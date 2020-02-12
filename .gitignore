@@ -1,0 +1,6 @@
+*.jar
+gradle.properties
+out/
+.idea/
+.gradle/
+build/
