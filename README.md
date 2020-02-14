@@ -17,7 +17,7 @@ Compilation
 ### Plugin Compilation
 - Clone source of healenium plugin from https://github.com/healenium/healenium-plugin
 - Comment the line 'token intellijPublishToken' in the file src/main/resources/META-INF/plugin.xml
-- To run the plugin from IntelliJ Idea choose Edit Configuration 'Gradle' with parameters:
-    - Gradle project: C:\path-to-directory-of\websync-idea
-    - Tasks: ':runIde'
+- To run the plugin from IntelliJ Idea choose <kbd>Edit Configuration</kbd> 'Gradle' with parameters:
+    - Gradle project: <kbd>C:\path-to-directory-of\websync-idea</kbd>
+    - Tasks: <kbd>':runIde'</kbd>
 
