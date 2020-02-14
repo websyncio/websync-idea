@@ -11,7 +11,6 @@ Provides support for updating broken selenium locators with healed one via remot
 **Last version (0.0.1) released on 19.11.2019**
 
 This plugin is based on Healenium plugin (https://github.com/healenium/healenium-plugin)
-
 ----------
 ### Plugin Compilation
 - Clone source of healenium plugin from https://github.com/healenium/healenium-plugin
