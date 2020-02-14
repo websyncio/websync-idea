@@ -11,8 +11,8 @@ Provides support for updating broken selenium locators with healed one via remot
 **Last version (0.0.1) released on 19.11.2019**
 
 This plugin is based on Healenium plugin (https://github.com/healenium/healenium-plugin)
-----------
-### Plugin Compilation
+
+## Plugin Compilation
 - Clone source of healenium plugin from https://github.com/healenium/healenium-plugin
 - Comment the line 'token intellijPublishToken' in the file src/main/resources/META-INF/plugin.xml
 - To run the plugin from IntelliJ Idea choose <kbd>Edit Configuration</kbd> > <kbd>Gradle</kbd> with parameters:
