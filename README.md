@@ -12,8 +12,7 @@ Provides support for updating broken selenium locators with healed one via remot
 
 This plugin is based on Healenium plugin (https://github.com/healenium/healenium-plugin)
 
-Compilation
-------------
+----------
 ### Plugin Compilation
 - Clone source of healenium plugin from https://github.com/healenium/healenium-plugin
 - Comment the line 'token intellijPublishToken' in the file src/main/resources/META-INF/plugin.xml
