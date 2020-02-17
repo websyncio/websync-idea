@@ -15,7 +15,7 @@ env:
 
  
 script:
-  - ./gradlew build -x signArchives -s
+  - ./gradlew build 
 
 
 after_success:
