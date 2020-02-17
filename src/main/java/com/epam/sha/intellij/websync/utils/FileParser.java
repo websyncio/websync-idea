@@ -1,23 +1,13 @@
 package com.epam.sha.intellij.websync.utils;
 
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.PsiShortNamesCache;
-import com.intellij.psi.search.searches.AllClassesSearch;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.MessageView;
-import com.jediterm.terminal.ui.TerminalPanel;
+import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,19 +34,30 @@ public class FileParser {
         }
     }
 
+    final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
+
     private void printClasses() {
+        Project[] projects = ProjectManager.getInstance().getOpenProjects();
+        if (projects.length == 0) {
+            ApplicationManager.getApplication().runReadAction(() -> {
+                System.out.println("None project has not been opened.");
+            });
+        }
+
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        String[] classes = PsiShortNamesCache.getInstance(project).getAllClassNames();
+        if (!project.isInitialized()) {
+            ApplicationManager.getApplication().runReadAction(() -> {
+                System.out.println("Project has not been initialized.");
+            });
+        }
 
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
+        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            List<PsiClass> classes = AllClassesSearch.search(projectScope, project).findAll().stream()
-                    .filter(c -> Arrays.asList(c.getSupers()).stream()
-                            .filter(s -> s.getQualifiedName().equals("com.epam.jdi.light.elements.composite.WebPage"))
-                            .count() > 0)
-                    .collect(Collectors.toList());
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEBPAGE, allScope);
+            List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
+                    .stream().collect(Collectors.toList());
 
             System.out.println("Classes:");
             classes.forEach(c -> System.out.println("*" + c.getQualifiedName()));
