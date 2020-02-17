@@ -1,0 +1,12 @@
+language: java
+install: true
+
+os: linux
+dist: trusty
+jdk: oraclejdk8
+
+env:
+  - CI=true
+
+script:
+  - ./gradlew build -x signArchives -s
