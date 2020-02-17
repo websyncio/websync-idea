@@ -2,7 +2,7 @@
   <id>com.epam.sha.intellij.locatorupdater</id>
   <name>Locator Updater</name>
   <version>0.0.0</version>
-  <vendor email="email@gmail.com" url="https://github.com/websyncio/websync-idea">First Name & Last Name</vendor>
+  <vendor email="email@gmail.com" url="https://github.com/websyncio/websync-idea">First Name &amp; Last Name</vendor>
 
   <description>
     IntelliJ IDEA plugin for updating selenium locators via remote call.
