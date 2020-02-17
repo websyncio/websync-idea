@@ -53,6 +53,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
         PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
         PsiClass psiClass = psiElementFactory.createAnnotationType(JDI_JSITE);
+
         return AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll().stream().map(c -> {
             PsiWebiteType website = new PsiWebiteType(c);
             website.Fill();
@@ -62,6 +63,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
     private List<PsiPageType> getPages(Project project) {
         List<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEBPAGE);
+
         return psiClasses.stream().map(c -> {
             PsiPageType page = new PsiPageType(c);
             page.Fill();
@@ -71,6 +73,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
     private List<PsiComponentType> getComponents(Project project) {
         List<PsiClass> psiClasses = getDerivedClasses(project, JDI_COMPONENT);
+
         return psiClasses.stream().map(c -> {
             PsiComponentType component = new PsiComponentType(c);
             component.Fill();
