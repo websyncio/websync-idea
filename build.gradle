@@ -20,6 +20,9 @@ task applicationCodeCoverageReport(type:JacocoReport) {
     sourceSets sourceSets.main
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '5.1'
+}
 jacocoTestReport {
     reports {
         xml.enabled true
