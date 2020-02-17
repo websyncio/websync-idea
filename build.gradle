@@ -2,34 +2,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.1'
 }
-plugins {
-    id 'application'
-    id 'jacoco'
-}
 
-application {
-    mainClassName = 'org.gradle.MyMain'
-}
-
-jacoco {
-    applyTo run
-}
-
-task applicationCodeCoverageReport(type:JacocoReport) {
-    executionData run
-    sourceSets sourceSets.main
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '6.0'
-}
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        csv.enabled true
-        html.enabled = true
-    }
-}
 group 'com.epam.sha.intellij.locatorupdater'
 version '2.0.1'
 
@@ -55,13 +28,6 @@ publishPlugin {
 //    token intellijPublishToken
 }
 
-test {
-    jacoco {
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpDir = file("$buildDir/jacoco/classpathdumps")
-    }
-}
 patchPluginXml {
     changeNotes """Fix dependency plugin version. Update gradle version."""
 }
-
