@@ -8,9 +8,7 @@ websync-plugin
 
 Provides support for updating broken selenium locators with healed one via remote call with with IntelliJ IDEA.
 
-**Last version (0.0.1) released on 19.11.2019**
-
-This plugin is based on Healenium plugin (https://github.com/healenium/healenium-plugin)
+**Last version (0.0.1) released on 01.01.2020**
 
 ## Plugin Compilation
 - Clone source of healenium plugin from https://github.com/healenium/healenium-plugin
