@@ -5,14 +5,14 @@ os: linux
 dist: trusty
 jdk: oraclejdk8
 
-
 env:
   - CI=true
 
   
 script:
   - ./gradlew build -x signArchives -s
+
  
- after_script:
+after_script:
   - bash <(curl -s https://codecov.io/bash)
   
