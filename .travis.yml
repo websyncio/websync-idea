@@ -4,7 +4,6 @@ install: true
 os: linux
 dist: trusty
 jdk: oraclejdk8
-
 before_install:
  - chmod +x gradlew
 
@@ -17,12 +16,9 @@ env:
 script:
   - ./gradlew build -x signArchives -s
 
- env:
- - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
- 
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   
-after_failure:
-  - bash <(curl -s https://codecov.io/bash)
+
   
