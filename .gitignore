@@ -1,4 +1,3 @@
-*.jar
 gradle.properties
 out/
 .idea/
