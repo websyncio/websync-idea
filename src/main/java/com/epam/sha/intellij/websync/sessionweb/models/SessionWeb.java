@@ -1,9 +1,9 @@
 package com.epam.sha.intellij.websync.sessionweb.models;
 
-import java.util.List;
+import java.util.Map;
 
 public abstract class SessionWeb {
-    protected List<PageType> pageTypes;
-    protected List<WebsiteType> websiteTypes;
-    protected List<ComponentType> componentTypes;
+    protected Map<String, PageType> pageTypes;
+    protected Map<String, WebsiteType> websiteTypes;
+    protected Map<String, ComponentType> componentTypes;
 }
