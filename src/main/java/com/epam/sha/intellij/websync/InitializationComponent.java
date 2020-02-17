@@ -9,12 +9,12 @@ import java.io.File;
 
 public class InitializationComponent implements BaseComponent {
 
-    DebugFileWatcher tempFileWatcher = new DebugFileWatcher(new File("c:/temp/text.txt"), new FileParser());
+    DebugFileWatcher debugFileWatcher = new DebugFileWatcher(new File("c:/temp/text.txt"), new FileParser());
 
     public void initComponent() {
         System.out.println("Initializing...");
 
-        tempFileWatcher.start();
+        debugFileWatcher.start();
 
         System.out.println("Initialized.");
     }
@@ -22,7 +22,7 @@ public class InitializationComponent implements BaseComponent {
     public void disposeComponent() {
         System.out.println("Disposing...");
 
-        tempFileWatcher.stop();
+        debugFileWatcher.stop();
 
         System.out.println("Disposed.");
     }
