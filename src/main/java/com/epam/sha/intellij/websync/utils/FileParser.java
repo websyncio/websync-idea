@@ -44,7 +44,7 @@ public class FileParser {
             });
         }
 
-        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        Project project = projects[0];
         if (!project.isInitialized()) {
             ApplicationManager.getApplication().runReadAction(() -> {
                 System.out.println("Project has not been initialized.");
