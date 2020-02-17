@@ -8,7 +8,9 @@ import com.epam.sha.intellij.websync.sessionweb.psimodels.PsiWebiteType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.impl.PsiElementFactoryImpl;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
 import java.util.Arrays;
@@ -34,7 +36,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
                 PsiSessionWeb sessionWeb = new PsiSessionWeb(websites, components, pages);
                 List<SessionWeb> sessionWebs = Arrays.asList(sessionWeb);
-                cacheSesionWebs(sessionWebs);
+                cacheSessionWebs(sessionWebs);
                 return sessionWebs;
             } catch (Exception ex) {
                 throw ex;
@@ -43,26 +45,34 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         return cachedSessionWebs;
     }
 
-    private List<PsiWebiteType> getWebsites(Project project) {
-        return null;
-    }
-
+    final public String JDI_JSITE = "JSite";
     final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
     final public String JDI_COMPONENT = "com.epam.jdi.light.elements.base.UIBaseElement";
 
+    private List<PsiWebiteType> getWebsites(Project project) {
+        GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
+        PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
+        PsiClass psiClass = psiElementFactory.createAnnotationType(JDI_JSITE);
+        return AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll().stream().map(c -> {
+            PsiWebiteType website = new PsiWebiteType(c);
+            website.Fill();
+            return website;
+        }).collect(Collectors.toList());
+    }
+
     private List<PsiPageType> getPages(Project project) {
-        List<PsiClass> derivedClasses = getDerivedClasses(project, JDI_WEBPAGE);
-        return derivedClasses.stream().map(dc -> {
-            PsiPageType page = new PsiPageType(dc);
+        List<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEBPAGE);
+        return psiClasses.stream().map(c -> {
+            PsiPageType page = new PsiPageType(c);
             page.Fill();
             return page;
         }).collect(Collectors.toList());
     }
 
     private List<PsiComponentType> getComponents(Project project) {
-        List<PsiClass> derivedClasses = getDerivedClasses(project, JDI_COMPONENT);
-        return derivedClasses.stream().map(dc -> {
-            PsiComponentType component = new PsiComponentType(dc);
+        List<PsiClass> psiClasses = getDerivedClasses(project, JDI_COMPONENT);
+        return psiClasses.stream().map(c -> {
+            PsiComponentType component = new PsiComponentType(c);
             component.Fill();
             return component;
         }).collect(Collectors.toList());
@@ -78,7 +88,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         return classes;
     }
 
-    private void cacheSesionWebs(List<SessionWeb> sessionWebs) {
+    private void cacheSessionWebs(List<SessionWeb> sessionWebs) {
         cachedSessionWebs = sessionWebs;
     }
 }
