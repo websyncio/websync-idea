@@ -21,7 +21,7 @@ task applicationCodeCoverageReport(type:JacocoReport) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '5.1'
+    gradleVersion = '6.0'
 }
 jacocoTestReport {
     reports {
