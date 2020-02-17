@@ -5,10 +5,15 @@ os: linux
 dist: trusty
 jdk: oraclejdk8
 
+before_install:
+ - chmod +x gradlew
+
 env:
   - CI=true
+  - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
 
-  
+
+ 
 script:
   - ./gradlew build -x signArchives -s
 
