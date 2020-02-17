@@ -18,6 +18,8 @@ Last support for IntelliJ 2019.1 by plugin version 1.9!
 
 Installation
 ------------
+
+
 ### Plugin Installation
 - Using IDE built-in plugin system on Windows:
   - <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "Locator Updater"</kbd> > <kbd>Install Plugin</kbd>
