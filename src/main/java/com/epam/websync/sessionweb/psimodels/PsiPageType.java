@@ -8,6 +8,8 @@ public class PsiPageType extends PsiComponentsContainer<PageType> implements Pag
         super(psiClass);
     }
 
+    @Override
     public void Fill() {
+        super.Fill();
     }
 }

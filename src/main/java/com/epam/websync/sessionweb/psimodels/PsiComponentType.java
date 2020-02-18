@@ -8,6 +8,8 @@ public class PsiComponentType extends PsiComponentsContainer<ComponentType> impl
         super(psiClass);
     }
 
+    @Override
     public void Fill() {
+        super.Fill();
     }
 }

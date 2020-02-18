@@ -38,9 +38,11 @@ public class FileParser {
         }
     }
     private void testSessionWebProvider() {
-        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
-        webProvider.getSessionWebs(false);
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+            webProvider.getSessionWebs(false);
+        });
     }
 
     final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";

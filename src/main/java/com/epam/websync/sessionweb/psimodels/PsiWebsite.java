@@ -7,4 +7,9 @@ public class PsiWebsite extends PsiNamedTypeWrapper<Website> implements Website 
     public PsiWebsite(PsiClass psiClass) {
         super(psiClass);
     }
+
+    @Override
+    public void Fill() {
+        super.Fill();
+    }
 }
