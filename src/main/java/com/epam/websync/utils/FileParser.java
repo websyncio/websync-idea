@@ -1,6 +1,9 @@
 package com.epam.websync.utils;
 
+import com.epam.websync.browserConnection.SessionWebSerializer;
+import com.epam.websync.ember.EmberSerializer;
 import com.epam.websync.sessionweb.PsiSessionWebProvider;
+import com.epam.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -9,6 +12,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,15 +37,34 @@ public class FileParser {
             case "web":
                 System.out.println("web...");
                 testSessionWebProvider();
+                break;
+            case "ser":
+                System.out.println("ser...");
+                testSerializer();
+                break;
             default:
                 System.out.println(String.format("Any command '%s'", lines.get(0)));
         }
     }
+
+    private void testSerializer() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+
+            Collection<SessionWeb> sessions = webProvider.getSessionWebs(false);
+
+            SessionWebSerializer serializer = new EmberSerializer();
+            String json = serializer.serialize(sessions);
+            sessions = serializer.deserialize(json);
+        });
+    }
+
     private void testSessionWebProvider() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
             PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
-            webProvider.getSessionWebs(false);
+            webProvider.getSessionWebs(true);
         });
     }
 
