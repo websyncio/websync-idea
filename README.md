@@ -3,7 +3,7 @@ websync-plugin
 
 [![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/13171-locator-updater.svg)](https://plugins.jetbrains.com/plugin/13171-locator-updater)
 [![CI Status](https://travis-ci.org/websyncio/websync-idea.svg?branch=yakovzaborov-patch-1)](https://travis-ci.org/websyncio/websync-idea)
-[![Code Coverage](https://img.shields.io/codecov/c/github/pvorb/property-providers/develop.svg)](https://codecov.io/gh/websyncio/websync-idea)
+[![codecov](https://codecov.io/gh/websyncio/websync-idea/branch/yakovzaborov-patch-1/graph/badge.svg)](https://codecov.io/gh/websyncio/websync-idea)
 
 
 ## Plugin for [IntelliJ IDEA](http://plugins.jetbrains.com/plugin/13171-locator-updater) to support [WebSync-Chrome](https://github.com/websyncio/websync-chrome). ##
