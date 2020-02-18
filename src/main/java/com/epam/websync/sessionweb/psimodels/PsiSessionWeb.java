@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PsiSessionWeb extends SessionWeb {
-    public PsiSessionWeb(Collection<PsiWebiteType> websites, Collection<PsiComponentType> components,
+    public PsiSessionWeb(Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
                          Collection<PsiPageType> pages) {
 
         this.websites = websites.stream()
-                .collect(Collectors.toMap(PsiWebiteType::getId, website -> website));
+                .collect(Collectors.toMap(PsiWebsite::getId, website -> website));
 
         this.componentTypes = components.stream()
                 .collect(Collectors.toMap(PsiComponentType::getId, component -> component));

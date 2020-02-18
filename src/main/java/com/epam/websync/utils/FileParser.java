@@ -1,5 +1,6 @@
 package com.epam.websync.utils;
 
+import com.epam.websync.sessionweb.PsiSessionWebProvider;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -29,9 +30,17 @@ public class FileParser {
                 System.out.println("Print");
                 printClasses();
                 break;
+            case "web":
+                System.out.println("web...");
+                testSessionWebProvider();
             default:
                 System.out.println(String.format("Any command '%s'", lines.get(0)));
         }
+    }
+    private void testSessionWebProvider() {
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+        webProvider.getSessionWebs(false);
     }
 
     final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";

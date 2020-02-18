@@ -63,7 +63,8 @@ public class EmberSerializer implements SessionWebSerializer {
         ObjectMapper objectMapper = new ObjectMapper();
         Collection<SessionWeb> sessions = null;
         try {
-            sessions = objectMapper.readValue(data, new TypeReference<Collection<SessionWeb>>(){});
+            sessions = objectMapper.readValue(data, new TypeReference<Collection<SessionWeb>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
