@@ -20,8 +20,8 @@ env:
     - CI=true
     - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
 
-install:
-   - gradle wrapper
+install: skip
+
  
 script:
   - gradle wrapper
