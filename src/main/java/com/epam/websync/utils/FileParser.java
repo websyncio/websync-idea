@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.utils;
+package com.epam.websync.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;

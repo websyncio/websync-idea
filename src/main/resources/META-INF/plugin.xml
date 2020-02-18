@@ -12,13 +12,13 @@
   <application-components>
     <component>
 <!--      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>-->
-      <implementation-class>com.epam.sha.intellij.websync.InitializationComponent</implementation-class>
+      <implementation-class>com.epam.websync.InitializationComponent</implementation-class>
     </component>
   </application-components>
 
   <extensions defaultExtensionNs="com.intellij">
 <!--    <applicationService serviceImplementation="com.epam.sha.intellij.locatorupdater.settings.LocatorUpdaterSettings"/>-->
-<!--    <postStartupActivity implementation="com.epam.sha.intellij.websync.InitializationStartupActivity" />-->
+<!--    <postStartupActivity implementation="InitializationStartupActivity" />-->
   </extensions>
 
   <actions>

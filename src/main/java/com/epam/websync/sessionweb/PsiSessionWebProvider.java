@@ -1,10 +1,10 @@
-package com.epam.sha.intellij.websync.sessionweb;
+package com.epam.websync.sessionweb;
 
-import com.epam.sha.intellij.websync.sessionweb.models.SessionWeb;
-import com.epam.sha.intellij.websync.sessionweb.psimodels.PsiComponentType;
-import com.epam.sha.intellij.websync.sessionweb.psimodels.PsiPageType;
-import com.epam.sha.intellij.websync.sessionweb.psimodels.PsiSessionWeb;
-import com.epam.sha.intellij.websync.sessionweb.psimodels.PsiWebiteType;
+import com.epam.websync.sessionweb.models.SessionWeb;
+import com.epam.websync.sessionweb.psimodels.PsiComponentType;
+import com.epam.websync.sessionweb.psimodels.PsiPageType;
+import com.epam.websync.sessionweb.psimodels.PsiSessionWeb;
+import com.epam.websync.sessionweb.psimodels.PsiWebiteType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -82,12 +82,18 @@ public class PsiSessionWebProvider implements SessionWebPovider {
     }
 
     private List<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
+        long startTime = System.currentTimeMillis();
+
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         PsiClass webPagePsiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
         List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                 .stream().collect(Collectors.toList());
+
+        long endTime = System.currentTimeMillis();
+        System.out.println(String.format("Time of getting derived classes from %s = %s s.", classQualifiedName,
+                (endTime - startTime) / 1000));
         return classes;
     }
 

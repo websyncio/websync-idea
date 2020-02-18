@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.sessionweb.models;
+package com.epam.websync.sessionweb.models;
 
 import java.util.Map;
 

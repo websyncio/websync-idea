@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync;
+package com.epam.websync;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;

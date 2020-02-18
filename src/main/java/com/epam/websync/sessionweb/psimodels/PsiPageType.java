@@ -1,6 +1,6 @@
-package com.epam.sha.intellij.websync.sessionweb.psimodels;
+package com.epam.websync.sessionweb.psimodels;
 
-import com.epam.sha.intellij.websync.sessionweb.models.PageType;
+import com.epam.websync.sessionweb.models.PageType;
 import com.intellij.psi.PsiClass;
 
 public class PsiPageType extends PsiComponentsContainer<PageType> implements PageType {

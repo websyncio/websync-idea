@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.sessionweb.psimodels;
+package com.epam.websync.sessionweb.psimodels;
 
 import lombok.Getter;
 import lombok.Setter;

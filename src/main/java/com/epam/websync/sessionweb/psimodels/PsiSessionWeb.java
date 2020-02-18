@@ -1,6 +1,6 @@
-package com.epam.sha.intellij.websync.sessionweb.psimodels;
+package com.epam.websync.sessionweb.psimodels;
 
-import com.epam.sha.intellij.websync.sessionweb.models.SessionWeb;
+import com.epam.websync.sessionweb.models.SessionWeb;
 
 import java.util.List;
 import java.util.stream.Collectors;
