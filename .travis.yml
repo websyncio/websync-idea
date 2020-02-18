@@ -27,7 +27,6 @@ script:
   - cd websync-idea
   - ls -la
   - chmod +x gradlew
-  - ./gradlew wrapper --gradle-version 6.1
   - ./gradlew build 
 
 
