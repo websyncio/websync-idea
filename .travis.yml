@@ -2,7 +2,7 @@ language: java
 
 os: linux
 dist: trusty
-jdk: oraclejdk11
+jdk: oraclejdk8
 before_install:
  - chmod +x gradlew
  - wget https://services.gradle.org/distributions/gradle-5.3-bin.zip
@@ -25,7 +25,9 @@ env:
  
 script:
   - ls -la
-  - chmod +x gradlew
+  - export GRADLE_HOME=$PWD/gradle-5.3
+  - export PATH=$GRADLE_HOME/bin:$PATH
+  - echo $GRADLE_HOME
   - gradle-5.3/bin/gradle clean build --refresh-dependencies
 #  - ./gradlew clean build --refresh-dependencies
 
