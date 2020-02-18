@@ -26,8 +26,8 @@ install: skip
 script:
   - ls -la
   - chmod +x gradlew
-#  - gradle-5.3/bin/gradle clean build --refresh-dependencies
-  - ./gradlew clean build --refresh-dependencies
+  - gradle-5.3/bin/gradle clean build --refresh-dependencies
+#  - ./gradlew clean build --refresh-dependencies
 
 
 after_success:
