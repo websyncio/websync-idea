@@ -13,8 +13,9 @@ before_install:
  - gradle -v
 
 env:
-  - CI=true
-  - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
+  global:
+    - CI=true
+    - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
 
 
  
