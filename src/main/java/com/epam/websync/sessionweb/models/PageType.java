@@ -1,4 +1,4 @@
 package com.epam.websync.sessionweb.models;
 
-public interface PageType {
+public interface PageType extends ComponentsContainer {
 }

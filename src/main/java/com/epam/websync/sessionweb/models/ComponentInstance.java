@@ -1,4 +1,4 @@
 package com.epam.websync.sessionweb.models;
 
-public interface WebsiteType {
+public interface ComponentInstance {
 }

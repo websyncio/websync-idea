@@ -1,9 +1,14 @@
 package com.epam.websync.sessionweb.models;
 
+import lombok.Getter;
+
 import java.util.Map;
 
 public abstract class SessionWeb {
+    @Getter
     protected Map<String, PageType> pageTypes;
-    protected Map<String, WebsiteType> websiteTypes;
+    @Getter
+    protected Map<String, Website> websites;
+    @Getter
     protected Map<String, ComponentType> componentTypes;
 }

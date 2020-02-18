@@ -14,25 +14,26 @@ import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PsiSessionWebProvider implements SessionWebPovider {
 
     private Project project;
-    private List<SessionWeb> cachedSessionWebs;
+    private Collection<SessionWeb> cachedSessionWebs;
 
     public PsiSessionWebProvider(Project project) {
         this.project = project;
     }
 
     @Override
-    public List<SessionWeb> getSessionWeb(boolean useCache) {
+    public Collection<SessionWeb> getSessionWebs(boolean useCache) {
         if (cachedSessionWebs == null || !useCache) {
             try {
-                List<PsiWebiteType> websites = getWebsites(project);
-                List<PsiPageType> pages = getPages(project);
-                List<PsiComponentType> components = getComponents(project);
+                Collection<PsiWebiteType> websites = getWebsites(project);
+                Collection<PsiPageType> pages = getPages(project);
+                Collection<PsiComponentType> components = getComponents(project);
 
                 PsiSessionWeb sessionWeb = new PsiSessionWeb(websites, components, pages);
                 List<SessionWeb> sessionWebs = Arrays.asList(sessionWeb);
@@ -49,7 +50,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
     final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
     final public String JDI_COMPONENT = "com.epam.jdi.light.elements.base.UIBaseElement";
 
-    private List<PsiWebiteType> getWebsites(Project project) {
+    private Collection<PsiWebiteType> getWebsites(Project project) {
         GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
         PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
         PsiClass psiClass = psiElementFactory.createAnnotationType(JDI_JSITE);
@@ -61,8 +62,8 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         }).collect(Collectors.toList());
     }
 
-    private List<PsiPageType> getPages(Project project) {
-        List<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEBPAGE);
+    private Collection<PsiPageType> getPages(Project project) {
+        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEBPAGE);
 
         return psiClasses.stream().map(c -> {
             PsiPageType page = new PsiPageType(c);
@@ -71,8 +72,8 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         }).collect(Collectors.toList());
     }
 
-    private List<PsiComponentType> getComponents(Project project) {
-        List<PsiClass> psiClasses = getDerivedClasses(project, JDI_COMPONENT);
+    private Collection<PsiComponentType> getComponents(Project project) {
+        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_COMPONENT);
 
         return psiClasses.stream().map(c -> {
             PsiComponentType component = new PsiComponentType(c);
@@ -81,15 +82,14 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         }).collect(Collectors.toList());
     }
 
-    private List<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
+    private Collection<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
         long startTime = System.currentTimeMillis();
 
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         PsiClass webPagePsiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
-        List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
-                .stream().collect(Collectors.toList());
+        Collection<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll();
 
         long endTime = System.currentTimeMillis();
         System.out.println(String.format("Time of getting derived classes from %s = %s s.", classQualifiedName,

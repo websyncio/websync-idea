@@ -2,18 +2,20 @@ package com.epam.websync.sessionweb.psimodels;
 
 import com.epam.websync.sessionweb.models.SessionWeb;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PsiSessionWeb extends SessionWeb {
-    public PsiSessionWeb(List<PsiWebiteType> websites, List<PsiComponentType> components, List<PsiPageType> pages) {
-        websiteTypes = websites.stream()
+    public PsiSessionWeb(Collection<PsiWebiteType> websites, Collection<PsiComponentType> components,
+                         Collection<PsiPageType> pages) {
+
+        this.websites = websites.stream()
                 .collect(Collectors.toMap(PsiWebiteType::getId, website -> website));
 
-        componentTypes = components.stream()
+        this.componentTypes = components.stream()
                 .collect(Collectors.toMap(PsiComponentType::getId, component -> component));
 
-        pageTypes = pages.stream()
+        this.pageTypes = pages.stream()
                 .collect(Collectors.toMap(PsiPageType::getId, page -> page));
     }
 }

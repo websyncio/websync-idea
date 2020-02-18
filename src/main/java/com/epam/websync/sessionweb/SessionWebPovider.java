@@ -2,8 +2,8 @@ package com.epam.websync.sessionweb;
 
 import com.epam.websync.sessionweb.models.SessionWeb;
 
-import java.util.List;
+import java.util.Collection;
 
 interface SessionWebPovider {
-    List<SessionWeb> getSessionWeb(boolean useCache);
+    Collection<SessionWeb> getSessionWebs(boolean useCache);
 }
