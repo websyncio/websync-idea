@@ -20,12 +20,13 @@ env:
     - CI=true
     - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
 
-#install: skip
+install: skip
 
  
 script:
   - cd websync-idea
   - ls -la
+  - chmod +x gradlew
   - ./gradlew wrapper --gradle-version 6.1
   - ./gradlew build 
 
