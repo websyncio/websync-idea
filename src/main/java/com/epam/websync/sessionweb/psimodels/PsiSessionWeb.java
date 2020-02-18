@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PsiSessionWeb extends SessionWeb {
+    public PsiSessionWeb() {
+        super();
+    }
+
     public PsiSessionWeb(Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
                          Collection<PsiPageType> pages) {
 

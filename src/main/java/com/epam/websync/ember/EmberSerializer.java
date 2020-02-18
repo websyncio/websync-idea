@@ -7,7 +7,9 @@ import com.epam.websync.sessionweb.models.ComponentsContainer;
 import com.epam.websync.sessionweb.models.SessionWeb;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +24,11 @@ public class EmberSerializer implements SessionWebSerializer {
         for (SessionWeb web : webs) {
             serializeSessionWeb(payload, web);
         }
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         String result = null;
         try {
-            result = objectMapper.writeValueAsString(payload);
+            result = mapper.writeValueAsString(payload);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -33,7 +36,7 @@ public class EmberSerializer implements SessionWebSerializer {
     }
 
     private void serializeSessionWeb(EmberDataPayload payload, SessionWeb web) {
-        payload.services = web.getWebsites().values().stream()
+        payload.websites = web.getWebsites().values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pageTypes = web.getPageTypes().values().stream()
                 .map(p -> new PageTypeDto(p)).collect(Collectors.toList());
@@ -52,22 +55,42 @@ public class EmberSerializer implements SessionWebSerializer {
 
     private void serializeComponents(EmberDataPayload payload, Collection<ComponentsContainer> containers) {
         for (ComponentsContainer container : containers) {
+            if (container.components == null) {
+                break;
+            }
             for (ComponentInstance component : container.components) {
                 payload.components.add(new ComponentDto(component));
             }
         }
     }
 
+//    @Override
+//    public Collection<SessionWeb> deserialize(String data) {
+//        ObjectMapper mapper = new ObjectMapper();
+////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+////        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+//        Collection<SessionWeb> sessions = null;
+//        try {
+//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiSessionWeb>>() {
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return sessions;
+//    }
+
     @Override
     public Collection<SessionWeb> deserialize(String data) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Collection<SessionWeb> sessions = null;
+        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        Collection<EmberDataPayload> payload = null;
         try {
-            sessions = objectMapper.readValue(data, new TypeReference<Collection<SessionWeb>>() {
+            payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return sessions;
+        return null;
     }
 }
