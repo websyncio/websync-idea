@@ -7,6 +7,7 @@ public class JdiAttributes {
     public static final String JDI_JTABLE = "com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable";
     public static final String JDI_JMENU = "com.epam.jdi.light.elements.pageobjects.annotations.locators.JMenu";
     public static final String JDI_JSITE = "com.epam.jdi.light.elements.pageobjects.annotations.JSite";
+    public static final String JDI_UI = "com.epam.jdi.light.elements.pageobjects.annotations.UI";
     public static final String JDI_WITH_TEXT = "com.epam.jdi.light.elements.pageobjects.annotations.locators.WithText";
     public static final String JDI_XPATH = "com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath";
     public static final String JDI_CLICK_AREA = "com.epam.jdi.light.elements.pageobjects.annotations.ClickArea";
@@ -29,4 +30,9 @@ public class JdiAttributes {
     public static final String JDI_URL = "com.epam.jdi.light.elements.pageobjects.annotations.Url";
     public static final String JDI_VISUAL_CHECK = "com.epam.jdi.light.elements.pageobjects.annotations.VisualCheck";
     public static final String JDI_WAIT_TIMEOUT = "com.epam.jdi.light.elements.pageobjects.annotations.WaitTimeout";
+    public static final String JDI_SCLASS = "com.epam.jdi.light.elements.pageobjects.annotations.smart.SClass";
+    public static final String JDI_SID = "com.epam.jdi.light.elements.pageobjects.annotations.smart.SId";
+    public static final String JDI_SMART = "com.epam.jdi.light.elements.pageobjects.annotations.smart.Smart";
+    public static final String JDI_SNAME = "com.epam.jdi.light.elements.pageobjects.annotations.smart.SName";
+    public static final String JDI_STEXT = "com.epam.jdi.light.elements.pageobjects.annotations.smart.SText";
 }
