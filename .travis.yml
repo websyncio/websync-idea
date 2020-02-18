@@ -2,7 +2,7 @@ language: java
 
 os: linux
 dist: trusty
-jdk: oraclejdk8
+#jdk: oraclejdk8
 before_install:
  - chmod +x gradlew
  - wget https://services.gradle.org/distributions/gradle-5.3-bin.zip
@@ -20,7 +20,7 @@ env:
     - CI=true
     - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
 
-install: skip
+#install: skip
 
  
 script:
