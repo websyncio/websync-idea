@@ -5,10 +5,10 @@ dist: trusty
 jdk: oraclejdk8
 before_install:
  - chmod +x gradlew
- - wget https://services.gradle.org/distributions/gradle-5.3-bin.zip
- - unzip -qq gradle-5.3-bin.zip
+ - wget https://services.gradle.org/distributions/gradle-4.10-bin.zip
+ - unzip -qq gradle-4.10-bin.zip
  - echo $PWD
- - export GRADLE_HOME=$PWD/gradle-5.3
+ - export GRADLE_HOME=$PWD/gradle-4.10
  - export PATH=$GRADLE_HOME/bin:$PATH
  - gradle -v
 
@@ -25,10 +25,10 @@ install: skip
  
 script:
   - ls -la
-  - export GRADLE_HOME=$PWD/gradle-5.3
+  - export GRADLE_HOME=$PWD/gradle-4.10
   - export PATH=$GRADLE_HOME/bin:$PATH
   - echo $GRADLE_HOME
-  - gradle-5.3/bin/gradle clean build --refresh-dependencies
+  - gradle-4.10/bin/gradle clean build --refresh-dependencies
 #  - ./gradlew clean build --refresh-dependencies
 
 
