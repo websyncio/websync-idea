@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.utils;
+package org.websync.utils;
 
 import java.io.File;
 import java.util.TimerTask;

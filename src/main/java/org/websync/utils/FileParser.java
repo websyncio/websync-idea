@@ -1,5 +1,9 @@
-package com.epam.sha.intellij.websync.utils;
+package org.websync.utils;
 
+import org.websync.browserConnection.SessionWebSerializer;
+import org.websync.ember.EmberSerializer;
+import org.websync.sessionweb.PsiSessionWebProvider;
+import org.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -8,6 +12,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,9 +34,38 @@ public class FileParser {
                 System.out.println("Print");
                 printClasses();
                 break;
+            case "web":
+                System.out.println("web...");
+                testSessionWebProvider();
+                break;
+            case "ser":
+                System.out.println("ser...");
+                testSerializer();
+                break;
             default:
                 System.out.println(String.format("Any command '%s'", lines.get(0)));
         }
+    }
+
+    private void testSerializer() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+
+            Collection<SessionWeb> sessions = webProvider.getSessionWebs(false);
+
+            SessionWebSerializer serializer = new EmberSerializer();
+            String json = serializer.serialize(sessions);
+            sessions = serializer.deserialize(json);
+        });
+    }
+
+    private void testSessionWebProvider() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+            webProvider.getSessionWebs(true);
+        });
     }
 
     final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";

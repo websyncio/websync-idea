@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.utils;
+package org.websync.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class DebugFileWatcher extends FileWatcher {
     protected void onChange(File file) {
         System.out.println("File " + file.getName() + " have change !");
         if (fileParser == null) {
-            System.out.println("File parser is not defined.");
+            System.out.println("File parser is not defined in DebugFileWatcher.");
             return;
         }
         try {
