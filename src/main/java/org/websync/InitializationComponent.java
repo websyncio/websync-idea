@@ -1,7 +1,7 @@
-package com.epam.sha.intellij.websync;
+package org.websync;
 
-import com.epam.sha.intellij.websync.utils.DebugFileWatcher;
-import com.epam.sha.intellij.websync.utils.FileParser;
+import org.websync.utils.DebugFileWatcher;
+import org.websync.utils.FileParser;
 import com.intellij.openapi.components.BaseComponent;
 import org.jetbrains.annotations.NotNull;
 

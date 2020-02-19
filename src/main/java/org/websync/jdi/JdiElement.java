@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.jdi;
+package org.websync.jdi;
 
 public enum JdiElement {
     JDI_ALERTS("com.epam.jdi.light.elements.common.Alerts"),
