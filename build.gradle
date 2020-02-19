@@ -1,7 +1,9 @@
 plugins {
     id 'java'
+    id 'jacoco'
     id 'org.jetbrains.intellij' version '0.4.1'
 }
+
 
 group 'com.epam.sha.intellij.locatorupdater'
 version '2.0.1'
@@ -12,6 +14,8 @@ repositories {
     mavenCentral()
 }
 
+
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     annotationProcessor("org.projectlombok:lombok:1.18.6")
@@ -20,6 +24,15 @@ dependencies {
     compile "com.epam.jdi:jdi-light:1.1.15"
     compile "com.epam.jdi:jdi-light-html:1.1.15"
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
 
 intellij {
     plugins 'java'
