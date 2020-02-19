@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.websync.jdi;
+package org.websync.jdi;
 
 public enum JdiAttribute {
     JDI_BY_TEXT("com.epam.jdi.light.elements.pageobjects.annotations.locators.ByText"),
