@@ -12,7 +12,7 @@
   <application-components>
     <component>
 <!--      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>-->
-      <implementation-class>com.epam.websync.InitializationComponent</implementation-class>
+      <implementation-class>org.websync.InitializationComponent</implementation-class>
     </component>
   </application-components>
 
