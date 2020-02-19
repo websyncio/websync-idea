@@ -64,21 +64,6 @@ public class EmberSerializer implements SessionWebSerializer {
         }
     }
 
-//    @Override
-//    public Collection<SessionWeb> deserialize(String data) {
-//        ObjectMapper mapper = new ObjectMapper();
-////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-////        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-//        Collection<SessionWeb> sessions = null;
-//        try {
-//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiSessionWeb>>() {
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return sessions;
-//    }
-
     @Override
     public Collection<SessionWeb> deserialize(String data) {
         ObjectMapper mapper = new ObjectMapper();
@@ -86,6 +71,7 @@ public class EmberSerializer implements SessionWebSerializer {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Collection<EmberDataPayload> payload = null;
         try {
+//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiSessionWeb>>() {
             payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
             });
         } catch (IOException e) {
