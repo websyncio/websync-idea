@@ -29,27 +29,36 @@ public class CommonElements {
     public Label initializedWithFindBys;
     @Frame("test")
     public Label initializedWithFrame;
-    @GetAny Label initializedWithGetAny;
-    @GetShowInView Label initializedWithGetShowInView;
+    @GetAny
+    public Label initializedWithGetAny;
+    @GetShowInView
+    public Label initializedWithGetShowInView;
     @GetTextAs(TextTypes.LABEL)
     public Label initializedWithGetTextAs;
-    @GetVisible Label initializedWithGetVisible;
-    @GetVisibleEnabled Label initializedWithGetVisibleEnabled;
-    @Mandatory Label initializedWithMandatory;
+    @GetVisible
+    public Label initializedWithGetVisible;
+    @GetVisibleEnabled
+    public Label initializedWithGetVisibleEnabled;
+    @Mandatory
+    public Label initializedWithMandatory;
     @Name("test")
     public Label initializedWithName;
-    @NoCache Label initializedWithNoCache;
-    @NoWait Label initializedWithNoWait;
+    @NoCache
+    public Label initializedWithNoCache;
+    @NoWait
+    public Label initializedWithNoWait;
     @PageName("test")
     public Label initializedWithPageName;
-    @Root Label initializedWithRoot;
+    @Root
+    public Label initializedWithRoot;
     @SetTextAs(SET_TEXT)
     public Label initializedWithSetTextAs;
     @Title("test")
     public Label initializedWithTitle;
     @Url("test")
     public Label initializedWithUrl;
-    @VisualCheck Label initializedWithVisualCheck;
+    @VisualCheck
+    public Label initializedWithVisualCheck;
     @WaitTimeout(2)
     public Label initializedWithWaitTimeout;
 
