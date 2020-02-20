@@ -1,4 +1,4 @@
-package com.epam.sha.intellij.supportedframeworks.jdi;
+package org.websync.supportedframeworks.jdi;
 
 
 import com.epam.jdi.light.common.TextTypes;
