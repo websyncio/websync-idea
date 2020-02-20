@@ -2,7 +2,7 @@ websync-plugin
 ======================
 
 [![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/13171-locator-updater.svg)](https://plugins.jetbrains.com/plugin/13171-locator-updater)
-[![CI Status](https://travis-ci.org/websyncio/websync-idea.svg?branch=master](https://travis-ci.org/websyncio/websync-idea)
+[![CI Status](https://travis-ci.org/websyncio/websync-idea.svg?branch=master)](https://travis-ci.org/websyncio/websync-idea)
 [![codecov](https://codecov.io/gh/websyncio/websync-idea/branch/yakovzaborov-patch-1/graph/badge.svg)](https://codecov.io/gh/websyncio/websync-idea)
 
 
