@@ -9,34 +9,34 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 public class AttributesInitialization extends WebPage {
 
     @Css(".testCss")
-    private Label initializedWithCss;
+    public Label initializedWithCss;
     @XPath("//testXpath")
-    private Label initializedWithXpath;
+    public Label initializedWithXpath;
     @ByText("test")
-    private Label initializedWithByText;
+    public Label initializedWithByText;
     @UI("test")
-    private Label initializedWithUi;
+    public Label initializedWithUi;
     @WithText("test")
-    private Label initializedWithWithText;
+    public Label initializedWithWithText;
     @FindBy(id = "test")
-    private Label initializedWithFindBy;
+    public Label initializedWithFindBy;
     @FindBys({@FindBy(id = "test"), @FindBy(id = "test1")})
-    private Label initializedWithFindBys;
+    public Label initializedWithFindBys;
     @Frame("test")
-    private Label initializedWithFrame;
+    public Label initializedWithFrame;
     @Name("test")
-    private Label initializedWithName;
+    public Label initializedWithName;
     @Title("test")
-    private Label initializedWithTitle;
+    public Label initializedWithTitle;
 
 
     @XPath("//testXpath")
     @Css(".testCss")
-    private Label overlappedCssAndXpath;
+    public Label overlappedCssAndXpath;
     @Css("//testCss")
-    private Label wrongCssFormat;
+    public Label wrongCssFormat;
     @XPath(".testXpath")
-    private Label wrongXpathFormat;
+    public Label wrongXpathFormat;
 
     public String getLabelValueByCss() {
         return initializedWithCss.getValue();

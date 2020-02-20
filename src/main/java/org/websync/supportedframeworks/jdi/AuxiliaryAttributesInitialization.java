@@ -11,33 +11,33 @@ import static com.epam.jdi.light.common.SetTextTypes.SET_TEXT;
 public class AuxiliaryAttributesInitialization {
 
     @ClickArea(CENTER)
-    private Label initializedWithClickArea;
+    public Label initializedWithClickArea;
     @GetAny
-    private Label initializedWithGetAny;
+    public Label initializedWithGetAny;
     @GetShowInView
-    private Label initializedWithGetShowInView;
+    public Label initializedWithGetShowInView;
     @GetTextAs(TextTypes.LABEL)
-    private Label initializedWithGetTextAs;
+    public Label initializedWithGetTextAs;
     @GetVisible
-    private Label initializedWithGetVisible;
+    public Label initializedWithGetVisible;
     @GetVisibleEnabled
-    private Label initializedWithGetVisibleEnabled;
+    public Label initializedWithGetVisibleEnabled;
     @Mandatory
-    private Label initializedWithMandatory;
+    public Label initializedWithMandatory;
     @NoCache
-    private Label initializedWithNoCache;
+    public Label initializedWithNoCache;
     @NoWait
-    private Label initializedWithNoWait;
+    public Label initializedWithNoWait;
     @PageName("test")
-    private Label initializedWithPageName;
+    public Label initializedWithPageName;
     @Root
-    private Label initializedWithRoot;
+    public Label initializedWithRoot;
     @SetTextAs(SET_TEXT)
-    private Label initializedWithSetTextAs;
+    public Label initializedWithSetTextAs;
     @Url("test")
-    private Label initializedWithUrl;
+    public Label initializedWithUrl;
     @VisualCheck
-    private Label initializedWithVisualCheck;
+    public Label initializedWithVisualCheck;
     @WaitTimeout(2)
-    private Label initializedWithWaitTimeout;
+    public Label initializedWithWaitTimeout;
 }
