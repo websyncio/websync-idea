@@ -40,4 +40,7 @@ public class ComplexElementsInitialization extends WebPage {
     @JMenu("test")
     public Menu initializedMenu;
 
+    @JMenu(value = "test", group = "group")
+    public Menu initializedMenuWithAllParameters;
+
 }
