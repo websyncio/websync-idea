@@ -15,7 +15,7 @@ import com.epam.jdi.light.ui.html.elements.complex.MultiSelector;
 import com.epam.jdi.light.ui.html.elements.complex.RadioButtons;
 import com.epam.jdi.light.ui.html.elements.complex.Tabs;
 
-public class BasePageObject extends WebPage {
+public abstract class BasePageObject extends WebPage {
     @Css(".testCss")
     public DataListOptions initializedDataListOptions;
     @XPath("//testXpath")
