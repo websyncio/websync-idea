@@ -1,10 +1,9 @@
 websync-plugin
 ======================
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86d6d10008844a7ca3e89984a309f241)](https://app.codacy.com/gh/websyncio/websync-idea?utm_source=github.com&utm_medium=referral&utm_content=websyncio/websync-idea&utm_campaign=Badge_Grade_Dashboard)
-[![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/13171-locator-updater.svg)](https://plugins.jetbrains.com/plugin/13171-locator-updater)
 [![CI Status](https://travis-ci.org/websyncio/websync-idea.svg?branch=master)](https://travis-ci.org/websyncio/websync-idea)
 [![codecov](https://codecov.io/gh/websyncio/websync-idea/branch/master/graph/badge.svg)](https://codecov.io/gh/websyncio/websync-idea)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86d6d10008844a7ca3e89984a309f241)](https://app.codacy.com/gh/websyncio/websync-idea?utm_source=github.com&utm_medium=referral&utm_content=websyncio/websync-idea&utm_campaign=Badge_Grade_Dashboard)
 
 
 ## Plugin for [IntelliJ IDEA](http://plugins.jetbrains.com/plugin/13171-locator-updater) to support [WebSync-Chrome](https://github.com/websyncio/websync-chrome). ##
