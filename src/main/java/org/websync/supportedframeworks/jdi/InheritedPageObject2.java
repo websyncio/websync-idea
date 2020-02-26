@@ -18,8 +18,8 @@ public class InheritedPageObject2 extends InheritedPageObject {
     public TextField initializedTextField;
     @FindBy(id = "test")
     public Icon initializedIcon;
-    @UI("#custom-table")
-    public CustomDataTable initializedCustomDataTable;
-    @UI("#custom-base-table")
-    public CustomBaseTable initializedCustomBaseTable;
+    @UI("#custom-element")
+    public CustomElement initializedCustomElement;
+    @UI("#custom-base-element")
+    public CustomBaseElement initializedCustomBaseElement;
 }
