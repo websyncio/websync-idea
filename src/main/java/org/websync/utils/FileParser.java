@@ -111,7 +111,7 @@ public class FileParser {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            System.out.println("Components:");
+            System.out.println(String.format("Components: %s", components.size()));
             components.forEach((k, v) -> {
                 String componentName = k;
                 String baseComponentId = v.getBaseComponentId() == null ? "" : v.getBaseComponentId();
