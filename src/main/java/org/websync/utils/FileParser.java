@@ -49,7 +49,7 @@ public class FileParser {
                 testPrintComponents();
                 break;
             default:
-                System.out.println(String.format("Unknown command has detected '%s'", command));
+                System.out.println(String.format("Unknown command is detected '%s'", command));
         }
         System.out.println(String.format("Command '%s' is performed", command));
     }
