@@ -3,6 +3,7 @@ package org.websync.utils;
 import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.EmberSerializer;
 import org.websync.sessionweb.PsiSessionWebProvider;
+import org.websync.sessionweb.models.ComponentType;
 import org.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -14,6 +15,7 @@ import com.intellij.psi.search.searches.ClassInheritorsSearch;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FileParser {
@@ -23,27 +25,32 @@ public class FileParser {
             return;
         }
 
-        switch (lines.get(0)) {
+        String command = lines.get(0);
+        switch (command) {
             case "a":
-                System.out.println("Command 'a'");
+                System.out.println(String.format("Command '%s'", command));
                 break;
             case "b":
-                System.out.println("Command 'b'");
+                System.out.println(String.format("Command '%s'", command));
                 break;
             case "print":
-                System.out.println("Print");
+                System.out.println(String.format(command));
                 printClasses();
                 break;
             case "web":
-                System.out.println("web...");
+                System.out.println(String.format("%s...", command));
                 testSessionWebProvider();
                 break;
-            case "ser":
-                System.out.println("ser...");
+            case "serialize":
+                System.out.println(String.format("%s...", command));
                 testSerializer();
                 break;
+            case "print components":
+                System.out.println(String.format("%s...", command));
+                testPrintComponents();
+                break;
             default:
-                System.out.println(String.format("Any command '%s'", lines.get(0)));
+                System.out.println(String.format("CommandNotExpectedException '%s'", command));
         }
     }
 
@@ -95,6 +102,21 @@ public class FileParser {
 
             System.out.println("Classes:");
             classes.forEach(c -> System.out.println("*" + c.getQualifiedName()));
+        });
+    }
+
+    private void testPrintComponents() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+            Collection<SessionWeb> sessions = webProvider.getSessionWebs(true);
+            SessionWeb session = sessions.stream().findFirst().get();
+            Map<String, ComponentType> components = session.getComponentTypes();
+
+            components.forEach((k, v) -> {
+                System.out.println(k);
+//                System.out.println(v.);
+            });
         });
     }
 }
