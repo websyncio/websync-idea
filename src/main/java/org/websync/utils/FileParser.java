@@ -28,32 +28,30 @@ public class FileParser {
         }
 
         String command = lines.get(0);
+        System.out.println(String.format("Command '%s' is performing...", command));
         switch (command) {
             case "a":
-                System.out.println(String.format("Command '%s'", command));
+                System.out.println(String.format("Command '%s' performed", command));
                 break;
             case "b":
-                System.out.println(String.format("Command '%s'", command));
+                System.out.println(String.format("Command '%s' performed", command));
                 break;
-            case "print":
-                System.out.println(String.format(command));
+            case "print classes":
                 printClasses();
                 break;
-            case "web":
-                System.out.println(String.format("%s...", command));
+            case "test session":
                 testWebSessionProvider();
                 break;
-            case "serialize":
-                System.out.println(String.format("%s...", command));
+            case "test serializer":
                 testSerializer();
                 break;
             case "print components":
-                System.out.println(String.format("%s...", command));
                 testPrintComponents();
                 break;
             default:
-                System.out.println(String.format("CommandNotExpectedException '%s'", command));
+                System.out.println(String.format("Unknown command has detected '%s'", command));
         }
+        System.out.println(String.format("Command '%s' is performed", command));
     }
 
     private void testSerializer() {
