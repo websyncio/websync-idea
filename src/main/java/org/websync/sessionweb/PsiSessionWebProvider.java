@@ -77,7 +77,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEB_PAGE.value);
 
-        Collection<PsiPage> pageTypes = psiClasses.stream().map(c -> {
+        Collection<PsiPage> pages = psiClasses.stream().map(c -> {
             PsiPage page = new PsiPage(c);
             page.Fill();
             return page;
@@ -86,7 +86,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         long endTime = System.currentTimeMillis();
         System.out.println(String.format("Time of getting page type PSI classes = %s s.",
                 (endTime - startTime) / 1000));
-        return pageTypes;
+        return pages;
     }
 
     private Collection<PsiComponent> getComponents(Project project) {
@@ -94,7 +94,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_UI_BASE_ELEMENT.value);
 
-        Collection<PsiComponent> componentTypes = psiClasses.stream().map(c -> {
+        Collection<PsiComponent> components = psiClasses.stream().map(c -> {
             PsiComponent component = new PsiComponent(c);
             component.Fill();
             return component;
@@ -103,7 +103,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         long endTime = System.currentTimeMillis();
         System.out.println(String.format("Time of getting component type PSI classes = %s s.",
                 (endTime - startTime) / 1000));
-        return componentTypes;
+        return components;
     }
 
     private Collection<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
