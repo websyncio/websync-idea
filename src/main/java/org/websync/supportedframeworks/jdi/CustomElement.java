@@ -12,7 +12,7 @@ public class CustomElement extends Label {
     @FindBy(xpath = "//test1")
     public UIElement initializedCustomUIElement;
     @XPath("//test2")
-    public By initializedCustomXpathElement;
+    public UIElement initializedCustomXpathElement;
     @Css("test3")
-    public By initializedCustomCssElement;
+    public UIElement initializedCustomCssElement;
 }

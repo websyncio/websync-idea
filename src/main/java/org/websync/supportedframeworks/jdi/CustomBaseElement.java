@@ -11,7 +11,7 @@ public class CustomBaseElement extends UIBaseElement {
     @FindBy(xpath = "//test")
     public UIElement customUIElement;
     @XPath("//test")
-    public By customXpathElement;
+    public UIElement customXpathElement;
     @Css("test")
-    public By customCssElement;
+    public UIElement customCssElement;
 }
