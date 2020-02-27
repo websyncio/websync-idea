@@ -11,7 +11,5 @@ public abstract class PsiComponentsContainer<T> extends PsiNamedTypeWrapper<T> i
         super(psiClass);
     }
 
-    public List<ComponentInstance> getComponents() {
-        return null;
-    }
+    public abstract List<ComponentInstance> getComponents();
 }
