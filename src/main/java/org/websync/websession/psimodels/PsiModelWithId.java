@@ -1,4 +1,4 @@
-package org.websync.sessionweb.psimodels;
+package org.websync.websession.psimodels;
 
 import lombok.Getter;
 import lombok.Setter;

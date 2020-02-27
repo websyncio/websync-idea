@@ -1,4 +1,4 @@
-package org.websync.sessionweb.psimodels;
+package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
 

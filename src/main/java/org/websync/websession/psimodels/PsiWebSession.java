@@ -1,6 +1,6 @@
-package org.websync.sessionweb.psimodels;
+package org.websync.websession.psimodels;
 
-import org.websync.sessionweb.models.WebSession;
+import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

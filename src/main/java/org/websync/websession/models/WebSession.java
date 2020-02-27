@@ -1,4 +1,4 @@
-package org.websync.sessionweb.models;
+package org.websync.websession.models;
 
 import lombok.Getter;
 

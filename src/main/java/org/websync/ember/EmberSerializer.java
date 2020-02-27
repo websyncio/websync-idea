@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.dto.*;
-import org.websync.sessionweb.models.ComponentInstance;
-import org.websync.sessionweb.models.ComponentsContainer;
-import org.websync.sessionweb.models.WebSession;
+import org.websync.websession.models.ComponentInstance;
+import org.websync.websession.models.ComponentsContainer;
+import org.websync.websession.models.WebSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,10 +55,10 @@ public class EmberSerializer implements SessionWebSerializer {
 
     private void serializeComponents(EmberDataPayload payload, Collection<ComponentsContainer> containers) {
         for (ComponentsContainer container : containers) {
-            if (container.components == null) {
+            if (container.getComponents() == null) {
                 break;
             }
-            for (ComponentInstance component : container.components) {
+            for (ComponentInstance component : container.getComponents()) {
                 payload.components.add(new ComponentDto(component));
             }
         }

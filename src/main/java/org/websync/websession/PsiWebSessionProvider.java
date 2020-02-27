@@ -1,4 +1,4 @@
-package org.websync.sessionweb;
+package org.websync.websession;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
@@ -7,11 +7,11 @@ import com.intellij.psi.impl.PsiElementFactoryImpl;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.sessionweb.models.WebSession;
-import org.websync.sessionweb.psimodels.PsiComponent;
-import org.websync.sessionweb.psimodels.PsiPage;
-import org.websync.sessionweb.psimodels.PsiWebSession;
-import org.websync.sessionweb.psimodels.PsiWebsite;
+import org.websync.websession.models.WebSession;
+import org.websync.websession.psimodels.PsiComponent;
+import org.websync.websession.psimodels.PsiPage;
+import org.websync.websession.psimodels.PsiWebSession;
+import org.websync.websession.psimodels.PsiWebsite;
 
 import java.util.Arrays;
 import java.util.Collection;

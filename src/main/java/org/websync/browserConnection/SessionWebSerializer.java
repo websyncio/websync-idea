@@ -1,6 +1,6 @@
 package org.websync.browserConnection;
 
-import org.websync.sessionweb.models.WebSession;
+import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
 

@@ -1,10 +1,5 @@
 package org.websync.utils;
 
-import org.websync.browserConnection.SessionWebSerializer;
-import org.websync.ember.EmberSerializer;
-import org.websync.sessionweb.PsiWebSessionProvider;
-import org.websync.sessionweb.models.Component;
-import org.websync.sessionweb.models.WebSession;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -12,6 +7,11 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import org.websync.browserConnection.SessionWebSerializer;
+import org.websync.ember.EmberSerializer;
+import org.websync.websession.PsiWebSessionProvider;
+import org.websync.websession.models.Component;
+import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
 import java.util.List;
@@ -116,8 +116,8 @@ public class FileParser {
             System.out.println("Components:");
             components.forEach((k, v) -> {
                 String componentName = k;
-                String componentBaseId = v.getBaseComponentId() == null ? "" : v.getBaseComponentId();
-                System.out.println(String.format("%s : %s", componentName, componentBaseId));
+                String baseComponentId = v.getBaseComponentId() == null ? "" : v.getBaseComponentId();
+                System.out.println(String.format("%s - %s", componentName, baseComponentId));
             });
         });
     }

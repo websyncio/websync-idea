@@ -1,7 +1,7 @@
-package org.websync.sessionweb.psimodels;
+package org.websync.websession.psimodels;
 
-import org.websync.sessionweb.models.Component;
 import com.intellij.psi.PsiClass;
+import org.websync.websession.models.Component;
 
 import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 
