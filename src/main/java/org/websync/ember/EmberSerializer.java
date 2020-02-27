@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.ember.dto.*;
-import org.websync.websession.models.ComponentInstance;
+import org.websync.ember.dto.ComponentDto;
+import org.websync.ember.dto.EmberDataPayload;
+import org.websync.ember.dto.PageDto;
+import org.websync.ember.dto.WebsiteDto;
+import org.websync.websession.models.Component;
 import org.websync.websession.models.ComponentsContainer;
 import org.websync.websession.models.WebSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -38,15 +40,15 @@ public class EmberSerializer implements WebSessionSerializer {
     private void serializeWebSession(EmberDataPayload payload, WebSession web) {
         payload.websites = web.getWebsites().values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
-        payload.pageTypes = web.getPages().values().stream()
-                .map(p -> new PageTypeDto(p)).collect(Collectors.toList());
-        payload.componentTypes = web.getComponents().values().stream()
-                .map(c -> new ComponentTypeDto(c)).collect(Collectors.toList());
+        payload.pages = web.getPages().values().stream()
+                .map(p -> new PageDto(p)).collect(Collectors.toList());
+        payload.components = web.getComponents().values().stream()
+                .map(c -> new ComponentDto(c)).collect(Collectors.toList());
         serializeComponents(payload, web);
     }
 
     private void serializeComponents(EmberDataPayload payload, WebSession web) {
-        payload.components = new ArrayList<ComponentDto>();
+//        payload.components = new ArrayList<ComponentDto>();
         serializeComponents(payload,
                 (Collection<ComponentsContainer>) (Collection<?>) web.getPages().values());
         serializeComponents(payload,
@@ -58,7 +60,7 @@ public class EmberSerializer implements WebSessionSerializer {
             if (container.getComponents() == null) {
                 break;
             }
-            for (ComponentInstance component : container.getComponents()) {
+            for (Component component : container.getComponents()) {
                 payload.components.add(new ComponentDto(component));
             }
         }

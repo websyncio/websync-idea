@@ -1,7 +1,7 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
-import org.websync.websession.models.ComponentInstance;
+import org.websync.websession.models.Component;
 import org.websync.websession.models.ComponentsContainer;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public abstract class PsiComponentsContainer<T> extends PsiNamedTypeWrapper<T> i
         super(psiClass);
     }
 
-    public abstract List<ComponentInstance> getComponents();
+    public abstract List<Component> getComponents();
 }

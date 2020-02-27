@@ -2,7 +2,6 @@ package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
 import org.websync.websession.models.Component;
-import org.websync.websession.models.ComponentInstance;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class PsiComponent extends PsiComponentsContainer<Component> implements C
     }
 
     @Override
-    public List<ComponentInstance> getComponents() {
+    public List<Component> getComponents() {
         return null;
     }
 }

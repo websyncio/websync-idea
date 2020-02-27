@@ -1,7 +1,7 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
-import org.websync.websession.models.ComponentInstance;
+import org.websync.websession.models.Component;
 import org.websync.websession.models.Page;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class PsiPage extends PsiComponentsContainer<Page> implements Page {
     }
 
     @Override
-    public List<ComponentInstance> getComponents() {
+    public List<Component> getComponents() {
         return null;
     }
 }
