@@ -1,25 +1,25 @@
 package org.websync.sessionweb.psimodels;
 
-import org.websync.sessionweb.models.SessionWeb;
+import org.websync.sessionweb.models.WebSession;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class PsiSessionWeb extends SessionWeb {
-    public PsiSessionWeb() {
+public class PsiWebSession extends WebSession {
+    public PsiWebSession() {
         super();
     }
 
-    public PsiSessionWeb(Collection<PsiWebsite> websites, Collection<PsiComponent> components,
+    public PsiWebSession(Collection<PsiWebsite> websites, Collection<PsiComponent> components,
                          Collection<PsiPage> pages) {
 
         this.websites = websites.stream()
                 .collect(Collectors.toMap(PsiWebsite::getId, website -> website));
 
-        this.componentTypes = components.stream()
+        this.components = components.stream()
                 .collect(Collectors.toMap(PsiComponent::getId, component -> component));
 
-        this.pageTypes = pages.stream()
+        this.pages = pages.stream()
                 .collect(Collectors.toMap(PsiPage::getId, page -> page));
     }
 }

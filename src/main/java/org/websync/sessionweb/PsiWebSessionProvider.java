@@ -7,10 +7,10 @@ import com.intellij.psi.impl.PsiElementFactoryImpl;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.sessionweb.models.SessionWeb;
+import org.websync.sessionweb.models.WebSession;
 import org.websync.sessionweb.psimodels.PsiComponent;
 import org.websync.sessionweb.psimodels.PsiPage;
-import org.websync.sessionweb.psimodels.PsiSessionWeb;
+import org.websync.sessionweb.psimodels.PsiWebSession;
 import org.websync.sessionweb.psimodels.PsiWebsite;
 
 import java.util.Arrays;
@@ -22,36 +22,36 @@ import static org.websync.jdi.JdiAttribute.JDI_JSITE;
 import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
-public class PsiSessionWebProvider implements SessionWebPovider {
+public class PsiWebSessionProvider implements WebSessionPovider {
 
     private Project project;
-    private Collection<SessionWeb> cachedSessionWebs;
+    private Collection<WebSession> cachedWebSessions;
 
-    public PsiSessionWebProvider(Project project) {
+    public PsiWebSessionProvider(Project project) {
         this.project = project;
     }
 
     @Override
-    public Collection<SessionWeb> getSessionWebs(boolean useCache) {
-        if (cachedSessionWebs == null || !useCache) {
+    public Collection<WebSession> getWebSessions(boolean useCache) {
+        if (cachedWebSessions == null || !useCache) {
             try {
                 Collection<PsiWebsite> websites = getWebsites(project);
                 Collection<PsiPage> pages = getPages(project);
                 Collection<PsiComponent> components = getComponents(project);
 
-                PsiSessionWeb sessionWeb = new PsiSessionWeb(websites, components, pages);
-                List<SessionWeb> sessionWebs = Arrays.asList(sessionWeb);
-                cacheSessionWebs(sessionWebs);
-                return sessionWebs;
+                PsiWebSession webSession = new PsiWebSession(websites, components, pages);
+                List<WebSession> webSessions = Arrays.asList(webSession);
+                cacheWebSession(webSessions);
+                return webSessions;
             } catch (Exception ex) {
                 throw ex;
             }
         }
-        return cachedSessionWebs;
+        return cachedWebSessions;
     }
 
     private Collection<PsiWebsite> getWebsites(Project project) {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
 
         GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
         PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
@@ -66,14 +66,14 @@ public class PsiSessionWebProvider implements SessionWebPovider {
                     return website;
                 }).collect(Collectors.toList());
 
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting website PSI classes = %s s.",
-                (endTime - startTime) / 1000));
+                (endTime - startTime) / 1000000));
         return websites;
     }
 
     private Collection<PsiPage> getPages(Project project) {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEB_PAGE.value);
 
@@ -83,14 +83,14 @@ public class PsiSessionWebProvider implements SessionWebPovider {
             return page;
         }).collect(Collectors.toList());
 
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting page type PSI classes = %s s.",
-                (endTime - startTime) / 1000));
+                (endTime - startTime) / 1000000));
         return pages;
     }
 
     private Collection<PsiComponent> getComponents(Project project) {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_UI_BASE_ELEMENT.value);
 
@@ -100,9 +100,9 @@ public class PsiSessionWebProvider implements SessionWebPovider {
             return component;
         }).collect(Collectors.toList());
 
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting component type PSI classes = %s s.",
-                (endTime - startTime) / 1000));
+                (endTime - startTime) / 1000000));
         return components;
     }
 
@@ -110,12 +110,12 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
-        PsiClass webPagePsiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
-        Collection<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll();
+        PsiClass psiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
+        Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass).findAll();
         return classes;
     }
 
-    private void cacheSessionWebs(List<SessionWeb> sessionWebs) {
-        cachedSessionWebs = sessionWebs;
+    private void cacheWebSession(List<WebSession> webSessions) {
+        cachedWebSessions = webSessions;
     }
 }

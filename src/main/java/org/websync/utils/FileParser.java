@@ -2,9 +2,9 @@ package org.websync.utils;
 
 import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.EmberSerializer;
-import org.websync.sessionweb.PsiSessionWebProvider;
+import org.websync.sessionweb.PsiWebSessionProvider;
 import org.websync.sessionweb.models.Component;
-import org.websync.sessionweb.models.SessionWeb;
+import org.websync.sessionweb.models.WebSession;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -18,10 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
+
 public class FileParser {
     public void parse(List<String> lines) {
         if (lines == null || lines.size() == 0) {
-            System.out.println("File is empty.");
+            System.out.println("Command file is empty.");
             return;
         }
 
@@ -57,9 +59,9 @@ public class FileParser {
     private void testSerializer() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
 
-            Collection<SessionWeb> sessions = webProvider.getSessionWebs(false);
+            Collection<WebSession> sessions = webProvider.getWebSessions(false);
 
             SessionWebSerializer serializer = new EmberSerializer();
             String json = serializer.serialize(sessions);
@@ -70,12 +72,10 @@ public class FileParser {
     private void testSessionWebProvider() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
-            webProvider.getSessionWebs(true);
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
+            webProvider.getWebSessions(true);
         });
     }
-
-    final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
 
     private void printClasses() {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
@@ -96,7 +96,7 @@ public class FileParser {
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEBPAGE, allScope);
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.value, allScope);
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 
@@ -108,10 +108,10 @@ public class FileParser {
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
-            Collection<SessionWeb> sessions = webProvider.getSessionWebs(true);
-            SessionWeb session = sessions.stream().findFirst().get();
-            Map<String, Component> components = session.getComponentTypes();
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
+            Collection<WebSession> sessions = webProvider.getWebSessions(true);
+            WebSession session = sessions.stream().findFirst().get();
+            Map<String, Component> components = session.getComponents();
 
             components.forEach((k, v) -> {
                 System.out.println(k);

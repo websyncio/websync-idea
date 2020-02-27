@@ -9,7 +9,7 @@ import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.dto.*;
 import org.websync.sessionweb.models.ComponentInstance;
 import org.websync.sessionweb.models.ComponentsContainer;
-import org.websync.sessionweb.models.SessionWeb;
+import org.websync.sessionweb.models.WebSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public class EmberSerializer implements SessionWebSerializer {
 
     @Override
-    public String serialize(Collection<SessionWeb> webs) {
+    public String serialize(Collection<WebSession> webs) {
         EmberDataPayload payload = new EmberDataPayload();
-        for (SessionWeb web : webs) {
+        for (WebSession web : webs) {
             serializeSessionWeb(payload, web);
         }
         ObjectMapper mapper = new ObjectMapper();
@@ -35,22 +35,22 @@ public class EmberSerializer implements SessionWebSerializer {
         return result;
     }
 
-    private void serializeSessionWeb(EmberDataPayload payload, SessionWeb web) {
+    private void serializeSessionWeb(EmberDataPayload payload, WebSession web) {
         payload.websites = web.getWebsites().values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
-        payload.pageTypes = web.getPageTypes().values().stream()
+        payload.pageTypes = web.getPages().values().stream()
                 .map(p -> new PageTypeDto(p)).collect(Collectors.toList());
-        payload.componentTypes = web.getComponentTypes().values().stream()
+        payload.componentTypes = web.getComponents().values().stream()
                 .map(c -> new ComponentTypeDto(c)).collect(Collectors.toList());
         serializeComponents(payload, web);
     }
 
-    private void serializeComponents(EmberDataPayload payload, SessionWeb web) {
+    private void serializeComponents(EmberDataPayload payload, WebSession web) {
         payload.components = new ArrayList<ComponentDto>();
         serializeComponents(payload,
-                (Collection<ComponentsContainer>) (Collection<?>) web.getPageTypes().values());
+                (Collection<ComponentsContainer>) (Collection<?>) web.getPages().values());
         serializeComponents(payload,
-                (Collection<ComponentsContainer>) (Collection<?>) web.getComponentTypes().values());
+                (Collection<ComponentsContainer>) (Collection<?>) web.getComponents().values());
     }
 
     private void serializeComponents(EmberDataPayload payload, Collection<ComponentsContainer> containers) {
@@ -65,7 +65,7 @@ public class EmberSerializer implements SessionWebSerializer {
     }
 
     @Override
-    public Collection<SessionWeb> deserialize(String data) {
+    public Collection<WebSession> deserialize(String data) {
         ObjectMapper mapper = new ObjectMapper();
 //        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);

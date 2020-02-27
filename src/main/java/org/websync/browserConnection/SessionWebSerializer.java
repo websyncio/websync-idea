@@ -1,11 +1,11 @@
 package org.websync.browserConnection;
 
-import org.websync.sessionweb.models.SessionWeb;
+import org.websync.sessionweb.models.WebSession;
 
 import java.util.Collection;
 
 public interface SessionWebSerializer {
-    String serialize(Collection<SessionWeb> webs);
+    String serialize(Collection<WebSession> webs);
 
-    Collection<SessionWeb> deserialize(String data);
+    Collection<WebSession> deserialize(String data);
 }

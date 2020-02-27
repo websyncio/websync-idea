@@ -33,7 +33,7 @@ public class DebugFileWatcher extends FileWatcher {
 
     @Override
     protected void onChange(File file) {
-        System.out.println("File " + file.getName() + " have change !");
+        System.out.println("Command file " + file.getName() + " have changed.");
         if (fileParser == null) {
             System.out.println("File parser is not defined in DebugFileWatcher.");
             return;
