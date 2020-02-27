@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.websync.browserConnection.SessionWebSerializer;
+import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.dto.*;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.ComponentsContainer;
@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class EmberSerializer implements SessionWebSerializer {
+public class EmberSerializer implements WebSessionSerializer {
 
     @Override
     public String serialize(Collection<WebSession> webs) {
         EmberDataPayload payload = new EmberDataPayload();
         for (WebSession web : webs) {
-            serializeSessionWeb(payload, web);
+            serializeWebSession(payload, web);
         }
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -35,7 +35,7 @@ public class EmberSerializer implements SessionWebSerializer {
         return result;
     }
 
-    private void serializeSessionWeb(EmberDataPayload payload, WebSession web) {
+    private void serializeWebSession(EmberDataPayload payload, WebSession web) {
         payload.websites = web.getWebsites().values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pageTypes = web.getPages().values().stream()
@@ -71,7 +71,7 @@ public class EmberSerializer implements SessionWebSerializer {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Collection<EmberDataPayload> payload = null;
         try {
-//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiSessionWeb>>() {
+//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiWebSession>>() {
             payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
             });
         } catch (IOException e) {

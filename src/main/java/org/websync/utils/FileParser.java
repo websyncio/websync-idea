@@ -7,7 +7,7 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.browserConnection.SessionWebSerializer;
+import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -41,7 +41,7 @@ public class FileParser {
                 break;
             case "web":
                 System.out.println(String.format("%s...", command));
-                testSessionWebProvider();
+                testWebSessionProvider();
                 break;
             case "serialize":
                 System.out.println(String.format("%s...", command));
@@ -63,13 +63,13 @@ public class FileParser {
 
             Collection<WebSession> sessions = webProvider.getWebSessions(false);
 
-            SessionWebSerializer serializer = new EmberSerializer();
+            WebSessionSerializer serializer = new EmberSerializer();
             String json = serializer.serialize(sessions);
             sessions = serializer.deserialize(json);
         });
     }
 
-    private void testSessionWebProvider() {
+    private void testWebSessionProvider() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
             PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
