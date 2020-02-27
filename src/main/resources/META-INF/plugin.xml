@@ -1,6 +1,6 @@
 <idea-plugin>
-  <id>com.epam.sha.intellij.locatorupdater</id>
-  <name>Locator Updater</name>
+  <id>org.websync</id>
+  <name>WebSync</name>
   <version>0.0.0</version>
   <vendor email="email@gmail.com" url="https://github.com/websyncio/websync-idea">First Name &amp; Last Name</vendor>
 
