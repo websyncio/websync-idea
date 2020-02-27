@@ -6,9 +6,9 @@ import java.util.Map;
 
 public abstract class SessionWeb {
     @Getter
-    protected Map<String, PageType> pageTypes;
+    protected Map<String, Page> pageTypes;
     @Getter
     protected Map<String, Website> websites;
     @Getter
-    protected Map<String, ComponentType> componentTypes;
+    protected Map<String, Component> componentTypes;
 }

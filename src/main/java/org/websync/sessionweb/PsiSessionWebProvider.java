@@ -8,8 +8,8 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.sessionweb.models.SessionWeb;
-import org.websync.sessionweb.psimodels.PsiComponentType;
-import org.websync.sessionweb.psimodels.PsiPageType;
+import org.websync.sessionweb.psimodels.PsiComponent;
+import org.websync.sessionweb.psimodels.PsiPage;
 import org.websync.sessionweb.psimodels.PsiSessionWeb;
 import org.websync.sessionweb.psimodels.PsiWebsite;
 
@@ -36,8 +36,8 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         if (cachedSessionWebs == null || !useCache) {
             try {
                 Collection<PsiWebsite> websites = getWebsites(project);
-                Collection<PsiPageType> pages = getPages(project);
-                Collection<PsiComponentType> components = getComponents(project);
+                Collection<PsiPage> pages = getPages(project);
+                Collection<PsiComponent> components = getComponents(project);
 
                 PsiSessionWeb sessionWeb = new PsiSessionWeb(websites, components, pages);
                 List<SessionWeb> sessionWebs = Arrays.asList(sessionWeb);
@@ -72,13 +72,13 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         return websites;
     }
 
-    private Collection<PsiPageType> getPages(Project project) {
+    private Collection<PsiPage> getPages(Project project) {
         long startTime = System.currentTimeMillis();
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEB_PAGE.value);
 
-        Collection<PsiPageType> pageTypes = psiClasses.stream().map(c -> {
-            PsiPageType page = new PsiPageType(c);
+        Collection<PsiPage> pageTypes = psiClasses.stream().map(c -> {
+            PsiPage page = new PsiPage(c);
             page.Fill();
             return page;
         }).collect(Collectors.toList());
@@ -89,13 +89,13 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         return pageTypes;
     }
 
-    private Collection<PsiComponentType> getComponents(Project project) {
+    private Collection<PsiComponent> getComponents(Project project) {
         long startTime = System.currentTimeMillis();
 
         Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_UI_BASE_ELEMENT.value);
 
-        Collection<PsiComponentType> componentTypes = psiClasses.stream().map(c -> {
-            PsiComponentType component = new PsiComponentType(c);
+        Collection<PsiComponent> componentTypes = psiClasses.stream().map(c -> {
+            PsiComponent component = new PsiComponent(c);
             component.Fill();
             return component;
         }).collect(Collectors.toList());

@@ -10,16 +10,16 @@ public class PsiSessionWeb extends SessionWeb {
         super();
     }
 
-    public PsiSessionWeb(Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
-                         Collection<PsiPageType> pages) {
+    public PsiSessionWeb(Collection<PsiWebsite> websites, Collection<PsiComponent> components,
+                         Collection<PsiPage> pages) {
 
         this.websites = websites.stream()
                 .collect(Collectors.toMap(PsiWebsite::getId, website -> website));
 
         this.componentTypes = components.stream()
-                .collect(Collectors.toMap(PsiComponentType::getId, component -> component));
+                .collect(Collectors.toMap(PsiComponent::getId, component -> component));
 
         this.pageTypes = pages.stream()
-                .collect(Collectors.toMap(PsiPageType::getId, page -> page));
+                .collect(Collectors.toMap(PsiPage::getId, page -> page));
     }
 }

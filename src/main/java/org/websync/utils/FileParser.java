@@ -3,7 +3,7 @@ package org.websync.utils;
 import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.EmberSerializer;
 import org.websync.sessionweb.PsiSessionWebProvider;
-import org.websync.sessionweb.models.ComponentType;
+import org.websync.sessionweb.models.Component;
 import org.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -111,7 +111,7 @@ public class FileParser {
             PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
             Collection<SessionWeb> sessions = webProvider.getSessionWebs(true);
             SessionWeb session = sessions.stream().findFirst().get();
-            Map<String, ComponentType> components = session.getComponentTypes();
+            Map<String, Component> components = session.getComponentTypes();
 
             components.forEach((k, v) -> {
                 System.out.println(k);

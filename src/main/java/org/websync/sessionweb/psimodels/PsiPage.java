@@ -1,10 +1,10 @@
 package org.websync.sessionweb.psimodels;
 
-import org.websync.sessionweb.models.PageType;
+import org.websync.sessionweb.models.Page;
 import com.intellij.psi.PsiClass;
 
-public class PsiPageType extends PsiComponentsContainer<PageType> implements PageType {
-    public PsiPageType(PsiClass psiClass) {
+public class PsiPage extends PsiComponentsContainer<Page> implements Page {
+    public PsiPage(PsiClass psiClass) {
         super(psiClass);
     }
 

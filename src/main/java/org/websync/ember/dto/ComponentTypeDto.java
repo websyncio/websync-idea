@@ -1,8 +1,8 @@
 package org.websync.ember.dto;
 
-import org.websync.sessionweb.models.ComponentType;
+import org.websync.sessionweb.models.Component;
 
 public class ComponentTypeDto {
-    public ComponentTypeDto(ComponentType c) {
+    public ComponentTypeDto(Component c) {
     }
 }
