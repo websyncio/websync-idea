@@ -6,9 +6,7 @@ import com.epam.jdi.light.elements.common.Label;
 import com.epam.jdi.light.elements.complex.dropdown.Dropdown;
 import com.epam.jdi.light.elements.complex.dropdown.DropdownExpand;
 import com.epam.jdi.light.elements.complex.dropdown.DropdownSelect;
-import com.epam.jdi.light.elements.complex.table.BaseTable;
-import com.epam.jdi.light.elements.complex.table.CacheAll;
-import com.epam.jdi.light.elements.complex.table.Column;
+import com.epam.jdi.light.elements.complex.table.*;
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.ByText;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath;
@@ -104,6 +102,18 @@ public class SupportedJDIElementsInit extends WebPage {
 
     @XPath("//testXpath")
     public Column InitializedColumn;
+
+    @XPath("//testXpath")
+    public DataTable InitializedDataTable;
+
+    @XPath("//testXpath")
+    public Line InitializedLine;
+
+    @XPath("//testXpath")
+    public NameNum InitializedNameNum;
+
+    @XPath("//testXpath")
+    public Row InitializedRow;
 
 
 
