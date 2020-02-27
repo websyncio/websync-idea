@@ -75,7 +75,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
     private Collection<PsiPage> getPages(Project project) {
         long startTime = System.nanoTime();
 
-        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEB_PAGE.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.value);
 
         Collection<PsiPage> pages = psiClasses.stream().map(c -> {
             PsiPage page = new PsiPage(c);
@@ -84,7 +84,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting page type PSI classes = %s s.",
+        System.out.println(String.format("Time of getting page PSI classes = %s s.",
                 (endTime - startTime) / 1000000));
         return pages;
     }
@@ -92,7 +92,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
     private Collection<PsiComponent> getComponents(Project project) {
         long startTime = System.nanoTime();
 
-        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_UI_BASE_ELEMENT.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
 
         Collection<PsiComponent> components = psiClasses.stream().map(c -> {
             PsiComponent component = new PsiComponent(c);
@@ -101,12 +101,12 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting component type PSI classes = %s s.",
+        System.out.println(String.format("Time of getting component PSI classes = %s s.",
                 (endTime - startTime) / 1000000));
         return components;
     }
 
-    private Collection<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
+    private Collection<PsiClass> getDerivedPsiClasses(Project project, String classQualifiedName) {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 

@@ -113,9 +113,11 @@ public class FileParser {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
+            System.out.println("Components:");
             components.forEach((k, v) -> {
-                System.out.println(k);
-//                System.out.println(v.);
+                String componentName = k;
+                String componentBaseId = v.getBaseComponentId() == null ? "" : v.getBaseComponentId();
+                System.out.println(String.format("%s : %s", componentName, componentBaseId));
             });
         });
     }
