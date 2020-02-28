@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
@@ -12,7 +13,9 @@ import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
+import org.websync.websession.psimodels.PsiComponent;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +133,13 @@ public class FileParser {
             Collection<WebSession> sessions = webProvider.getWebSessions(true);
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
+
+            String elementId = components.keySet().stream().filter(k -> k.contains("Avatar")).findFirst().get();
+            PsiComponent psiComponent = (PsiComponent) components.get(elementId);
+
+            PsiField[] fields = psiComponent.getPsiClass().getFields();
+            List<PsiField> fieldsList = Arrays.asList(fields);
+            System.out.println("");
         });
     }
 

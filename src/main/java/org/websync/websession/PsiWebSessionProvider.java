@@ -107,10 +107,11 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
     private Collection<PsiClass> getDerivedPsiClasses(Project project, String classQualifiedName) {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
+        GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
-        PsiClass psiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
-        Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass).findAll();
+        PsiClass psiClass = javaPsiFacade.findClass(classQualifiedName, scope);
+        Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass,
+                GlobalSearchScope.projectScope(project), true).findAll();
         return classes;
     }
 
