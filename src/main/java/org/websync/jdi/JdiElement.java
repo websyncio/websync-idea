@@ -53,7 +53,6 @@ public enum JdiElement {
     JDI_WEB_PAGE("com.epam.jdi.light.elements.composite.WebPage"),
     JDI_DRIVER_BASE("com.epam.jdi.light.elements.base.DriverBase"),
     JDI_JDI_BASE("com.epam.jdi.light.elements.base.JDIBase"),
-    JDI_OUTPUT_TEMPLATES("com.epam.jdi.light.elements.base.OutputTemplates"),
     JDI_UI_BASE_ELEMENT("com.epam.jdi.light.elements.base.UIBaseElement"),
     JDI_UI_LIST_BASE("com.epam.jdi.light.elements.base.UIListBase");
 
