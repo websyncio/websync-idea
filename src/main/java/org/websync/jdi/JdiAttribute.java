@@ -58,4 +58,8 @@ public enum JdiAttribute {
         }
         throw new EnumConstantNotPresentException(JdiAttribute.class, "No enum const " + JdiAttribute.class + "@value." + value);
     }
+
+    public String getShortName() {
+        return value.substring(value.lastIndexOf(".") + 1);
+    }
 }

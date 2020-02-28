@@ -56,8 +56,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
         PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
 
-        String JSiteAnnotation = JDI_JSITE.value.substring(JDI_JSITE.value.lastIndexOf(".") + 1);
-        PsiClass psiClass = psiElementFactory.createAnnotationType(JSiteAnnotation);
+        PsiClass psiClass = psiElementFactory.createAnnotationType(JDI_JSITE.getShortName());
 
         Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll()
                 .stream().map(c -> {
