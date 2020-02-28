@@ -1,9 +1,5 @@
 package org.websync.utils;
 
-import org.websync.browserConnection.SessionWebSerializer;
-import org.websync.ember.EmberSerializer;
-import org.websync.sessionweb.PsiSessionWebProvider;
-import org.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -11,64 +7,73 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.ember.EmberSerializer;
+import org.websync.websession.PsiWebSessionProvider;
+import org.websync.websession.models.Component;
+import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
 public class FileParser {
     public void parse(List<String> lines) {
         if (lines == null || lines.size() == 0) {
-            System.out.println("File is empty.");
+            System.out.println("Command file is empty.");
             return;
         }
 
-        switch (lines.get(0)) {
+        String command = lines.get(0);
+        System.out.println(String.format("Command '%s' is performing...", command));
+        switch (command) {
             case "a":
-                System.out.println("Command 'a'");
+                System.out.println(String.format("Command '%s' performed", command));
                 break;
             case "b":
-                System.out.println("Command 'b'");
+                System.out.println(String.format("Command '%s' performed", command));
                 break;
-            case "print":
-                System.out.println("Print");
+            case "print classes":
                 printClasses();
                 break;
-            case "web":
-                System.out.println("web...");
-                testSessionWebProvider();
+            case "test session":
+                testWebSessionProvider();
                 break;
-            case "ser":
-                System.out.println("ser...");
+            case "test serializer":
                 testSerializer();
                 break;
+            case "print components":
+                testPrintComponents();
+                break;
             default:
-                System.out.println(String.format("Any command '%s'", lines.get(0)));
+                System.out.println(String.format("Unknown command '%s' is detected", command));
         }
+        System.out.println(String.format("Command '%s' is performed", command));
     }
 
     private void testSerializer() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
 
-            Collection<SessionWeb> sessions = webProvider.getSessionWebs(false);
+            Collection<WebSession> sessions = webProvider.getWebSessions(false);
 
-            SessionWebSerializer serializer = new EmberSerializer();
+            WebSessionSerializer serializer = new EmberSerializer();
             String json = serializer.serialize(sessions);
             sessions = serializer.deserialize(json);
         });
     }
 
-    private void testSessionWebProvider() {
+    private void testWebSessionProvider() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiSessionWebProvider webProvider = new PsiSessionWebProvider(project);
-            webProvider.getSessionWebs(true);
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
+            webProvider.getWebSessions(true);
         });
     }
-
-    final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
 
     private void printClasses() {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
@@ -89,12 +94,29 @@ public class FileParser {
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEBPAGE, allScope);
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.value, allScope);
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 
             System.out.println("Classes:");
             classes.forEach(c -> System.out.println("*" + c.getQualifiedName()));
+        });
+    }
+
+    private void testPrintComponents() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
+            Collection<WebSession> sessions = webProvider.getWebSessions(true);
+            WebSession session = sessions.stream().findFirst().get();
+            Map<String, Component> components = session.getComponents();
+
+            System.out.println(String.format("Components: %s", components.size()));
+            components.forEach((k, v) -> {
+                String componentName = k;
+                String baseComponentId = v.getBaseComponentId() == null ? "" : v.getBaseComponentId();
+                System.out.println(String.format("%s - %s", componentName, baseComponentId));
+            });
         });
     }
 }

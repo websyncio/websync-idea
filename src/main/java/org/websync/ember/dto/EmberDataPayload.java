@@ -4,7 +4,6 @@ import java.util.List;
 
 public class EmberDataPayload {
     public List<WebsiteDto> websites;
-    public List<PageTypeDto> pageTypes;
-    public List<ComponentTypeDto> componentTypes;
+    public List<PageDto> pages;
     public List<ComponentDto> components;
 }

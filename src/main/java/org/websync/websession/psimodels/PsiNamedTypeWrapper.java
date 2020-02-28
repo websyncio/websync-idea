@@ -1,4 +1,4 @@
-package org.websync.sessionweb.psimodels;
+package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
 
@@ -11,6 +11,6 @@ public abstract class PsiNamedTypeWrapper<T> extends PsiModelWithId<T> {
     }
 
     public void Fill() {
-        super.setId(psiClass.toString());
+        id = psiClass.toString();
     }
 }
