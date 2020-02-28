@@ -68,7 +68,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting website PSI classes = %s s.",
-                (endTime - startTime) / 1000000));
+                (endTime - startTime) / 1000000000));
         return websites;
     }
 
@@ -85,7 +85,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting page PSI classes = %s s.",
-                (endTime - startTime) / 1000000));
+                (endTime - startTime) / 1000000000));
         return pages;
     }
 
@@ -102,7 +102,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Time of getting component PSI classes = %s s.",
-                (endTime - startTime) / 1000000));
+                (endTime - startTime) / 1000000000));
         return components;
     }
 
