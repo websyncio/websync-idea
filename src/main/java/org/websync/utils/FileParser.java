@@ -48,6 +48,9 @@ public class FileParser {
             case "print components":
                 testPrintComponents();
                 break;
+            case "test fields":
+                testFieldsOfPsiClasses();
+                break;
             default:
                 System.out.println(String.format("Unknown command '%s' is detected", command));
         }
@@ -119,4 +122,16 @@ public class FileParser {
             });
         });
     }
+
+    private void testFieldsOfPsiClasses() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
+            Collection<WebSession> sessions = webProvider.getWebSessions(true);
+            WebSession session = sessions.stream().findFirst().get();
+            Map<String, Component> components = session.getComponents();
+        });
+    }
+
 }
+
