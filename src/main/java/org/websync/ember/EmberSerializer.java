@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.lang.NotImplementedException;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.dto.ComponentDto;
 import org.websync.ember.dto.EmberDataPayload;
@@ -68,17 +69,18 @@ public class EmberSerializer implements WebSessionSerializer {
 
     @Override
     public Collection<WebSession> deserialize(String data) {
-        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        Collection<EmberDataPayload> payload = null;
-        try {
-//            sessions = mapper.readValue(data, new TypeReference<Collection<PsiWebSession>>() {
-            payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        throw new NotImplementedException();
+//        ObjectMapper mapper = new ObjectMapper();
+////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+//        Collection<EmberDataPayload> payload = null;
+//        try {
+////            sessions = mapper.readValue(data, new TypeReference<Collection<PsiWebSession>>() {
+//            payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 }
