@@ -1,10 +1,12 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
+import lombok.Getter;
 
 public abstract class PsiNamedTypeWrapper<T> extends PsiModelWithId<T> {
 
-    PsiClass psiClass;
+    @Getter
+    public PsiClass psiClass;
 
     public PsiNamedTypeWrapper(PsiClass psiClass) {
         this.psiClass = psiClass;
