@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.NotImplementedException;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.dto.*;
+import org.websync.websession.models.ComponentContainer;
 import org.websync.websession.models.ComponentInstance;
-import org.websync.websession.models.ComponentsContainer;
 import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
@@ -45,13 +45,13 @@ public class EmberSerializer implements WebSessionSerializer {
     private void serializeComponents(EmberDataPayload payload, WebSession web) {
 //        payload.components = new ArrayList<ComponentDto>();
         serializeComponents(payload,
-                (Collection<ComponentsContainer>) (Collection<?>) web.getPages().values());
+                (Collection<ComponentContainer>) (Collection<?>) web.getPages().values());
         serializeComponents(payload,
-                (Collection<ComponentsContainer>) (Collection<?>) web.getComponents().values());
+                (Collection<ComponentContainer>) (Collection<?>) web.getComponents().values());
     }
 
-    private void serializeComponents(EmberDataPayload payload, Collection<ComponentsContainer> containers) {
-        for (ComponentsContainer container : containers) {
+    private void serializeComponents(EmberDataPayload payload, Collection<ComponentContainer> containers) {
+        for (ComponentContainer container : containers) {
             if (container.getComponentInstances() == null) {
                 break;
             }

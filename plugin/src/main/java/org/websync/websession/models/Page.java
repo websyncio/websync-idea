@@ -1,4 +1,4 @@
 package org.websync.websession.models;
 
-public interface Page extends ComponentsContainer {
+public interface Page extends ComponentContainer {
 }

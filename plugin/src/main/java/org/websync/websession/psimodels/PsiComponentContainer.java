@@ -6,17 +6,17 @@ import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PsiUtil;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.models.ComponentInstance;
-import org.websync.websession.models.ComponentsContainer;
+import org.websync.websession.models.ComponentContainer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class PsiComponentsContainer<T> extends PsiNamedTypeWrapper<T> implements ComponentsContainer {
+public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> implements ComponentContainer {
 
     List<ComponentInstance> componentInstances = new ArrayList<>();
 
-    public PsiComponentsContainer(PsiClass psiClass) {
+    public PsiComponentContainer(PsiClass psiClass) {
         super(psiClass);
     }
 

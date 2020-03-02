@@ -5,7 +5,7 @@ import org.websync.websession.models.Component;
 
 import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 
-public class PsiComponent extends PsiComponentsContainer<Component> implements Component {
+public class PsiComponent extends PsiComponentContainer<Component> implements Component {
 
     String baseComponentId;
 

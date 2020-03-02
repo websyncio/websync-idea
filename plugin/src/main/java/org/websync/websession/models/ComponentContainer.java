@@ -2,6 +2,6 @@ package org.websync.websession.models;
 
 import java.util.List;
 
-public interface ComponentsContainer {
+public interface ComponentContainer {
     List<ComponentInstance> getComponentInstances();
 }
