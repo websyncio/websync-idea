@@ -61,7 +61,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll()
                 .stream().map(c -> {
                     PsiWebsite website = new PsiWebsite(c);
-                    website.Fill();
+                    website.fill();
                     return website;
                 }).collect(Collectors.toList());
 
@@ -78,7 +78,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         Collection<PsiPage> pages = psiClasses.stream().map(c -> {
             PsiPage page = new PsiPage(c);
-            page.Fill();
+            page.fill();
             return page;
         }).collect(Collectors.toList());
 
@@ -95,7 +95,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         Collection<PsiComponent> components = psiClasses.stream().map(c -> {
             PsiComponent component = new PsiComponent(c);
-            component.Fill();
+            component.fill();
             return component;
         }).collect(Collectors.toList());
 

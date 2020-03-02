@@ -14,8 +14,8 @@ public class PsiComponent extends PsiComponentContainer<Component> implements Co
     }
 
     @Override
-    public void Fill() {
-        super.Fill();
+    public void fill() {
+        super.fill();
         baseComponentId = psiClass.getQualifiedName().equals(JDI_UI_BASE_ELEMENT.value) ? null : psiClass.getSuperClass().getQualifiedName();
     }
 

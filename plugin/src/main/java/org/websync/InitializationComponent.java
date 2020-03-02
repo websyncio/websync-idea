@@ -2,8 +2,8 @@ package org.websync;
 
 import com.intellij.openapi.components.BaseComponent;
 import org.jetbrains.annotations.NotNull;
-import org.websync.utils.DebugFileWatcher;
-import org.websync.utils.FileParser;
+import org.websync.debbuger.DebugFileWatcher;
+import org.websync.debbuger.FileParser;
 
 import java.io.File;
 

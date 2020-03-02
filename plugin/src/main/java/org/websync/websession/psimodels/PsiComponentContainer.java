@@ -25,8 +25,8 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
     }
 
     @Override
-    public void Fill() {
-        super.Fill();
+    public void fill() {
+        super.fill();
 
         List<PsiField> fieldsList = Arrays.asList(psiClass.getFields());
 
@@ -37,9 +37,10 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
                         PsiClass c = PsiUtil.resolveClassInType(s);
                         return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.value);
                     });
+
             if (isElement) {
                 PsiComponentInstance psiComponentInstance = new PsiComponentInstance(f);
-                psiComponentInstance.Fill();
+                psiComponentInstance.fill();
                 componentInstances.add(psiComponentInstance);
             }
         });

@@ -9,7 +9,7 @@ public class PsiWebsite extends PsiNamedTypeWrapper<Website> implements Website 
     }
 
     @Override
-    public void Fill() {
-        super.Fill();
+    public void fill() {
+        super.fill();
     }
 }

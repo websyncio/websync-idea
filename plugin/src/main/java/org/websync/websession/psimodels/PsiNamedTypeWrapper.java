@@ -12,7 +12,7 @@ public abstract class PsiNamedTypeWrapper<T> extends PsiModelWithId<T> {
         this.psiClass = psiClass;
     }
 
-    public void Fill() {
+    public void fill() {
         id = psiClass.toString();
     }
 }

@@ -9,7 +9,7 @@ public class PsiPage extends PsiComponentContainer<Page> implements Page {
     }
 
     @Override
-    public void Fill() {
-        super.Fill();
+    public void fill() {
+        super.fill();
     }
 }
