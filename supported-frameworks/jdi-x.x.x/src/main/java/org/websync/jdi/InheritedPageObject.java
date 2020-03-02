@@ -1,4 +1,4 @@
-package org.websync.supportedframeworks.jdi;
+package org.websync.jdi;
 
 
 import com.epam.jdi.light.elements.complex.*;
