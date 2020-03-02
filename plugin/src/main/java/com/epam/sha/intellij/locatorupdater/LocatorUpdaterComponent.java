@@ -16,51 +16,50 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
 public class LocatorUpdaterComponent implements BaseComponent {
-  private static final Logger log = Logger.getInstance(LocatorUpdaterComponent.class);
-  private final LocatorUpdaterSettings mySettings;
+    private static final Logger log = Logger.getInstance(LocatorUpdaterComponent.class);
+    private final LocatorUpdaterSettings mySettings;
 
-  private ServerSocket serverSocket;
-  private Thread listenerThread;
+    private ServerSocket serverSocket;
+    private Thread listenerThread;
 
-  public LocatorUpdaterComponent(LocatorUpdaterSettings settings) {
-    mySettings = settings;
-  }
-
-  public void initComponent() {
-    final int port = mySettings.getPortNumber();
-    final boolean allowRequestsFromLocalhostOnly = mySettings.isAllowRequestsFromLocalhostOnly();
-
-    try {
-      serverSocket = new ServerSocket();
-      serverSocket.bind(new InetSocketAddress(allowRequestsFromLocalhostOnly ? "localhost" : "0.0.0.0", port));
-      log.info("Listening " + port);
-    }
-    catch (IOException e) {
-      ApplicationManager.getApplication().invokeLater(() -> Messages
-        .showMessageDialog("Can't bind with " + port + " port. LocatorUpdater plugin won't work", "LocatorUpdater Plugin Error",
-                           Messages.getErrorIcon()));
-      return;
+    public LocatorUpdaterComponent(LocatorUpdaterSettings settings) {
+        mySettings = settings;
     }
 
-    RequestNotifier messageNotifier = new SocketNotifier(serverSocket);
-    messageNotifier.addRequestHandler(new OpenFileMessageHandler(new FileNavigatorImpl()));
-    listenerThread = new Thread(messageNotifier);
-    listenerThread.start();
-  }
+    public void initComponent() {
+        final int port = mySettings.getPortNumber();
+        final boolean allowRequestsFromLocalhostOnly = mySettings.isAllowRequestsFromLocalhostOnly();
 
-  public void disposeComponent() {
-    try {
-      if (listenerThread != null) {
-        listenerThread.interrupt();
-      }
-      serverSocket.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+        try {
+            serverSocket = new ServerSocket();
+            serverSocket.bind(new InetSocketAddress(allowRequestsFromLocalhostOnly ? "localhost" : "0.0.0.0", port));
+            log.info("Listening " + port);
+        } catch (IOException e) {
+            ApplicationManager.getApplication().invokeLater(() -> Messages
+                    .showMessageDialog("Can't bind with " + port + " port. LocatorUpdater plugin won't work", "LocatorUpdater Plugin Error",
+                            Messages.getErrorIcon()));
+            return;
+        }
+
+        RequestNotifier messageNotifier = new SocketNotifier(serverSocket);
+        messageNotifier.addRequestHandler(new OpenFileMessageHandler(new FileNavigatorImpl()));
+        listenerThread = new Thread(messageNotifier);
+        listenerThread.start();
     }
-  }
 
-  @NotNull
-  public String getComponentName() {
-    return "LocatorUpdaterComponent";
-  }
+    public void disposeComponent() {
+        try {
+            if (listenerThread != null) {
+                listenerThread.interrupt();
+            }
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @NotNull
+    public String getComponentName() {
+        return "LocatorUpdaterComponent";
+    }
 }

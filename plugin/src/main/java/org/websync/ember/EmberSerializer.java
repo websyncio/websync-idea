@@ -1,21 +1,15 @@
 package org.websync.ember;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.NotImplementedException;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.ember.dto.ComponentDto;
-import org.websync.ember.dto.EmberDataPayload;
-import org.websync.ember.dto.PageDto;
-import org.websync.ember.dto.WebsiteDto;
-import org.websync.websession.models.Component;
+import org.websync.ember.dto.*;
+import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.ComponentsContainer;
 import org.websync.websession.models.WebSession;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -58,11 +52,11 @@ public class EmberSerializer implements WebSessionSerializer {
 
     private void serializeComponents(EmberDataPayload payload, Collection<ComponentsContainer> containers) {
         for (ComponentsContainer container : containers) {
-            if (container.getComponents() == null) {
+            if (container.getComponentInstances() == null) {
                 break;
             }
-            for (Component component : container.getComponents()) {
-                payload.components.add(new ComponentDto(component));
+            for (ComponentInstance componentInstance : container.getComponentInstances()) {
+                payload.componentInstances.add(new ComponentInstanceDto(componentInstance));
             }
         }
     }

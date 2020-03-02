@@ -8,36 +8,36 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @State(
-  name = "LocatorUpdater",
-  storages = {@Storage("/locator-updater.xml")})
+        name = "LocatorUpdater",
+        storages = {@Storage("/locator-updater.xml")})
 public class LocatorUpdaterSettings implements PersistentStateComponent<LocatorUpdaterSettings> {
-  private int myPortNumber = 8091;
-  private boolean myAllowRequestsFromLocalhostOnly = true;
+    private int myPortNumber = 8091;
+    private boolean myAllowRequestsFromLocalhostOnly = true;
 
-  public int getPortNumber() {
-    return myPortNumber;
-  }
+    public int getPortNumber() {
+        return myPortNumber;
+    }
 
-  public void setPortNumber(int portNumber) {
-    myPortNumber = portNumber;
-  }
+    public void setPortNumber(int portNumber) {
+        myPortNumber = portNumber;
+    }
 
-  public boolean isAllowRequestsFromLocalhostOnly() {
-    return myAllowRequestsFromLocalhostOnly;
-  }
+    public boolean isAllowRequestsFromLocalhostOnly() {
+        return myAllowRequestsFromLocalhostOnly;
+    }
 
-  public void setAllowRequestsFromLocalhostOnly(boolean allowRequestsFromLocalhostOnly) {
-    myAllowRequestsFromLocalhostOnly = allowRequestsFromLocalhostOnly;
-  }
+    public void setAllowRequestsFromLocalhostOnly(boolean allowRequestsFromLocalhostOnly) {
+        myAllowRequestsFromLocalhostOnly = allowRequestsFromLocalhostOnly;
+    }
 
-  @Nullable
-  @Override
-  public LocatorUpdaterSettings getState() {
-    return this;
-  }
+    @Nullable
+    @Override
+    public LocatorUpdaterSettings getState() {
+        return this;
+    }
 
-  @Override
-  public void loadState(@NotNull LocatorUpdaterSettings remoteCallSettings) {
-    XmlSerializerUtil.copyBean(remoteCallSettings, this);
-  }
+    @Override
+    public void loadState(@NotNull LocatorUpdaterSettings remoteCallSettings) {
+        XmlSerializerUtil.copyBean(remoteCallSettings, this);
+    }
 }

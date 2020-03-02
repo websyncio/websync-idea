@@ -8,8 +8,10 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import com.intellij.psi.util.InheritanceUtil;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
+import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -134,12 +136,24 @@ public class FileParser {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            String elementId = components.keySet().stream().filter(k -> k.contains("Avatar")).findFirst().get();
+            String elementId = components.keySet().stream().filter(k -> k.contains("MarvelUser")).findFirst().get();
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
 
             PsiField[] fields = psiComponent.getPsiClass().getFields();
             List<PsiField> fieldsList = Arrays.asList(fields);
-            System.out.println("");
+
+            //
+            fieldsList.stream().forEach(f -> {
+                boolean isElement = Arrays.asList(f.getType().getSuperTypes())
+                        .stream()
+                        .anyMatch(s -> {
+                            return InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.value);
+                        });
+                if (isElement) {
+                    System.out.println(f.getName() + " is Element");
+                }
+            });
+//            System.out.println("");
         });
     }
 

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestData {
 
-  private String target;
-  private String oldLocator;
-  private String newLocator;
+    private String target;
+    private String oldLocator;
+    private String newLocator;
 
 }

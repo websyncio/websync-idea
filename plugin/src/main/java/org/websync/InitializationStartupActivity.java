@@ -1,11 +1,11 @@
 package org.websync;
 
-import org.websync.utils.DebugFileWatcher;
-import org.websync.utils.FileParser;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import org.jetbrains.annotations.NotNull;
+import org.websync.utils.DebugFileWatcher;
+import org.websync.utils.FileParser;
 
 import java.io.File;
 

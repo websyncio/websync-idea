@@ -7,10 +7,11 @@ import com.epam.sha.intellij.locatorupdater.model.RequestData;
  */
 public interface RequestHandler {
 
-  /**
-   * Handle incoming request
-   * @param request - request payload
-   */
-  void handle(RequestData request);
+    /**
+     * Handle incoming request
+     *
+     * @param request - request payload
+     */
+    void handle(RequestData request);
 
 }
