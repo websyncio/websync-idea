@@ -5,20 +5,17 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiField;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import com.intellij.psi.util.InheritanceUtil;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
-import org.websync.jdi.JdiElement;
+import org.websync.jdi.JdiAttribute;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -141,9 +138,51 @@ public class FileParser {
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
             System.out.println("Attributes:");
             psiComponent.getComponentInstances().stream().forEach(i -> {
-                String attr = ((PsiComponentInstance)i).getId();
-                attr += ": " + i.getAttributes();
-                System.out.println(attr);
+                String attr = ((PsiComponentInstance) i).getId();
+                System.out.println("\t" + attr);
+                PsiComponentInstance.Locator locator = i.getLocator();
+                switch (JdiAttribute.valueOfStr(locator.clazz.getCanonicalName())) {
+                    case JDI_BY_TEXT: {
+                        PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_CSS: {
+                        PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_JDROPDOWN: {
+                        PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_JTABLE: {
+                        PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.root);
+                        break;
+                    }
+                    case JDI_JMENU: {
+                        PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_UI: {
+                        PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_WITH_TEXT: {
+                        PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                    case JDI_XPATH: {
+                        PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.clazz.cast(locator.locator);
+                        System.out.println("\t\t" + l.value);
+                        break;
+                    }
+                }
             });
         });
     }
