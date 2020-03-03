@@ -9,17 +9,18 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.Css;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath;
 import com.epam.jdi.light.ui.html.elements.common.*;
 
-@Url("/index.html") @Title("Test Page")
-public class PageObjectInitialization2 extends WebPage {
+@Url("/index.html")
+@Title("Test Page")
+public class PageObjectWithDifferentModificators extends WebPage {
 
     @Css(".testCss")
-    public Link initializedLink;
+    public Link publicLink;
     @XPath("//testXpath")
-    protected DateTimeSelector initializedDateTimeSelector;
+    protected DateTimeSelector protectedDateTimeSelector;
     @ByText("test")
-    TextArea initializedTextArea;
+    TextArea packagePrivateTextArea;
     @Css(".testCss")
-    private FileInput initializedFileInput;
+    private FileInput privateFileInput;
     @FindBy(xpath = "//test")
-    static NumberSelector initializedNumberSelector;
+    static NumberSelector staticNumberSelector;
 }
