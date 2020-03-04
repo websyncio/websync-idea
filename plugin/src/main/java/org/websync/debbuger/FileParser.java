@@ -133,7 +133,7 @@ public class FileParser {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            String elementId = components.keySet().stream().filter(k -> k.contains("Avatar")).findFirst().get();
+            String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
 
             System.out.println("Attributes:");
