@@ -9,7 +9,6 @@ import lombok.Getter;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,10 +82,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
             PsiAnnotationMemberValue value = attributes.stream()
                     .filter(a -> a.getName().equals(name))
                     .findFirst().get().getValue();
-
-            Object object = ((PsiLiteralExpressionImpl) value).getValue();
-            Class<?> clazz = object.getClass();
-            return (T) clazz.cast(object);
+            return (T) ((PsiLiteralExpressionImpl) value).getValue();
         }
 
         private <T> List<T> getAnnotationValues(String name) {
@@ -96,11 +92,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
             List<T> list = Arrays.asList(value.getChildren()).stream()
                     .filter(a -> a instanceof PsiLiteralExpressionImpl)
-                    .map(a -> {
-                        Object object = ((PsiLiteralExpressionImpl) a).getValue();
-                        Class<?> clazz = object.getClass();
-                        return (T) clazz.cast(object);
-                    })
+                    .map(a -> (T) ((PsiLiteralExpressionImpl) a).getValue())
                     .collect(Collectors.toList());
             return list;
         }
@@ -199,61 +191,10 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         id = psiFiled.toString();
     }
 
-    public String getAttributes() {
-        List<PsiAnnotation> psiAnnotations = Arrays.asList(psiFiled.getAnnotations());
-        final String[] result = {""};
-        psiAnnotations.stream().forEach(
-                anno -> {
-                    result[0] += anno.getQualifiedName();
-                    List<PsiNameValuePair> attributes = Arrays.asList(anno.getParameterList().getAttributes());
-                    attributes.stream().forEach(attr -> result[0] += " = '" + attr.getLiteralValue() + "'");
-                }
-        );
-        return result[0];
-    }
-
     public Locator getLocator() {
-        Locator locator = new Locator(psiFiled.getAnnotations()[0]);
-
-//        String className = anno.getQualifiedName();
-//        List<PsiNameValuePair> attributes = Arrays.asList(anno.getParameterList().getAttributes());
-//
-//        switch (JdiAttribute.valueOfStr(className)) {
-//            case JDI_BY_TEXT:
-//                locator.locator = new ByText();
-//                ((ByText) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_CSS:
-//                locator.locator = new Css();
-//                ((Css) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_JDROPDOWN:
-//                locator.locator = new JDropdown();
-//                ((JDropdown) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_JMENU:
-//                locator.locator = new JMenu();
-//                ((JMenu) locator.locator).value[0] = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_JTABLE:
-//                locator.locator = new JTable();
-//                ((JTable) locator.locator).root = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_UI:
-//                locator.locator = new UI();
-//                ((UI) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_WITH_TEXT:
-//                locator.locator = new WithText();
-//                ((WithText) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            case JDI_XPATH:
-//                locator.locator = new XPath();
-//                ((XPath) locator.locator).value = attributes.get(0).getLiteralValue();
-//                break;
-//            default:
-//                break;
-//        }
-        return locator;
+        if (psiFiled.getAnnotations().length == 0) {
+            return null;
+        }
+        return new Locator(psiFiled.getAnnotations()[0]);
     }
 }
