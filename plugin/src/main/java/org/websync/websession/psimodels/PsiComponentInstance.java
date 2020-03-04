@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
 
-    public enum LocatorAnno {
+    public enum LocatorAttr {
         BYTEXT(ByText.class),
         CSS(Css.class),
         JDROPDOWN(JDropdown.class),
@@ -25,12 +25,12 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         @Getter
         private Class<?> clazz;
 
-        LocatorAnno(Class<?> clazz) {
+        LocatorAttr(Class<?> clazz) {
             this.clazz = clazz;
         }
 
-        public static LocatorAnno getByClass(Class<?> locatorClass) {
-            return Arrays.asList(LocatorAnno.values())
+        public static LocatorAttr getByClass(Class<?> locatorClass) {
+            return Arrays.asList(LocatorAttr.values())
                     .stream()
                     .filter(l -> l.getClazz().equals(locatorClass))
                     .findFirst().orElse(null);
@@ -125,50 +125,46 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         Locator locator = new Locator();
 
         List<PsiAnnotation> psiAnnotations = Arrays.asList(psiFiled.getAnnotations());
-        psiAnnotations.stream().forEach(
-                anno -> {
-                    List<PsiNameValuePair> attributes = Arrays.asList(anno.getParameterList().getAttributes());
+        PsiAnnotation anno = psiAnnotations.get(0);
+        String className = anno.getQualifiedName();
+        List<PsiNameValuePair> attributes = Arrays.asList(anno.getParameterList().getAttributes());
 
-                    String className = anno.getQualifiedName();
-
-                    switch (JdiAttribute.valueOfStr(className)) {
-                        case JDI_BY_TEXT:
-                            locator.locator = new ByText();
-                            ((ByText) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_CSS:
-                            locator.locator = new Css();
-                            ((Css) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_JDROPDOWN:
-                            locator.locator = new JDropdown();
-                            ((JDropdown) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_JMENU:
-                            locator.locator = new JMenu();
-                            ((JMenu) locator.locator).value[0] = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_JTABLE:
-                            locator.locator = new JTable();
-                            ((JTable) locator.locator).root = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_UI:
-                            locator.locator = new UI();
-                            ((UI) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_WITH_TEXT:
-                            locator.locator = new WithText();
-                            ((WithText) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        case JDI_XPATH:
-                            locator.locator = new XPath();
-                            ((XPath) locator.locator).value = attributes.get(0).getLiteralValue();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-        );
+        switch (JdiAttribute.valueOfStr(className)) {
+            case JDI_BY_TEXT:
+                locator.locator = new ByText();
+                ((ByText) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_CSS:
+                locator.locator = new Css();
+                ((Css) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_JDROPDOWN:
+                locator.locator = new JDropdown();
+                ((JDropdown) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_JMENU:
+                locator.locator = new JMenu();
+                ((JMenu) locator.locator).value[0] = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_JTABLE:
+                locator.locator = new JTable();
+                ((JTable) locator.locator).root = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_UI:
+                locator.locator = new UI();
+                ((UI) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_WITH_TEXT:
+                locator.locator = new WithText();
+                ((WithText) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            case JDI_XPATH:
+                locator.locator = new XPath();
+                ((XPath) locator.locator).value = attributes.get(0).getLiteralValue();
+                break;
+            default:
+                break;
+        }
         return locator;
     }
 }

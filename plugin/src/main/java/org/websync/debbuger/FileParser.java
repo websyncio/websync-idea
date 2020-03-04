@@ -142,7 +142,7 @@ public class FileParser {
                 System.out.println("\t" + attr);
 
                 PsiComponentInstance.Locator locator = i.getLocator();
-                switch (PsiComponentInstance.LocatorAnno.getByClass(locator.getLocatorClass())) {
+                switch (PsiComponentInstance.LocatorAttr.getByClass(locator.getLocatorClass())) {
                     case BYTEXT: {
                         PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.getLocator();
                         System.out.println("\t\t" + l.value);
