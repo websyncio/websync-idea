@@ -195,11 +195,21 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                 }
                 case JDI_JDROPDOWN: {
                     JDropdown locator = new JDropdown();
-                    locator.root = getAnnotationValue("root");
-                    locator.value = getAnnotationValue("value");
-                    locator.expand = getAnnotationValue("expand");
-                    locator.list = getAnnotationValue("list");
-                    locator.autoclose = getAnnotationValue("autoclose");
+                    Arrays.asList(JDropdown.class.getFields()).stream().forEach(
+                            f -> {
+                                String fieldName = f.getName();
+                                try {
+                                    f.set(locator, getAnnotationValue(fieldName));
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+//                    locator.root = getAnnotationValue("root");
+//                    locator.value = getAnnotationValue("value");
+//                    locator.expand = getAnnotationValue("expand");
+//                    locator.list = getAnnotationValue("list");
+//                    locator.autoclose = getAnnotationValue("autoclose");
                     this.locator = locator;
                     break;
                 }
