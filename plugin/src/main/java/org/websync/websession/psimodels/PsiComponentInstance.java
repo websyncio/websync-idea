@@ -3,30 +3,37 @@ package org.websync.websession.psimodels;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiNameValuePair;
+import lombok.Getter;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.websync.jdi.JdiAttribute.*;
-
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
 
-    public enum LocatorClassName {
-        BY_TEXT(JDI_BY_TEXT.value),
-        BY_CSS(JDI_CSS.value),
-        BY_JDROPDOWN(JDI_JDROPDOWN.value),
-        BY_JTABLE(JDI_JTABLE.value),
-        BY_JMENU(JDI_JMENU.value),
-        BY_UI(JDI_UI.value),
-        BY_WITH_TEXT(JDI_WITH_TEXT.value),
-        BY_XPATH(JDI_XPATH.value);
+    public enum LocatorAnno {
+        BYTEXT(ByText.class),
+        CSS(Css.class),
+        JDROPDOWN(JDropdown.class),
+        JMENU(JMenu.class),
+        JTABLE(JTable.class),
+        UI(UI.class),
+        WITHTEXT(WithText.class),
+        XPATH(XPath.class);
 
-        private String value;
+        @Getter
+        private Class<?> clazz;
 
-        LocatorClassName(String value) {
-            this.value = value;
+        LocatorAnno(Class<?> clazz) {
+            this.clazz = clazz;
+        }
+
+        public static LocatorAnno valueOfClass(Class<?> locatorClass) {
+            return Arrays.asList(LocatorAnno.values())
+                    .stream()
+                    .filter(l -> l.getClazz().equals(locatorClass))
+                    .findFirst().get();
         }
     }
 
@@ -83,8 +90,12 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     public static class Locator {
-        public Class<?> clazz;
-        public Object locator;
+        @Getter
+        private Object locator;
+
+        public Class<?> getLocatorClass() {
+            return locator.getClass();
+        }
     }
 
     private PsiField psiFiled;
@@ -119,52 +130,39 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                     List<PsiNameValuePair> attributes = Arrays.asList(anno.getParameterList().getAttributes());
 
                     String className = anno.getQualifiedName();
-                    try {
-                        locator.clazz = Class.forName(className);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
                     switch (JdiAttribute.valueOfStr(className)) {
                         case JDI_BY_TEXT:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new ByText();
-                            ((ByText)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((ByText) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_CSS:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new Css();
-                            ((Css)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((Css) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_JDROPDOWN:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new JDropdown();
-                            ((JDropdown)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((JDropdown) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_JMENU:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new JMenu();
-                            ((JMenu)locator.locator).value[0] = attributes.get(0).getLiteralValue();
+                            ((JMenu) locator.locator).value[0] = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_JTABLE:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new JTable();
-                            ((JTable)locator.locator).root = attributes.get(0).getLiteralValue();
+                            ((JTable) locator.locator).root = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_UI:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new UI();
-                            ((UI)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((UI) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_WITH_TEXT:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new WithText();
-                            ((WithText)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((WithText) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         case JDI_XPATH:
-                            attributes.get(0).getLiteralValue();
                             locator.locator = new XPath();
-                            ((XPath)locator.locator).value = attributes.get(0).getLiteralValue();
+                            ((XPath) locator.locator).value = attributes.get(0).getLiteralValue();
                             break;
                         default:
                             break;

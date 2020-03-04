@@ -5,8 +5,8 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PsiUtil;
 import org.websync.jdi.JdiElement;
-import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.ComponentContainer;
+import org.websync.websession.models.ComponentInstance;
 
 import java.util.ArrayList;
 import java.util.Arrays;

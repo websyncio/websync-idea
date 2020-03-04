@@ -9,7 +9,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
-import org.websync.jdi.JdiAttribute;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -136,49 +135,51 @@ public class FileParser {
 
             String elementId = components.keySet().stream().filter(k -> k.contains("Avatar")).findFirst().get();
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
+
             System.out.println("Attributes:");
             psiComponent.getComponentInstances().stream().forEach(i -> {
                 String attr = ((PsiComponentInstance) i).getId();
                 System.out.println("\t" + attr);
+
                 PsiComponentInstance.Locator locator = i.getLocator();
-                switch (JdiAttribute.valueOfStr(locator.clazz.getCanonicalName())) {
-                    case JDI_BY_TEXT: {
-                        PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.clazz.cast(locator.locator);
+                switch (PsiComponentInstance.LocatorAnno.valueOfClass(locator.getLocatorClass())) {
+                    case BYTEXT: {
+                        PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_CSS: {
-                        PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.clazz.cast(locator.locator);
+                    case CSS: {
+                        PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_JDROPDOWN: {
-                        PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.clazz.cast(locator.locator);
+                    case JDROPDOWN: {
+                        PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_JTABLE: {
-                        PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.clazz.cast(locator.locator);
+                    case JTABLE: {
+                        PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.getLocator();
                         System.out.println("\t\t" + l.root);
                         break;
                     }
-                    case JDI_JMENU: {
-                        PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.clazz.cast(locator.locator);
+                    case JMENU: {
+                        PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_UI: {
-                        PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.clazz.cast(locator.locator);
+                    case UI: {
+                        PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_WITH_TEXT: {
-                        PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.clazz.cast(locator.locator);
+                    case WITHTEXT: {
+                        PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
-                    case JDI_XPATH: {
-                        PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.clazz.cast(locator.locator);
+                    case XPATH: {
+                        PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.getLocator();
                         System.out.println("\t\t" + l.value);
                         break;
                     }
@@ -186,6 +187,5 @@ public class FileParser {
             });
         });
     }
-
 }
 
