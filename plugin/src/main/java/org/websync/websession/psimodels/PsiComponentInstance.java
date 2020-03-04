@@ -12,6 +12,7 @@ import org.websync.websession.models.ComponentInstance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
 
@@ -93,14 +94,14 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                     .filter(a -> a.getName().equals(name))
                     .findFirst().get().getValue();
 
-            List<T> list = new ArrayList<>();
-            Arrays.asList(value.getChildren()).stream()
+            List<T> list = Arrays.asList(value.getChildren()).stream()
                     .filter(a -> a instanceof PsiLiteralExpressionImpl)
-                    .forEach(a -> {
+                    .map(a -> {
                         Object object = ((PsiLiteralExpressionImpl) a).getValue();
                         Class<?> clazz = object.getClass();
-                        list.add((T) clazz.cast(object));
-                    });
+                        return (T) clazz.cast(object);
+                    })
+                    .collect(Collectors.toList());
             return list;
         }
 
