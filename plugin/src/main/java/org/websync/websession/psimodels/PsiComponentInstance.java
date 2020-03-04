@@ -29,11 +29,11 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
             this.clazz = clazz;
         }
 
-        public static LocatorAnno valueOfClass(Class<?> locatorClass) {
+        public static LocatorAnno getByClass(Class<?> locatorClass) {
             return Arrays.asList(LocatorAnno.values())
                     .stream()
                     .filter(l -> l.getClazz().equals(locatorClass))
-                    .findFirst().get();
+                    .findFirst().orElse(null);
         }
     }
 
