@@ -17,10 +17,24 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
     public static class ByText {
         public String value;
+
+        @Override
+        public String toString() {
+            return "ByText{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
     }
 
     public static class Css {
         public String value;
+
+        @Override
+        public String toString() {
+            return "Css{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
     }
 
     public static class JDropdown {
@@ -29,11 +43,30 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         public String list;
         public String expand;
         public boolean autoclose;
+
+        @Override
+        public String toString() {
+            return "JDropdown{" +
+                    "root='" + root + '\'' +
+                    ", value='" + value + '\'' +
+                    ", list='" + list + '\'' +
+                    ", expand='" + expand + '\'' +
+                    ", autoclose=" + autoclose +
+                    '}';
+        }
     }
 
     public static class JMenu {
         public List<String> value;
         public String group;
+
+        @Override
+        public String toString() {
+            return "JMenu{" +
+                    "value=" + value +
+                    ", group='" + group + '\'' +
+                    '}';
+        }
     }
 
     public static class JTable {
@@ -51,20 +84,63 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         public int count;
         public int firstColumnIndex;
         public List<Integer> columnsMapping;
+
+        @Override
+        public String toString() {
+            return "JTable{" +
+                    "root='" + root + '\'' +
+                    ", header=" + header +
+                    ", headers='" + headers + '\'' +
+                    ", filter='" + filter + '\'' +
+                    ", row='" + row + '\'' +
+                    ", column='" + column + '\'' +
+                    ", cell='" + cell + '\'' +
+                    ", allCells='" + allCells + '\'' +
+                    ", rowHeader='" + rowHeader + '\'' +
+                    ", fromCellToRow='" + fromCellToRow + '\'' +
+                    ", size=" + size +
+                    ", count=" + count +
+                    ", firstColumnIndex=" + firstColumnIndex +
+                    ", columnsMapping=" + columnsMapping +
+                    '}';
+        }
     }
 
     public static class UI {
         public String value;
         public String group;
         public List<UI> list;
+
+        @Override
+        public String toString() {
+            return "UI{" +
+                    "value='" + value + '\'' +
+                    ", group='" + group + '\'' +
+                    ", list=" + list +
+                    '}';
+        }
     }
 
     public static class WithText {
         public String value;
+
+        @Override
+        public String toString() {
+            return "WithText{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
     }
 
     public static class XPath {
         public String value;
+
+        @Override
+        public String toString() {
+            return "XPath{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
     }
 
     public static class Locator {

@@ -153,60 +153,42 @@ public class FileParser {
                 switch (attribute) {
                     case JDI_BY_TEXT: {
                         PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_CSS: {
                         PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_JDROPDOWN: {
                         PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.getLocator();
-                        System.out.println("\t\troot = " + l.root);
-                        System.out.println("\t\tvalue = " + l.value);
-                        System.out.println("\t\texpand = " + l.expand);
-                        System.out.println("\t\tlist = " + l.list);
-                        System.out.println("\t\tautoclose = " + l.autoclose);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_JTABLE: {
                         PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.getLocator();
-                        System.out.println("\t\troot = " + l.root);
-                        System.out.println("\t\theader = " + l.header);
-                        System.out.println("\t\theaders = " + l.headers);
-                        System.out.println("\t\tfilter = " + l.filter);
-                        System.out.println("\t\trow = " + l.row);
-                        System.out.println("\t\tcolumn = " + l.column);
-                        System.out.println("\t\tcell = " + l.cell);
-                        System.out.println("\t\tallCells = " + l.allCells);
-                        System.out.println("\t\trowHeader = " + l.rowHeader);
-                        System.out.println("\t\tfromCellToRow = " + l.fromCellToRow);
-                        System.out.println("\t\tsize = " + l.size);
-                        System.out.println("\t\tcount = " + l.count);
-                        System.out.println("\t\tfirstColumnIndex = " + l.firstColumnIndex);
-                        System.out.println("\t\tcolumnsMapping = " + l.columnsMapping);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_JMENU: {
                         PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
-                        System.out.println("\t\tgroup = " + l.group);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_UI: {
                         PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_WITH_TEXT: {
                         PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                     case JDI_XPATH: {
                         PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.getLocator();
-                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\t" + l.toString());
                         break;
                     }
                 }
