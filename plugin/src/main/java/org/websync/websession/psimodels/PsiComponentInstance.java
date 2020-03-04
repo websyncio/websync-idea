@@ -91,8 +91,8 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                     .findFirst().get().getValue();
 
             List<T> list = Arrays.asList(value.getChildren()).stream()
-                    .filter(a -> a instanceof PsiLiteralExpressionImpl)
-                    .map(a -> (T) ((PsiLiteralExpressionImpl) a).getValue())
+                    .filter(c -> c instanceof PsiLiteralExpressionImpl)
+                    .map(c -> (T) ((PsiLiteralExpressionImpl) c).getValue())
                     .collect(Collectors.toList());
             return list;
         }
