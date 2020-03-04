@@ -9,6 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
+import org.websync.jdi.JdiAttribute;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -142,45 +143,70 @@ public class FileParser {
                 System.out.println("\t" + attr);
 
                 PsiComponentInstance.Locator locator = i.getLocator();
-                switch (PsiComponentInstance.LocatorAttr.getByClass(locator.getLocatorClass())) {
-                    case BYTEXT: {
+
+                JdiAttribute attribute;
+                try {
+                    attribute = JdiAttribute.valueOfStr(locator.getAnnotation().getQualifiedName());
+                } catch (Exception ex) {
+                    return;
+                }
+                switch (attribute) {
+                    case JDI_BY_TEXT: {
                         PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
                         break;
                     }
-                    case CSS: {
+                    case JDI_CSS: {
                         PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
                         break;
                     }
-                    case JDROPDOWN: {
+                    case JDI_JDROPDOWN: {
                         PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\troot = " + l.root);
+                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\texpand = " + l.expand);
+                        System.out.println("\t\tlist = " + l.list);
+                        System.out.println("\t\tautoclose = " + l.autoclose);
                         break;
                     }
-                    case JTABLE: {
+                    case JDI_JTABLE: {
                         PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.getLocator();
-                        System.out.println("\t\t" + l.root);
+                        System.out.println("\t\troot = " + l.root);
+                        System.out.println("\t\theader = " + l.header);
+                        System.out.println("\t\theaders = " + l.headers);
+                        System.out.println("\t\tfilter = " + l.filter);
+                        System.out.println("\t\trow = " + l.row);
+                        System.out.println("\t\tcolumn = " + l.column);
+                        System.out.println("\t\tcell = " + l.cell);
+                        System.out.println("\t\tallCells = " + l.allCells);
+                        System.out.println("\t\trowHeader = " + l.rowHeader);
+                        System.out.println("\t\tfromCellToRow = " + l.fromCellToRow);
+                        System.out.println("\t\tsize = " + l.size);
+                        System.out.println("\t\tcount = " + l.count);
+                        System.out.println("\t\tfirstColumnIndex = " + l.firstColumnIndex);
+                        System.out.println("\t\tcolumnsMapping = " + l.columnsMapping);
                         break;
                     }
-                    case JMENU: {
+                    case JDI_JMENU: {
                         PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
+                        System.out.println("\t\tgroup = " + l.group);
                         break;
                     }
-                    case UI: {
+                    case JDI_UI: {
                         PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
                         break;
                     }
-                    case WITHTEXT: {
+                    case JDI_WITH_TEXT: {
                         PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
                         break;
                     }
-                    case XPATH: {
+                    case JDI_XPATH: {
                         PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.getLocator();
-                        System.out.println("\t\t" + l.value);
+                        System.out.println("\t\tvalue = " + l.value);
                         break;
                     }
                 }
