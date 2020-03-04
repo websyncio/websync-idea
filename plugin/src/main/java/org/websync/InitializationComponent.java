@@ -6,14 +6,37 @@ import org.websync.debbuger.DebugFileWatcher;
 import org.websync.debbuger.FileParser;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class InitializationComponent implements BaseComponent {
 
-    DebugFileWatcher debugFileWatcher = new DebugFileWatcher(new File("c:/temp/text.txt"), new FileParser());
+    String projectDir;
+
+    {
+        String path = InitializationComponent.class.getResource("").getPath();
+        projectDir = Paths.get(path
+                .replace("file:/", "")
+                .replaceFirst("[!].*", ""))
+                .getParent().toString();
+    }
+
+    DebugFileWatcher debugFileWatcher;
 
     public void initComponent() {
         System.out.println("Initializing...");
 
+        Path debugFilePath = Paths.get(projectDir + "/debug.txt");
+        try {
+            Files.write(debugFilePath, "command".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        debugFileWatcher = new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
         debugFileWatcher.start();
 
         System.out.println("Initialized.");

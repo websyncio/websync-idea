@@ -23,6 +23,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
     compile "com.epam.jdi:jdi-light:1.1.15"
     compile "com.epam.jdi:jdi-light-html:1.1.15"
+    implementation 'org.jetbrains:annotations:15.0'
 }
 
 test {
