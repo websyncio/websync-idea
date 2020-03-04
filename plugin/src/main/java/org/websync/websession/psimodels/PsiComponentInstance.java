@@ -144,13 +144,12 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     public static class Locator {
-        @Getter
         private PsiAnnotation annotation;
         private List<PsiNameValuePair> attributes;
 
         private Locator(PsiAnnotation annotation) {
             this.annotation = annotation;
-            attributes = Arrays.asList(annotation.getParameterList().getAttributes());
+            this.attributes = Arrays.asList(annotation.getParameterList().getAttributes());
             setup();
         }
 
@@ -263,8 +262,10 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
             }
         }
 
-        @Getter
         private Object locator;
+        public Object get() {
+            return locator;
+        }
     }
 
     private PsiField psiFiled;

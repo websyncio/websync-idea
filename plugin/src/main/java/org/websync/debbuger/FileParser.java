@@ -142,55 +142,31 @@ public class FileParser {
                 String attr = ((PsiComponentInstance) i).getId();
                 System.out.println("\t" + attr);
 
-                PsiComponentInstance.Locator locator = i.getLocator();
-
-                JdiAttribute attribute;
-                try {
-                    attribute = JdiAttribute.valueOfStr(locator.getAnnotation().getQualifiedName());
-                } catch (Exception ex) {
-                    return;
-                }
-                switch (attribute) {
-                    case JDI_BY_TEXT: {
-                        PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_CSS: {
-                        PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_JDROPDOWN: {
-                        PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_JTABLE: {
-                        PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_JMENU: {
-                        PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_UI: {
-                        PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_WITH_TEXT: {
-                        PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
-                    case JDI_XPATH: {
-                        PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator.getLocator();
-                        System.out.println("\t\t" + l.toString());
-                        break;
-                    }
+                Object locator = i.getLocator().get();
+                if (locator instanceof PsiComponentInstance.ByText) {
+                    PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.Css) {
+                    PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.JDropdown) {
+                    PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.JTable) {
+                    PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.JMenu) {
+                    PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.UI) {
+                    PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.WithText) {
+                    PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator;
+                    System.out.println("\t\t" + l.toString());
+                } else if (locator instanceof PsiComponentInstance.XPath) {
+                    PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator;
+                    System.out.println("\t\t" + l.toString());
                 }
             });
         });
