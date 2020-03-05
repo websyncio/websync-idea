@@ -9,7 +9,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.ember.EmberSerializer;
-import org.websync.jdi.JdiAttribute;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -138,36 +137,38 @@ public class FileParser {
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
 
             System.out.println("Attributes:");
-            psiComponent.getComponentInstances().stream().forEach(i -> {
-                String attr = ((PsiComponentInstance) i).getId();
+            psiComponent.getComponentInstances().stream().forEach(instance -> {
+                String attr = ((PsiComponentInstance) instance).getId();
                 System.out.println("\t" + attr);
+                PsiComponentInstance.Attribute attribute = ((PsiComponentInstance) instance).getAttribute();
+                System.out.println(attribute);
 
-                Object locator = i.getLocator().get();
-                if (locator instanceof PsiComponentInstance.ByText) {
-                    PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.Css) {
-                    PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.JDropdown) {
-                    PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.JTable) {
-                    PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.JMenu) {
-                    PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.UI) {
-                    PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.WithText) {
-                    PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator;
-                    System.out.println("\t\t" + l.toString());
-                } else if (locator instanceof PsiComponentInstance.XPath) {
-                    PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator;
-                    System.out.println("\t\t" + l.toString());
-                }
+//                Object locator = instance.getLocator().get();
+//                if (locator instanceof PsiComponentInstance.ByText) {
+//                    PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.Css) {
+//                    PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JDropdown) {
+//                    PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JTable) {
+//                    PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JMenu) {
+//                    PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.UI) {
+//                    PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.WithText) {
+//                    PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.XPath) {
+//                    PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                }
             });
         });
     }

@@ -1,14 +1,12 @@
 package org.websync.websession.psimodels;
 
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiAnnotationMemberValue;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiNameValuePair;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.java.PsiLiteralExpressionImpl;
 import lombok.Getter;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -263,6 +261,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
 
         private Object locator;
+
         public Object get() {
             return locator;
         }
@@ -283,5 +282,129 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
             return null;
         }
         return new Locator(psiFiled.getAnnotations()[0]);
+    }
+
+    public static class LiteralExpression {
+        @Getter
+        private final Class<?> clazz;
+        @Getter
+        private final Object value;
+
+        public LiteralExpression(Object value) {
+            this.value = value;
+            this.clazz = (value != null) ? value.getClass() : null;
+        }
+
+        @Override
+        public String toString() {
+            return "LiteralExpression{" +
+                    "clazz=" + clazz +
+                    ", value=" + value +
+                    '}';
+        }
+    }
+
+    public static class NameValuePair {
+        @Getter
+        private final String identifier;
+        @Getter
+        private LiteralExpression literalExpression;
+        @Getter
+        private ArrayList<LiteralExpression> arrayInitializerMemberValue;
+
+        public NameValuePair(String identifier, LiteralExpression literalExpression) {
+            this.identifier = identifier;
+            this.literalExpression = literalExpression;
+        }
+
+        public NameValuePair(String identifier, ArrayList<LiteralExpression> arrayInitializerMemberValue) {
+            this.identifier = identifier;
+            this.arrayInitializerMemberValue = arrayInitializerMemberValue;
+        }
+
+        @Override
+        public String toString() {
+            return "NameValuePair{" +
+                    "identifier='" + identifier + '\'' +
+                    ", literalExpression=" + literalExpression +
+                    ", arrayInitializerMemberValue=" + arrayInitializerMemberValue +
+                    '}';
+        }
+    }
+
+    public static class Attribute {
+        @Getter
+        private final String codeReferenceElement;
+        @Getter
+        private final List<NameValuePair> annotationParameterList = new ArrayList<>();
+
+        public Attribute(String javaCodeReferenceElement) {
+            this.codeReferenceElement = javaCodeReferenceElement;
+        }
+
+        @Override
+        public String toString() {
+            return "Annotata{" +
+                    "codeReferenceElement='" + codeReferenceElement + '\'' +
+                    ", annotationParameterList=" + annotationParameterList +
+                    '}';
+        }
+    }
+
+    public Attribute getAttribute() {
+        if (psiFiled.getAnnotations().length == 0) {
+            return null;
+        }
+        PsiAnnotation annotation = psiFiled.getAnnotations()[0];
+
+        String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
+                .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
+                .findFirst().get().getText();
+        Attribute attribute = new Attribute(javaCodeReference);
+
+        List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(annotation.getParameterList().getAttributes());
+        psiNameValuePairs.stream().forEach(
+                psiNameValuePair -> {
+                    String identifier = psiNameValuePair.getName();
+                    List<PsiElement> psiElements = Arrays.asList(psiNameValuePair.getChildren());
+
+                    PsiLiteralExpression psiLiteralExpression = (PsiLiteralExpression) psiElements.stream()
+                            .filter(psiElement -> PsiLiteralExpression.class.isInstance(psiElement))
+                            .findFirst().orElse(null);
+
+                    if (psiLiteralExpression != null) {
+                        Object value = psiLiteralExpression.getValue();
+                        attribute.getAnnotationParameterList().add(
+                                new NameValuePair(identifier, new LiteralExpression(value)));
+                    }
+
+                    PsiArrayInitializerMemberValue psiArrayInitializerMemberValue =
+                            (PsiArrayInitializerMemberValue) psiElements.stream()
+                                    .filter(psiElement -> PsiArrayInitializerMemberValue.class.isInstance(psiElement))
+                                    .findFirst().orElse(null);
+
+                    if (psiArrayInitializerMemberValue != null) {
+
+                        ArrayList<LiteralExpression> arrayInitializerMemberValue = new ArrayList<>();
+
+                        Arrays.asList(psiArrayInitializerMemberValue.getInitializers())
+                                .forEach(psiAnnotationMemberValue -> {
+                                    if (PsiAnnotation.class.isInstance(psiAnnotationMemberValue)) {
+                                        LiteralExpression literalExpression = new LiteralExpression(null);
+                                        arrayInitializerMemberValue.add(literalExpression);
+                                    }
+                                    if (PsiLiteralExpression.class.isInstance(psiAnnotationMemberValue)) {
+                                        Object value = ((PsiLiteralExpression) psiAnnotationMemberValue).getValue();
+                                        LiteralExpression literalExpression = new LiteralExpression(value);
+                                        arrayInitializerMemberValue.add(literalExpression);
+                                    }
+                                });
+
+                        attribute.getAnnotationParameterList().add(
+                                new NameValuePair(identifier, arrayInitializerMemberValue));
+                    }
+                }
+        );
+        return attribute;
     }
 }
