@@ -344,7 +344,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
         @Override
         public String toString() {
-            return "Annotata{" +
+            return "Attribute{" +
                     "codeReferenceElement='" + codeReferenceElement + '\'' +
                     ", annotationParameterList=" + annotationParameterList +
                     '}';
