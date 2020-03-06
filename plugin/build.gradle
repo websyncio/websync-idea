@@ -26,6 +26,14 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
 }
 
+sourceSets {
+    test {
+        java {
+            exclude 'org/**'
+        }
+    }
+}
+
 test {
     useJUnit()
 
