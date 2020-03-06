@@ -389,10 +389,12 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
                         Arrays.asList(psiArrayInitializerMemberValue.getInitializers())
                                 .forEach(psiAnnotationMemberValue -> {
+                                    // This is the dummy for @UI.List
                                     if (PsiAnnotation.class.isInstance(psiAnnotationMemberValue)) {
                                         LiteralExpression literalExpression = new LiteralExpression(null);
                                         arrayInitializerMemberValue.add(literalExpression);
                                     }
+                                    // This works for @ByText, @Css, @JDropdown, @JMenu, @JTable, @UI, @WithText, @XPath
                                     if (PsiLiteralExpression.class.isInstance(psiAnnotationMemberValue)) {
                                         Object value = ((PsiLiteralExpression) psiAnnotationMemberValue).getValue();
                                         LiteralExpression literalExpression = new LiteralExpression(value);
