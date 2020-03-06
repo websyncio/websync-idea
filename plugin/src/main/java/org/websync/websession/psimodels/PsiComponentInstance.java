@@ -332,13 +332,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
     }
 
-    public static class Attribute {
+    public static class Annotation {
         @Getter
         private final String codeReferenceElement;
         @Getter
         private final List<NameValuePair> annotationParameterList = new ArrayList<>();
 
-        public Attribute(String javaCodeReferenceElement) {
+        public Annotation(String javaCodeReferenceElement) {
             this.codeReferenceElement = javaCodeReferenceElement;
         }
 
@@ -351,7 +351,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
     }
 
-    public Attribute getAttribute() {
+    public Annotation getAttribute() {
         if (psiFiled.getAnnotations().length == 0) {
             return null;
         }
@@ -360,7 +360,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
                 .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
                 .findFirst().get().getText();
-        Attribute attribute = new Attribute(javaCodeReference);
+        Annotation attribute = new Annotation(javaCodeReference);
 
         List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(annotation.getParameterList().getAttributes());
         psiNameValuePairs.stream().forEach(

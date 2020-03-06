@@ -140,8 +140,8 @@ public class FileParser {
             psiComponent.getComponentInstances().stream().forEach(instance -> {
                 String attr = ((PsiComponentInstance) instance).getId();
                 System.out.println("\t" + attr);
-                PsiComponentInstance.Attribute attribute = ((PsiComponentInstance) instance).getAttribute();
-                System.out.println(attribute);
+                PsiComponentInstance.Annotation annotation = ((PsiComponentInstance) instance).getAttribute();
+                System.out.println(annotation);
 
 //                Object locator = instance.getLocator().get();
 //                if (locator instanceof PsiComponentInstance.ByText) {
