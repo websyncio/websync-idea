@@ -25,8 +25,8 @@ public class BrowserConnection {
     }
 
     public void initConnection() {
-        server = new Server(new InetSocketAddress(host, port));
-        server.run();
+        server = new Server(port);
+        server.start();
         log.info("Listening " + port);
     }
 
