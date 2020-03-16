@@ -9,7 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Test;
-import org.websync.sessionweb.PsiSessionWebProvider;
+import org.websync.websession.PsiWebSessionProvider;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -148,7 +148,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 String.format("%s - the copy time from directory contained java classes to virtual project",
                         endTime - startTime));
 
-        new PsiSessionWebProvider(getProject()).getSessionWebs(false);
+        new PsiWebSessionProvider(getProject()).getWebSessions(false);
     }
 
     @Test
