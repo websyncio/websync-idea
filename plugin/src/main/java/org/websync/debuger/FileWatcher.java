@@ -1,4 +1,4 @@
-package org.websync.debbuger;
+package org.websync.debuger;
 
 import java.io.File;
 import java.util.TimerTask;

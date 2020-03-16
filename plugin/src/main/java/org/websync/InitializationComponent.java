@@ -2,13 +2,11 @@ package org.websync;
 
 import com.intellij.openapi.components.BaseComponent;
 import org.jetbrains.annotations.NotNull;
-import org.websync.debbuger.DebugFileWatcher;
-import org.websync.debbuger.FileParser;
+import org.websync.debuger.DebugFileWatcher;
+import org.websync.debuger.FileParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

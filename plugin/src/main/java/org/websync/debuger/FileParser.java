@@ -1,4 +1,4 @@
-package org.websync.debbuger;
+package org.websync.debuger;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
