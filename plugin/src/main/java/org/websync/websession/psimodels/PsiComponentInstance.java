@@ -357,11 +357,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
         PsiAnnotation annotation = psiFiled.getAnnotations()[0];
 
+        // Get tag name of annotation
         String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
                 .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
                 .findFirst().get().getText();
         Annotation attribute = new Annotation(javaCodeReference);
 
+        // Processing of values of annotation
         List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(annotation.getParameterList().getAttributes());
         psiNameValuePairs.stream().forEach(
                 psiNameValuePair -> {
