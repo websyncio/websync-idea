@@ -94,7 +94,7 @@ public abstract class MavenTestCase extends UsefulTestCase {
 //        ((ApplicationImpl) ApplicationManager.getApplication()).registerServiceInstance(
 //                MavenWorkspaceSettingsComponent.class, c, PluginManager.getPlugins()[2]);
 
-//        MavenWorkspaceSettingsComponent.getInstance(myProject).loadState(new MavenWorkspaceSettings());
+        MavenWorkspaceSettingsComponent.getInstance(myProject).loadState(new MavenWorkspaceSettings());
 
         String home = getTestMavenHome();
         if (home != null) {

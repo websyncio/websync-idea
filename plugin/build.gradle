@@ -49,7 +49,7 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 intellij {
-    plugins 'java'
+    setPlugins("java", "maven")
     version '2019.3.3'
 }
 

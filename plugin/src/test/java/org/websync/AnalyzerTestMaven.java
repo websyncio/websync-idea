@@ -1,9 +1,6 @@
 package org.websync;
 
-import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.application.impl.ApplicationImpl;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
