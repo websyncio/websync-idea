@@ -8,7 +8,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.debugger.commands.CommandTestsRun;
+import org.websync.debugger.commands.CommandTestRun;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -55,7 +55,7 @@ public class FileParser {
                 testFieldsOfPsiClasses();
                 break;
             case "test run":
-                CommandTestsRun.run();
+                CommandTestRun.run();
                 break;
             default:
                 System.out.println(String.format("Unknown command '%s' is detected", command));
@@ -144,8 +144,8 @@ public class FileParser {
             psiComponent.getComponentInstances().stream().forEach(instance -> {
                 String attr = ((PsiComponentInstance) instance).getId();
                 System.out.println("\t" + attr);
-                PsiComponentInstance.Annotation annotation = ((PsiComponentInstance) instance).getAttribute();
-                System.out.println(annotation);
+                PsiComponentInstance.InstanceAnnotation instanceAnnotation = ((PsiComponentInstance) instance).getInstanceAttribute();
+                System.out.println(instanceAnnotation);
 
 //                Object locator = instance.getLocator().get();
 //                if (locator instanceof PsiComponentInstance.ByText) {

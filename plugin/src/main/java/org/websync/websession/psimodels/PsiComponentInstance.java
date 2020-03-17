@@ -1,7 +1,12 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.*;
+import com.intellij.psi.impl.PsiElementBase;
+import com.intellij.psi.impl.source.PsiJavaCodeReferenceElementImpl;
+import com.intellij.psi.impl.source.tree.java.PsiAnnotationImpl;
+import com.intellij.psi.impl.source.tree.java.PsiJavaTokenImpl;
 import com.intellij.psi.impl.source.tree.java.PsiLiteralExpressionImpl;
+import com.intellij.psi.impl.source.tree.java.PsiNameValuePairImpl;
 import lombok.Getter;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
@@ -332,13 +337,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
     }
 
-    public static class Annotation {
+    public static class InstanceAnnotation {
         @Getter
         private final String codeReferenceElement;
         @Getter
         private final List<NameValuePair> annotationParameterList = new ArrayList<>();
 
-        public Annotation(String javaCodeReferenceElement) {
+        public InstanceAnnotation(String javaCodeReferenceElement) {
             this.codeReferenceElement = javaCodeReferenceElement;
         }
 
@@ -351,7 +356,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
     }
 
-    public Annotation getAttribute() {
+    public InstanceAnnotation getInstanceAttribute() {
         if (psiFiled.getAnnotations().length == 0) {
             return null;
         }
@@ -361,7 +366,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
                 .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
                 .findFirst().get().getText();
-        Annotation attribute = new Annotation(javaCodeReference);
+        InstanceAnnotation attribute = new InstanceAnnotation(javaCodeReference);
 
         // Processing of values of annotation
         List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(annotation.getParameterList().getAttributes());
