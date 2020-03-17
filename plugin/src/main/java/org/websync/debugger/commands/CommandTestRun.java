@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.websync.debugger.testengine.TestEngine;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -25,13 +26,14 @@ public class CommandTestRun {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            test1(components);
+            TestEngine.run(() -> test1(components), "test1");
         });
     }
 
     // Test valid names of attributes
     private static void test1(Map<String, Component> components) {
-        List<String> givenPageNames = Arrays.asList("AttributesTest", "AttributesInitialization");
+//        List<String> givenPageNames = Arrays.asList("AttributesTest", "AttributesInitialization");
+        List<String> givenPageNames = Arrays.asList("AttributesTest");
         List<String> expectedResults = Arrays.asList(
                 "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
                 "FindBy", "FindBys",
