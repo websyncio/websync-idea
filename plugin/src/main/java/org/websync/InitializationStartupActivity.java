@@ -4,8 +4,8 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import org.jetbrains.annotations.NotNull;
-import org.websync.debuger.DebugFileWatcher;
-import org.websync.debuger.FileParser;
+import org.websync.debugger.DebugFileWatcher;
+import org.websync.debugger.FileParser;
 
 import java.io.File;
 

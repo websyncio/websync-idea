@@ -1,4 +1,4 @@
-package org.websync.debuger;
+package org.websync.debugger;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -8,6 +8,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.debugger.commands.CommandTestsRun;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -52,6 +53,9 @@ public class FileParser {
                 break;
             case "test fields":
                 testFieldsOfPsiClasses();
+                break;
+            case "test run":
+                CommandTestsRun.run();
                 break;
             default:
                 System.out.println(String.format("Unknown command '%s' is detected", command));
