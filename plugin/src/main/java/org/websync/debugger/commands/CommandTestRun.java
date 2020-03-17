@@ -32,16 +32,17 @@ public class CommandTestRun {
 
     // Test valid names of attributes
     private static void test1(Map<String, Component> components) {
-//        List<String> givenPageNames = Arrays.asList("AttributesTest", "AttributesInitialization");
-        List<String> givenPageNames = Arrays.asList("AttributesTest");
+//        List<String> givenComponentNames = Arrays.asList("AttributesTest", "AttributesInitialization");
+        List<String> givenComponentNames = Arrays.asList("AttributesTest", "CustomBaseElement");
+//        List<String> givenComponentNames = Arrays.asList("AttributesTest");
         List<String> expectedResults = Arrays.asList(
                 "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
                 "FindBy", "FindBys",
                 "Frame", "Name", "Title");
 
-        givenPageNames.stream().forEach(pageName -> {
+        givenComponentNames.stream().forEach(componentName -> {
             String componentId = components.keySet().stream()
-                    .filter(k -> k.contains(pageName))
+                    .filter(k -> k.contains(componentName))
                     .findFirst().get();
             PsiComponent psiComponent = (PsiComponent) components.get(componentId);
 
