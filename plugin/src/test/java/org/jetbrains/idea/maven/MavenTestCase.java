@@ -90,9 +90,10 @@ public abstract class MavenTestCase extends UsefulTestCase {
         myProject = myTestFixture.getProject();
 
 //        PluginManager.getPlugins();
-//        MavenWorkspaceSettingsComponent c = new MavenWorkspaceSettingsComponent(myProject);
+        MavenWorkspaceSettingsComponent mavenWorkspaceSettingsComponent = new MavenWorkspaceSettingsComponent(myProject);
 //        ((ApplicationImpl) ApplicationManager.getApplication()).registerServiceInstance(
-//                MavenWorkspaceSettingsComponent.class, c, PluginManager.getPlugins()[2]);
+//                MavenWorkspaceSettingsComponent.class, mavenWorkspaceSettingsComponent, PluginManager.getPlugins()[2]);
+        mavenWorkspaceSettingsComponent.loadState(new MavenWorkspaceSettings());
 
         MavenWorkspaceSettingsComponent.getInstance(myProject).loadState(new MavenWorkspaceSettings());
 

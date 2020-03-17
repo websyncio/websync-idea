@@ -16,7 +16,7 @@ public class AnalyzerTestMaven extends MavenTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        VfsRootAccess.allowRootAccess(getTestRootDisposable(), PathManager.getConfigPath());
+//        VfsRootAccess.allowRootAccess(getTestRootDisposable(), PathManager.getConfigPath());
 
         super.setUp();
     }
