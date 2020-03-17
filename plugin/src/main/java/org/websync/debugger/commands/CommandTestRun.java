@@ -25,27 +25,31 @@ public class CommandTestRun {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            // Test valid names of attributes
-            List<String> givenPageNames = Arrays.asList("AttributesTest", "AttributesInitialization");
-            List<String> expectedResults = Arrays.asList(
-                    "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
-                    "FindBy", "FindBys",
-                    "Frame", "Name", "Title");
+            test1(components);
+        });
+    }
 
-            givenPageNames.stream().forEach(pageName -> {
-                String componentId = components.keySet().stream()
-                        .filter(k -> k.contains(pageName))
-                        .findFirst().get();
-                PsiComponent psiComponent = (PsiComponent) components.get(componentId);
+    // Test valid names of attributes
+    private static void test1(Map<String, Component> components) {
+        List<String> givenPageNames = Arrays.asList("AttributesTest", "AttributesInitialization");
+        List<String> expectedResults = Arrays.asList(
+                "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
+                "FindBy", "FindBys",
+                "Frame", "Name", "Title");
 
-                psiComponent.getComponentInstances().stream().forEach(instance -> {
-                    String attr = ((PsiComponentInstance) instance).getId();
-                    PsiComponentInstance.InstanceAnnotation instanceAnnotation =
-                            ((PsiComponentInstance) instance).getInstanceAttribute();
+        givenPageNames.stream().forEach(pageName -> {
+            String componentId = components.keySet().stream()
+                    .filter(k -> k.contains(pageName))
+                    .findFirst().get();
+            PsiComponent psiComponent = (PsiComponent) components.get(componentId);
 
-                    String actualResult = instanceAnnotation.getCodeReferenceElement();
-                    MatcherAssert.assertThat(expectedResults, Matchers.hasItem(actualResult));
-                });
+            psiComponent.getComponentInstances().stream().forEach(instance -> {
+                String attr = ((PsiComponentInstance) instance).getId();
+                PsiComponentInstance.InstanceAnnotation instanceAnnotation =
+                        ((PsiComponentInstance) instance).getInstanceAttribute();
+
+                String actualResult = instanceAnnotation.getCodeReferenceElement();
+                MatcherAssert.assertThat(expectedResults, Matchers.hasItem(actualResult));
             });
         });
     }
