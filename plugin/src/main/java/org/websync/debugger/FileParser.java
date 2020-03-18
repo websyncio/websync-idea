@@ -115,9 +115,7 @@ public class FileParser {
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
-            Collection<WebSession> sessions = webProvider.getWebSessions(true);
-            WebSession session = sessions.stream().findFirst().get();
+            WebSession session = PsiWebSessionProvider.getWebSession(project);
             Map<String, Component> components = session.getComponents();
 
             System.out.println(String.format("Components: %s", components.size()));
@@ -132,9 +130,7 @@ public class FileParser {
     private void testFieldsOfPsiClasses() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
-            Collection<WebSession> sessions = webProvider.getWebSessions(true);
-            WebSession session = sessions.stream().findFirst().get();
+            WebSession session = PsiWebSessionProvider.getWebSession(project);
             Map<String, Component> components = session.getComponents();
 
             String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
