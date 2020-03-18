@@ -3,6 +3,7 @@ package org.websync.debugger.commands;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import javafx.util.Pair;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.websync.debugger.testengine.TestEngine;
@@ -26,7 +27,10 @@ public class CommandTestRun {
             WebSession session = sessions.stream().findFirst().get();
             Map<String, Component> components = session.getComponents();
 
-            TestEngine.run(() -> test1(components), "test1");
+            TestEngine.run(
+                    new Pair<>(() -> test1(components), "test1"),
+                    new Pair<>(() -> test2(components), "test2")
+            );
         });
     }
 
@@ -55,5 +59,9 @@ public class CommandTestRun {
                 MatcherAssert.assertThat(expectedResults, Matchers.hasItem(actualResult));
             });
         });
+    }
+
+    private static void test2(Map<String, Component> components) {
+        MatcherAssert.assertThat(true, Matchers.is(false));
     }
 }
