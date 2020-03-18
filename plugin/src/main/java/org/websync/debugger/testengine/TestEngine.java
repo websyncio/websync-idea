@@ -23,11 +23,11 @@ public class TestEngine {
             if (count < 2) {
                 printToOut(LINE);
             }
-            printToOut(String.format("Test [%s] is performing...", testName));
+            printToOut(String.format("TEST [%s] is performing...", testName));
             try {
                 runnable.run();
             } catch (Throwable throwable) {
-                printToOut(String.format("Test [%s] FAILED.", testName));
+                printToOut(String.format("TEST [%s] FAILED.", testName));
 //                throwable.getCause().printStackTrace();
                 printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
                 if (count < 2) {
@@ -35,7 +35,7 @@ public class TestEngine {
                 }
                 return;
             }
-            printToOut(String.format("Test [%s] PASSED.", testName));
+            printToOut(String.format("TEST [%s] PASSED.", testName));
             if (count < 2) {
                 printToOut(LINE);
             }
@@ -80,11 +80,11 @@ public class TestEngine {
             if (count < 2) {
                 printToOut(LINE);
             }
-            printToOut(String.format("Test [%s] is performing...", testMethodName));
+            printToOut(String.format("TEST [%s] is performing...", testMethodName));
             try {
                 test.invoke(null);
             } catch (Throwable throwable) {
-                printToOut(String.format("Test [%s] FAILED.", testMethodName));
+                printToOut(String.format("TEST [%s] FAILED.", testMethodName));
 //                throwable.getCause().printStackTrace();
                 printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
                 if (count < 2) {
@@ -92,7 +92,7 @@ public class TestEngine {
                 }
                 return;
             }
-            printToOut(String.format("Test [%s] PASSED.", testMethodName));
+            printToOut(String.format("TEST [%s] PASSED.", testMethodName));
             if (count < 2) {
                 printToOut(LINE);
             }

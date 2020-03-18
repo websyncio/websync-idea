@@ -8,7 +8,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.debugger.commands.CommandTestRun;
+import org.websync.debugger.commands.CommandTestAttributes;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -31,13 +31,13 @@ public class FileParser {
         }
 
         String command = lines.get(0);
-        System.out.println(String.format("Command '%s' is performing...", command));
+        System.out.println(String.format("COMMAND '%s' is performing...", command));
         switch (command) {
             case "a":
-                System.out.println(String.format("Command '%s' performed", command));
+                System.out.println("COMMAND 'a' something doing.");
                 break;
             case "b":
-                System.out.println(String.format("Command '%s' performed", command));
+                System.out.println("COMMAND 'b' something doing.");
                 break;
             case "print classes":
                 printClasses();
@@ -54,13 +54,13 @@ public class FileParser {
             case "test fields":
                 testFieldsOfPsiClasses();
                 break;
-            case "test run":
-                CommandTestRun.run();
+            case "test attributes":
+                CommandTestAttributes.run();
                 break;
             default:
-                System.out.println(String.format("Unknown command '%s' is detected", command));
+                System.out.println(String.format("COMMAND '%s' is unknown", command));
         }
-        System.out.println(String.format("Command '%s' is performed", command));
+        System.out.println(String.format("COMMAND '%s' is performed", command));
     }
 
     private void testSerializer() {

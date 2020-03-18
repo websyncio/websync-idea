@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommandTestRun {
+public class CommandTestAttributes {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            TestEngine.run(CommandTestRun.class);
+            TestEngine.run(CommandTestAttributes.class);
         });
     }
 
@@ -76,7 +76,7 @@ public class CommandTestRun {
     }
 
     @Test
-    public static void test3() {
+    public static void testDummyAndFailed() {
         MatcherAssert.assertThat(true, Matchers.is(false));
     }
 
@@ -91,5 +91,10 @@ public class CommandTestRun {
         String givenComponentName = "AttributesTest";
 
         testValidNamesOfAttributesInComponent(components, givenComponentName);
+    }
+
+    @Test
+    public static void testValidNamesOfAttributesInPages() {
+
     }
 }
