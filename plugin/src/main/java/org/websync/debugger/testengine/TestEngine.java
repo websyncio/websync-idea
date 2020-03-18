@@ -48,15 +48,17 @@ public class TestEngine {
 
         tests.stream().forEach(test -> {
 
-            System.out.println(LINE);
+            if (count < 2) {
+                System.out.println(LINE);
+            }
             System.out.println(String.format("Test [%s] is performing...", test.getName()));
             try {
                 test.invoke(null);
             } catch (Throwable throwable) {
 
                 System.out.println(String.format("Test [%s] failed.", test.getName()));
-//                System.out.println(ExceptionUtils.getStackTrace(ex));
-                throwable.getCause().printStackTrace();
+                System.out.println(ExceptionUtils.getStackTrace(throwable.getCause()));
+//                throwable.getCause().printStackTrace();
                 System.out.println(LINE);
                 return;
             }

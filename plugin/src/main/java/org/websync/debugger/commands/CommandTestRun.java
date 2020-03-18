@@ -22,61 +22,16 @@ import java.util.stream.Collectors;
 public class CommandTestRun {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = PsiWebSessionProvider.getWebSession(project);
-
-            TestEngine.run(
-                    new Pair<>(() -> testValidNamesOfAttributesInComponent(session),
-                            "Test valid names of attributes in component"),
-                    new Pair<>(() -> testValidNamesOfAttributesInSeveralComponents(session),
-                            "Test valid names of attributes in several components"),
-                    new Pair<>(() -> test2(session), "test2")
-            );
-        });
-    }
-
-    public static void run1() {
-        ApplicationManager.getApplication().runReadAction(() -> {
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = PsiWebSessionProvider.getWebSession(project);
-
             TestEngine.run(CommandTestRun.class);
         });
     }
 
-    // Test valid names of attributes
-    static void testValidNamesOfAttributesInComponent(WebSession webSession) {
-        // GIVEN
-        Map<String, Component> components = webSession.getComponents();
-        String givenComponentName = "AttributesTest";
-
-        // Get PsiComponent object by given component name
-        String componentId = components.keySet().stream()
-                .filter(k -> k.contains(givenComponentName))
-                .findFirst().get();
-        PsiComponent psiComponent = (PsiComponent) components.get(componentId);
-
-        // STEPS
-        // Get attribute names of component instances
-        List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
-                .map(instance -> {
-                    PsiComponentInstance.InstanceAnnotation instanceAnnotation =
-                            ((PsiComponentInstance) instance).getInstanceAttribute();
-                    return instanceAnnotation.getCodeReferenceElement();
-                })
-                .collect(Collectors.toList());
-
-        // ASSERT
-        List<String> expectedResults = Arrays.asList(
-                "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
-                "FindBy", "FindBys",
-                "Frame", "Name", "Title");
-
-        MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
-    }
-
-    static void testValidNamesOfAttributesInSeveralComponents(WebSession webSession) {
+    @Test
+    public static void testValidNamesOfAttributesInSeveralComponents() {
         // PREREQUISITE
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+
         Map<String, Component> components = webSession.getComponents();
         List<String> givenComponentNames = Arrays.asList("CustomElement", "CustomBaseElement");
 
@@ -118,12 +73,44 @@ public class CommandTestRun {
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
     }
 
-    public static void test2(WebSession webSession) {
-        MatcherAssert.assertThat(true, Matchers.is(false));
-    }
-
     @Test
     public static void test3() {
         MatcherAssert.assertThat(true, Matchers.is(false));
     }
+
+    @Test
+    public static void testValidNamesOfAttributesInComponent() {
+        // PREREQUISITES
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+
+        // GIVEN
+        String givenComponentName = "AttributesTest";
+        Map<String, Component> components = webSession.getComponents();
+
+        // Get PsiComponent object by given component name
+        String componentId = components.keySet().stream()
+                .filter(k -> k.contains(givenComponentName))
+                .findFirst().get();
+        PsiComponent psiComponent = (PsiComponent) components.get(componentId);
+
+        // STEPS
+        // Get attribute names of component instances
+        List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
+                .map(instance -> {
+                    PsiComponentInstance.InstanceAnnotation instanceAnnotation =
+                            ((PsiComponentInstance) instance).getInstanceAttribute();
+                    return instanceAnnotation.getCodeReferenceElement();
+                })
+                .collect(Collectors.toList());
+
+        // ASSERT
+        List<String> expectedResults = Arrays.asList(
+                "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
+                "FindBy", "FindBys",
+                "Frame", "Name", "Title");
+
+        MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
+    }
+
 }

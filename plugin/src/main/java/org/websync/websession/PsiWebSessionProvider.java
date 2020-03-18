@@ -78,7 +78,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
                 }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting website PSI classes = %.3f s.",
+        System.out.println(String.format("Getting website PSI classes. Time = %.3f s.",
                 (double)(endTime - startTime) / 1000000000));
         return websites;
     }
@@ -95,7 +95,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting page PSI classes = %.3f s.",
+        System.out.println(String.format("Getting page PSI classes. Time = %.3f s.",
                 (double)(endTime - startTime) / 1000000000));
         return pages;
     }
@@ -112,7 +112,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting component PSI classes = %.3f s.",
+        System.out.println(String.format("Getting component PSI classes. Time = %.3f s.",
                 (double)(endTime - startTime) / 1000000000));
         return components;
     }

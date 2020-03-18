@@ -50,7 +50,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
         System.out.println(
-                String.format("%.3f - the time of coping from directory contained java classes to virtual project",
+                String.format("Copy from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
         System.out.println();
@@ -102,7 +102,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
         System.out.println(
-                String.format("%.3f - the copy time from directory contained java classes to virtual project",
+                String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
         // To get inheritors of WebPage class
@@ -145,7 +145,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
         System.out.println(
-                String.format("%.3f - the copy time from directory contained java classes to virtual project",
+                String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
         new PsiWebSessionProvider(getProject()).getWebSessions(false);
