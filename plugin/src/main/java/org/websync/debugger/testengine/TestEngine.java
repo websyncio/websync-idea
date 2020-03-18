@@ -9,14 +9,18 @@ import java.util.Arrays;
 public class TestEngine {
 
     public static String LINE = StringUtils.repeat('-', 80);
+    public static int count = 0;
 
-    public static void run(Pair<Runnable, String> ... tests) {
+    public static void run(Pair<Runnable, String>... tests) {
+        count++;
         Arrays.asList(tests).stream().forEach(test -> {
             Runnable testMethod = test.getKey();
             String testName = test.getValue();
 
-            System.out.println(LINE);
-            System.out.println(String.format("Test '%s' is performing...", testName));
+            if (count < 2) {
+                System.out.println(LINE);
+            }
+            System.out.println(String.format("Test [%s] is performing...", testName));
             try {
                 testMethod.run();
             } catch (Throwable ex) {
@@ -25,8 +29,11 @@ public class TestEngine {
                 System.out.println(LINE);
                 return;
             }
-            System.out.println(String.format("Test '%s' passed.", testName));
-            System.out.println(LINE);
+            System.out.println(String.format("Test [%s] passed.", testName));
+            if (count < 2) {
+                System.out.println(LINE);
+            }
         });
+        count--;
     }
 }

@@ -28,6 +28,17 @@ public class PsiWebSessionProvider implements WebSessionPovider {
     private Project project;
     private Collection<WebSession> cachedWebSessions;
 
+    private static PsiWebSessionProvider webSessionProvider;
+
+    public static WebSession getWebSession(Project project) {
+        if (null == webSessionProvider) {
+            webSessionProvider = new PsiWebSessionProvider(project);
+        }
+        Collection<WebSession> sessions = webSessionProvider.getWebSessions(true);
+        WebSession session = sessions.stream().findFirst().get();
+        return session;
+    }
+
     public PsiWebSessionProvider(Project project) {
         this.project = project;
     }
