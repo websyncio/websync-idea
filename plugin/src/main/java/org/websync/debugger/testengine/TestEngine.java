@@ -25,7 +25,7 @@ public class TestEngine {
                 System.out.println(LINE);
                 return;
             }
-            System.out.println(String.format("Test passed."));
+            System.out.println(String.format("Test '%s' passed.", testName));
             System.out.println(LINE);
         });
     }
