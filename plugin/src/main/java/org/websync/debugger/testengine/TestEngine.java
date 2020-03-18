@@ -3,7 +3,6 @@ package org.websync.debugger.testengine;
 import javafx.util.Pair;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.websync.debugger.commands.CommandTestRun;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -18,54 +17,86 @@ public class TestEngine {
     public static void run(Pair<Runnable, String>... tests) {
         count++;
         Arrays.asList(tests).stream().forEach(test -> {
-            Runnable testMethod = test.getKey();
+            Runnable runnable = test.getKey();
             String testName = test.getValue();
 
             if (count < 2) {
-                System.out.println(LINE);
+                printToOut(LINE);
             }
-            System.out.println(String.format("Test [%s] is performing...", testName));
+            printToOut(String.format("Test [%s] is performing...", testName));
             try {
-                testMethod.run();
-            } catch (Throwable ex) {
-                System.out.println(String.format("Test failed."));
-                System.out.println(ExceptionUtils.getStackTrace(ex));
-                System.out.println(LINE);
+                runnable.run();
+            } catch (Throwable throwable) {
+                printToOut(String.format("Test [%s] failed.", testName));
+//                throwable.getCause().printStackTrace();
+                printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
+                if (count < 2) {
+                    printToOut(LINE);
+                }
                 return;
             }
-            System.out.println(String.format("Test [%s] passed.", testName));
+            printToOut(String.format("Test [%s] passed.", testName));
             if (count < 2) {
-                System.out.println(LINE);
+                printToOut(LINE);
             }
         });
         count--;
     }
 
+    public static String getTestNameByMethodName(String testMethodName) {
+        String testName = StringUtils.capitalize(
+                testMethodName.replaceAll("([A-Z])", " $1").toLowerCase()
+        );
+        return testName;
+    }
+
+    public static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    synchronized public static void printToOut(String line) {
+        System.out.println(line);
+    }
+
+    synchronized public static void printToErr(String line) {
+        System.err.println(line);
+    }
+
     public static void run(Class<?> testClass) {
-        List<Method> tests = Arrays.stream(testClass.getDeclaredMethods()).filter(m -> {
-            return (Arrays.stream(m.getDeclaredAnnotations()).anyMatch(a -> a.annotationType().getName().contains("Test")));
-        }).collect(Collectors.toList());
+        count++;
+        List<Method> tests = Arrays.stream(testClass.getDeclaredMethods()).filter(m ->
+                (Arrays.stream(m.getDeclaredAnnotations()).anyMatch(a -> a.annotationType().getName().contains("Test")))
+        ).collect(Collectors.toList());
 
         tests.stream().forEach(test -> {
 
+            String testMethodName = testClass.getName() + "." + test.getName();
+            String testName = getTestNameByMethodName(test.getName());
+
             if (count < 2) {
-                System.out.println(LINE);
+                printToOut(LINE);
             }
-            System.out.println(String.format("Test [%s] is performing...", test.getName()));
+            printToOut(String.format("Test [%s] is performing...", testMethodName));
             try {
                 test.invoke(null);
             } catch (Throwable throwable) {
-
-                System.out.println(String.format("Test [%s] failed.", test.getName()));
-                System.out.println(ExceptionUtils.getStackTrace(throwable.getCause()));
+                printToOut(String.format("Test [%s] failed.", testMethodName));
 //                throwable.getCause().printStackTrace();
-                System.out.println(LINE);
+                printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
+                if (count < 2) {
+                    printToOut(LINE);
+                }
                 return;
             }
-            System.out.println(String.format("Test [%s] passed.", test.getName()));
+            printToOut(String.format("Test [%s] passed.", testMethodName));
             if (count < 2) {
-                System.out.println(LINE);
+                printToOut(LINE);
             }
         });
+        count--;
     }
 }

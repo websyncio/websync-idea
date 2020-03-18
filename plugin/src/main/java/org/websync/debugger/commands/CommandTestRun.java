@@ -35,11 +35,13 @@ public class CommandTestRun {
         Map<String, Component> components = webSession.getComponents();
         List<String> givenComponentNames = Arrays.asList("CustomElement", "CustomBaseElement");
 
-        // TESTS
-        givenComponentNames.stream().forEach(n -> {
+        // TESTS FOR EACH GIVEN COMPONENT NAME
+        givenComponentNames.stream().forEach(name -> {
             TestEngine.run(
-                    new Pair<>(() -> testValidNamesOfAttributesInComponent(components, n),
-                            String.format("Test valid names of attributes in component '%s'", n))
+                    new Pair<>(
+                            () -> testValidNamesOfAttributesInComponent(components, name),
+                            String.format("%s for component '%s'", "testValidNamesOfAttributesInComponent", name)
+                    )
             );
         });
     }
@@ -88,29 +90,6 @@ public class CommandTestRun {
         String givenComponentName = "AttributesTest";
         Map<String, Component> components = webSession.getComponents();
 
-        // Get PsiComponent object by given component name
-        String componentId = components.keySet().stream()
-                .filter(k -> k.contains(givenComponentName))
-                .findFirst().get();
-        PsiComponent psiComponent = (PsiComponent) components.get(componentId);
-
-        // STEPS
-        // Get attribute names of component instances
-        List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
-                .map(instance -> {
-                    PsiComponentInstance.InstanceAnnotation instanceAnnotation =
-                            ((PsiComponentInstance) instance).getInstanceAttribute();
-                    return instanceAnnotation.getCodeReferenceElement();
-                })
-                .collect(Collectors.toList());
-
-        // ASSERT
-        List<String> expectedResults = Arrays.asList(
-                "ByText", "Css", "JDropdown", "JMenu", "JTable", "UI", "UI.List", "WithText", "XPath",
-                "FindBy", "FindBys",
-                "Frame", "Name", "Title");
-
-        MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
+        testValidNamesOfAttributesInComponent(components, givenComponentName);
     }
-
 }
