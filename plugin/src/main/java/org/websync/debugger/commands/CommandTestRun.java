@@ -85,10 +85,10 @@ public class CommandTestRun {
         // PREREQUISITES
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         WebSession webSession = PsiWebSessionProvider.getWebSession(project);
-
-        // GIVEN
-        String givenComponentName = "AttributesTest";
         Map<String, Component> components = webSession.getComponents();
+
+        // TEST FOR GIVEN COMPONENT NAME
+        String givenComponentName = "AttributesTest";
 
         testValidNamesOfAttributesInComponent(components, givenComponentName);
     }

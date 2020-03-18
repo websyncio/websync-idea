@@ -27,7 +27,7 @@ public class TestEngine {
             try {
                 runnable.run();
             } catch (Throwable throwable) {
-                printToOut(String.format("Test [%s] failed.", testName));
+                printToOut(String.format("Test [%s] FAILED.", testName));
 //                throwable.getCause().printStackTrace();
                 printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
                 if (count < 2) {
@@ -35,7 +35,7 @@ public class TestEngine {
                 }
                 return;
             }
-            printToOut(String.format("Test [%s] passed.", testName));
+            printToOut(String.format("Test [%s] PASSED.", testName));
             if (count < 2) {
                 printToOut(LINE);
             }
@@ -84,7 +84,7 @@ public class TestEngine {
             try {
                 test.invoke(null);
             } catch (Throwable throwable) {
-                printToOut(String.format("Test [%s] failed.", testMethodName));
+                printToOut(String.format("Test [%s] FAILED.", testMethodName));
 //                throwable.getCause().printStackTrace();
                 printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
                 if (count < 2) {
@@ -92,7 +92,7 @@ public class TestEngine {
                 }
                 return;
             }
-            printToOut(String.format("Test [%s] passed.", testMethodName));
+            printToOut(String.format("Test [%s] PASSED.", testMethodName));
             if (count < 2) {
                 printToOut(LINE);
             }
