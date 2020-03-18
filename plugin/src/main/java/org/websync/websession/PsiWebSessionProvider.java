@@ -16,6 +16,7 @@ import org.websync.websession.psimodels.PsiWebsite;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
@@ -66,8 +67,8 @@ public class PsiWebSessionProvider implements WebSessionPovider {
                 }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting website PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Time of getting website PSI classes = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return websites;
     }
 
@@ -83,8 +84,8 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting page PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Time of getting page PSI classes = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return pages;
     }
 
@@ -100,8 +101,8 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting component PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Time of getting component PSI classes = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return components;
     }
 
