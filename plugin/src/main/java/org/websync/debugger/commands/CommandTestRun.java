@@ -6,6 +6,7 @@ import com.intellij.openapi.project.ProjectManager;
 import javafx.util.Pair;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.websync.debugger.testengine.TestEngine;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -31,6 +32,15 @@ public class CommandTestRun {
                             "Test valid names of attributes in several components"),
                     new Pair<>(() -> test2(session), "test2")
             );
+        });
+    }
+
+    public static void run1() {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            Project project = ProjectManager.getInstance().getOpenProjects()[0];
+            WebSession session = PsiWebSessionProvider.getWebSession(project);
+
+            TestEngine.run(CommandTestRun.class);
         });
     }
 
@@ -108,7 +118,12 @@ public class CommandTestRun {
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
     }
 
-    private static void test2(WebSession webSession) {
+    public static void test2(WebSession webSession) {
+        MatcherAssert.assertThat(true, Matchers.is(false));
+    }
+
+    @Test
+    public static void test3() {
         MatcherAssert.assertThat(true, Matchers.is(false));
     }
 }

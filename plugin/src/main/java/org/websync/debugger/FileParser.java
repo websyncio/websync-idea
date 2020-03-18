@@ -55,7 +55,7 @@ public class FileParser {
                 testFieldsOfPsiClasses();
                 break;
             case "test run":
-                CommandTestRun.run();
+                CommandTestRun.run1();
                 break;
             default:
                 System.out.println(String.format("Unknown command '%s' is detected", command));
