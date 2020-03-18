@@ -12,10 +12,13 @@ public class TestEngine {
 
     public static void run(Pair<Runnable, String> ... tests) {
         Arrays.asList(tests).stream().forEach(test -> {
+            Runnable testMethod = test.getKey();
+            String testName = test.getValue();
+
             System.out.println(LINE);
-            System.out.println(String.format("Test '%s' is performing...", test.getValue()));
+            System.out.println(String.format("Test '%s' is performing...", testName));
             try {
-                test.getKey().run();
+                testMethod.run();
             } catch (Throwable ex) {
                 System.out.println(String.format("Test failed."));
                 System.out.println(ExceptionUtils.getStackTrace(ex));
