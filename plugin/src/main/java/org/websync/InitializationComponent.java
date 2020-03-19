@@ -7,6 +7,7 @@ import org.websync.debugger.FileParser;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +26,14 @@ public class InitializationComponent implements BaseComponent {
 
     DebugFileWatcher debugFileWatcher;
 
+    BrowserConnection browserConnection = new BrowserConnection("localhost", 1804);
+
+    private ServerSocket serverSocket;
+    private Thread listenerThread;
+
+    public InitializationComponent() {
+    }
+
     public void initComponent() {
         System.out.println("Initializing...");
 
@@ -36,7 +45,7 @@ public class InitializationComponent implements BaseComponent {
         }
         debugFileWatcher = new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
         debugFileWatcher.start();
-
+        browserConnection.initConnection();
         System.out.println("Initialized.");
     }
 
@@ -44,7 +53,7 @@ public class InitializationComponent implements BaseComponent {
         System.out.println("Disposing...");
 
         debugFileWatcher.stop();
-
+        browserConnection.disposeConnection();
         System.out.println("Disposed.");
     }
 

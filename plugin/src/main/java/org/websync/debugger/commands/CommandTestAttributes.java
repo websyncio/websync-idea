@@ -12,6 +12,7 @@ import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
+import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public class CommandTestAttributes {
         // Get attribute names of component instances
         List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
                 .map(instance -> {
-                    PsiComponentInstance.InstanceAnnotation instanceAnnotation =
+                    InstanceAnnotation instanceAnnotation =
                             ((PsiComponentInstance) instance).getInstanceAttribute();
                     return instanceAnnotation.getCodeReferenceElement();
                 })

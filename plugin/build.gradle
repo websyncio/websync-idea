@@ -23,6 +23,7 @@ dependencies {
     compile "com.epam.jdi:jdi-light:1.1.15"
     compile "com.epam.jdi:jdi-light-html:1.1.15"
     implementation 'org.jetbrains:annotations:15.0'
+    compile "org.java-websocket:Java-WebSocket:1.4.0"
 }
 
 sourceSets {

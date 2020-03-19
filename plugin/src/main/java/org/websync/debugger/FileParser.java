@@ -15,6 +15,7 @@ import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
+import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
 import java.util.Collection;
 import java.util.List;
@@ -140,7 +141,7 @@ public class FileParser {
             psiComponent.getComponentInstances().stream().forEach(instance -> {
                 String attr = ((PsiComponentInstance) instance).getId();
                 System.out.println("\t" + attr);
-                PsiComponentInstance.InstanceAnnotation instanceAnnotation = ((PsiComponentInstance) instance).getInstanceAttribute();
+                InstanceAnnotation instanceAnnotation = ((PsiComponentInstance) instance).getInstanceAttribute();
                 System.out.println(instanceAnnotation);
 
 //                Object locator = instance.getLocator().get();

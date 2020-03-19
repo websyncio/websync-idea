@@ -7,7 +7,7 @@ import java.util.List;
 public class UI {
     public String value;
     public String group;
-    public List<PsiComponentInstance.UI> list;
+    public List<UI> list;
 
     @Override
     public String toString() {
