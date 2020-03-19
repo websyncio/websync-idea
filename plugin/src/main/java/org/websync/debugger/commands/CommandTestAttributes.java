@@ -14,6 +14,7 @@ import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,12 +38,14 @@ public class CommandTestAttributes {
 
         // TESTS FOR EACH GIVEN COMPONENT NAME
         givenComponentNames.stream().forEach(name -> {
-            TestEngine.run(
-                    new Pair<>(
-                            () -> testValidNamesOfAttributesInComponent(components, name),
-                            String.format("%s for component '%s'", "testValidNamesOfAttributesInComponent", name)
-                    )
-            );
+            Method method = null;
+            try {
+                method = CommandTestAttributes.class.getDeclaredMethod("testValidNamesOfAttributesInComponent",
+                        Map.class, String.class);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            TestEngine.run(method, components, name);
         });
     }
 

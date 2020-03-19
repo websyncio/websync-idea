@@ -74,7 +74,7 @@ public class TestEngine {
 
         tests.stream().forEach(test -> {
 
-            String testMethodName = testClass.getName() + "." + test.getName();
+            String testMethodName = test.toString();
             String testName = getTestNameByMethodName(test.getName());
 
             if (count < 2) {
@@ -97,6 +97,37 @@ public class TestEngine {
                 printToOut(LINE);
             }
         });
+        count--;
+    }
+
+    public static void run(Method method, Object... args) {
+        count++;
+
+        Method test = method;
+        test.setAccessible(true);
+
+        String testMethodName = test.toString();
+        String testName = getTestNameByMethodName(test.getName());
+
+        if (count < 2) {
+            printToOut(LINE);
+        }
+        printToOut(String.format("TEST [%s] is performing...", testMethodName));
+        try {
+            test.invoke(null, args);
+        } catch (Throwable throwable) {
+            printToOut(String.format("TEST [%s] FAILED.", testMethodName));
+//                throwable.getCause().printStackTrace();
+            printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
+            if (count < 2) {
+                printToOut(LINE);
+            }
+            return;
+        }
+        printToOut(String.format("TEST [%s] PASSED.", testMethodName));
+        if (count < 2) {
+            printToOut(LINE);
+        }
         count--;
     }
 }
