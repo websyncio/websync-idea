@@ -83,7 +83,7 @@ public class TestEngine {
         test.setAccessible(true);
 
         StringBuilder argsValues = new StringBuilder();
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             if (i != 0) {
                 argsValues.append(", ");
             }
