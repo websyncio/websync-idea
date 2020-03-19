@@ -26,21 +26,18 @@ public class TestEngine {
             printToOut(String.format("TEST [%s] is performing...", testName));
             try {
                 runnable.run();
+                printToOut(String.format("TEST [%s] PASSED.", testName));
             } catch (Throwable throwable) {
                 printToOut(String.format("TEST [%s] FAILED.", testName));
 //                throwable.getCause().printStackTrace();
                 printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
+            } finally {
                 if (count < 2) {
                     printToOut(LINE);
                 }
-                return;
-            }
-            printToOut(String.format("TEST [%s] PASSED.", testName));
-            if (count < 2) {
-                printToOut(LINE);
+                count--;
             }
         });
-        count--;
     }
 
     public static String getTestNameByMethodName(String testMethodName) {
@@ -110,7 +107,6 @@ public class TestEngine {
             printToOut(String.format("TEST [%s] FAILED.", testMethodName));
 //                throwable.getCause().printStackTrace();
             printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
-            return;
         } finally {
             if (count < 2) {
                 printToOut(LINE);
