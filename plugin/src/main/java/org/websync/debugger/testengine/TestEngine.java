@@ -87,7 +87,7 @@ public class TestEngine {
             if (args[i] instanceof String) {
                 argsValues.append("\"" + args[i] + "\"");
             } else if (args[i] instanceof Object) {
-                argsValues.append("Some value of " + args[i].getClass().getName());
+                argsValues.append("Some " + args[i].getClass().getName() + " Value");
             } else {
                 argsValues.append(args[i]);
             }
