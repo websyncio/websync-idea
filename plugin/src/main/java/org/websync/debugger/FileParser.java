@@ -1,21 +1,22 @@
-package org.websync.utils;
+package org.websync.debugger;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiField;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.debugger.commands.CommandTestAttributes;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponent;
+import org.websync.websession.psimodels.PsiComponentInstance;
+import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +32,13 @@ public class FileParser {
         }
 
         String command = lines.get(0);
-        System.out.println(String.format("Command '%s' is performing...", command));
+        System.out.println(String.format("COMMAND '%s' is performing...", command));
         switch (command) {
             case "a":
-                System.out.println(String.format("Command '%s' performed", command));
+                System.out.println("COMMAND 'a' something doing.");
                 break;
             case "b":
-                System.out.println(String.format("Command '%s' performed", command));
+                System.out.println("COMMAND 'b' something doing.");
                 break;
             case "print classes":
                 printClasses();
@@ -54,10 +55,13 @@ public class FileParser {
             case "test fields":
                 testFieldsOfPsiClasses();
                 break;
+            case "test attributes":
+                CommandTestAttributes.run();
+                break;
             default:
-                System.out.println(String.format("Unknown command '%s' is detected", command));
+                System.out.println(String.format("COMMAND '%s' is unknown", command));
         }
-        System.out.println(String.format("Command '%s' is performed", command));
+        System.out.println(String.format("COMMAND '%s' is performed", command));
     }
 
     private void testSerializer() {
@@ -112,9 +116,7 @@ public class FileParser {
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
-            Collection<WebSession> sessions = webProvider.getWebSessions(true);
-            WebSession session = sessions.stream().findFirst().get();
+            WebSession session = PsiWebSessionProvider.getWebSession(project);
             Map<String, Component> components = session.getComponents();
 
             System.out.println(String.format("Components: %s", components.size()));
@@ -129,19 +131,47 @@ public class FileParser {
     private void testFieldsOfPsiClasses() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
-            Collection<WebSession> sessions = webProvider.getWebSessions(true);
-            WebSession session = sessions.stream().findFirst().get();
+            WebSession session = PsiWebSessionProvider.getWebSession(project);
             Map<String, Component> components = session.getComponents();
 
-            String elementId = components.keySet().stream().filter(k -> k.contains("Avatar")).findFirst().get();
+            String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
             PsiComponent psiComponent = (PsiComponent) components.get(elementId);
 
-            PsiField[] fields = psiComponent.getPsiClass().getFields();
-            List<PsiField> fieldsList = Arrays.asList(fields);
-            System.out.println("");
+            System.out.println("Attributes:");
+            psiComponent.getComponentInstances().stream().forEach(instance -> {
+                String attr = ((PsiComponentInstance) instance).getId();
+                System.out.println("\t" + attr);
+                InstanceAnnotation instanceAnnotation = ((PsiComponentInstance) instance).getInstanceAttribute();
+                System.out.println(instanceAnnotation);
+
+//                Object locator = instance.getLocator().get();
+//                if (locator instanceof PsiComponentInstance.ByText) {
+//                    PsiComponentInstance.ByText l = (PsiComponentInstance.ByText) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.Css) {
+//                    PsiComponentInstance.Css l = (PsiComponentInstance.Css) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JDropdown) {
+//                    PsiComponentInstance.JDropdown l = (PsiComponentInstance.JDropdown) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JTable) {
+//                    PsiComponentInstance.JTable l = (PsiComponentInstance.JTable) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.JMenu) {
+//                    PsiComponentInstance.JMenu l = (PsiComponentInstance.JMenu) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.UI) {
+//                    PsiComponentInstance.UI l = (PsiComponentInstance.UI) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.WithText) {
+//                    PsiComponentInstance.WithText l = (PsiComponentInstance.WithText) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                } else if (locator instanceof PsiComponentInstance.XPath) {
+//                    PsiComponentInstance.XPath l = (PsiComponentInstance.XPath) locator;
+//                    System.out.println("\t\t" + l.toString());
+//                }
+            });
         });
     }
-
 }
 

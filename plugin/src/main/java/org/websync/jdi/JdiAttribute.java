@@ -7,7 +7,7 @@ public enum JdiAttribute {
     JDI_JTABLE("com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable"),
     JDI_JMENU("com.epam.jdi.light.elements.pageobjects.annotations.locators.JMenu"),
     JDI_JSITE("com.epam.jdi.light.elements.pageobjects.annotations.JSite"),
-    JDI_UI("com.epam.jdi.light.elements.pageobjects.annotations.UI"),
+    JDI_UI("com.epam.jdi.light.elements.pageobjects.annotations.locators.UI"),
     JDI_WITH_TEXT("com.epam.jdi.light.elements.pageobjects.annotations.locators.WithText"),
     JDI_XPATH("com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath"),
     JDI_CLICK_AREA("com.epam.jdi.light.elements.pageobjects.annotations.ClickArea"),

@@ -16,6 +16,7 @@ import org.websync.websession.psimodels.PsiWebsite;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
@@ -26,6 +27,17 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
     private Project project;
     private Collection<WebSession> cachedWebSessions;
+
+    private static PsiWebSessionProvider webSessionProvider;
+
+    public static WebSession getWebSession(Project project) {
+        if (null == webSessionProvider) {
+            webSessionProvider = new PsiWebSessionProvider(project);
+        }
+        Collection<WebSession> sessions = webSessionProvider.getWebSessions(true);
+        WebSession session = sessions.stream().findFirst().get();
+        return session;
+    }
 
     public PsiWebSessionProvider(Project project) {
         this.project = project;
@@ -61,13 +73,13 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll()
                 .stream().map(c -> {
                     PsiWebsite website = new PsiWebsite(c);
-                    website.Fill();
+                    website.fill();
                     return website;
                 }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting website PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Getting website PSI classes. Time = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return websites;
     }
 
@@ -78,13 +90,13 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         Collection<PsiPage> pages = psiClasses.stream().map(c -> {
             PsiPage page = new PsiPage(c);
-            page.Fill();
+            page.fill();
             return page;
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting page PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Getting page PSI classes. Time = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return pages;
     }
 
@@ -95,13 +107,13 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         Collection<PsiComponent> components = psiClasses.stream().map(c -> {
             PsiComponent component = new PsiComponent(c);
-            component.Fill();
+            component.fill();
             return component;
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of getting component PSI classes = %s s.",
-                (endTime - startTime) / 1000000000));
+        System.out.println(String.format("Getting component PSI classes. Time = %.3f s.",
+                (double)(endTime - startTime) / 1000000000));
         return components;
     }
 

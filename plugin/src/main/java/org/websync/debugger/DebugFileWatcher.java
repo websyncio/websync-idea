@@ -1,4 +1,4 @@
-package org.websync.utils;
+package org.websync.debugger;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,15 +2,30 @@ package org.websync;
 
 import com.intellij.openapi.components.BaseComponent;
 import org.jetbrains.annotations.NotNull;
-import org.websync.utils.DebugFileWatcher;
-import org.websync.utils.FileParser;
+import org.websync.debugger.DebugFileWatcher;
+import org.websync.debugger.FileParser;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class InitializationComponent implements BaseComponent {
 
-    DebugFileWatcher debugFileWatcher = new DebugFileWatcher(new File("c:/temp/text.txt"), new FileParser());
+    String projectDir;
+
+    {
+        String path = InitializationComponent.class.getResource("").getPath();
+        projectDir = Paths.get(path
+                .replace("file:/", "")
+                .replaceFirst("[!].*", ""))
+                .getParent().toString();
+    }
+
+    DebugFileWatcher debugFileWatcher;
+
     BrowserConnection browserConnection = new BrowserConnection("localhost", 1804);
 
     private ServerSocket serverSocket;
@@ -22,6 +37,13 @@ public class InitializationComponent implements BaseComponent {
     public void initComponent() {
         System.out.println("Initializing...");
 
+        Path debugFilePath = Paths.get(projectDir + "/debug.txt");
+        try {
+            Files.write(debugFilePath, "command".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        debugFileWatcher = new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
         debugFileWatcher.start();
         browserConnection.initConnection();
         System.out.println("Initialized.");

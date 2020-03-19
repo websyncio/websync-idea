@@ -6,4 +6,5 @@ public class EmberDataPayload {
     public List<WebsiteDto> websites;
     public List<PageDto> pages;
     public List<ComponentDto> components;
+    public List<ComponentInstanceDto> componentInstances;
 }
