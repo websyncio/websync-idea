@@ -67,46 +67,36 @@ public class TestEngine {
     }
 
     public static void run(Class<?> testClass) {
-        count++;
         List<Method> tests = Arrays.stream(testClass.getDeclaredMethods()).filter(m ->
                 (Arrays.stream(m.getDeclaredAnnotations()).anyMatch(a -> a.annotationType().getName().contains("Test")))
         ).collect(Collectors.toList());
 
         tests.stream().forEach(test -> {
-
-            String testMethodName = test.toString();
-            String testName = getTestNameByMethodName(test.getName());
-
-            if (count < 2) {
-                printToOut(LINE);
-            }
-            printToOut(String.format("TEST [%s] is performing...", testMethodName));
-            try {
-                test.invoke(null);
-            } catch (Throwable throwable) {
-                printToOut(String.format("TEST [%s] FAILED.", testMethodName));
-//                throwable.getCause().printStackTrace();
-                printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
-                if (count < 2) {
-                    printToOut(LINE);
-                }
-                return;
-            }
-            printToOut(String.format("TEST [%s] PASSED.", testMethodName));
-            if (count < 2) {
-                printToOut(LINE);
-            }
+            count++;
+            run(test);
+            count--;
         });
-        count--;
     }
 
     public static void run(Method method, Object... args) {
-        count++;
-
         Method test = method;
         test.setAccessible(true);
 
-        String testMethodName = test.toString();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < args.length; i++) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            if (args[i] instanceof String) {
+                sb.append("\"" + args[i] + "\"");
+            } else if (args[i] instanceof Object) {
+                sb.append("Some value of " + args[i].getClass().getName());
+            } else {
+                sb.append(args[i]);
+            }
+        }
+
+        String testMethodName = test.getDeclaringClass().getSimpleName() + "." + test.getName() + "(" + sb.toString() + ")";
         String testName = getTestNameByMethodName(test.getName());
 
         if (count < 2) {
@@ -115,19 +105,16 @@ public class TestEngine {
         printToOut(String.format("TEST [%s] is performing...", testMethodName));
         try {
             test.invoke(null, args);
+            printToOut(String.format("TEST [%s] PASSED.", testMethodName));
         } catch (Throwable throwable) {
             printToOut(String.format("TEST [%s] FAILED.", testMethodName));
 //                throwable.getCause().printStackTrace();
             printToOut(ExceptionUtils.getStackTrace(throwable.getCause()));
+            return;
+        } finally {
             if (count < 2) {
                 printToOut(LINE);
             }
-            return;
         }
-        printToOut(String.format("TEST [%s] PASSED.", testMethodName));
-        if (count < 2) {
-            printToOut(LINE);
-        }
-        count--;
     }
 }
