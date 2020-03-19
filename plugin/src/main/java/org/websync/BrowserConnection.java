@@ -11,7 +11,6 @@ import java.net.ServerSocket;
 
 public class BrowserConnection {
     private static final Logger log = Logger.getInstance(BrowserConnection.class);
-    private ServerSocket serverSocket;
     private WebSocketServer server;
     private Thread listenerThread;
     private String host;

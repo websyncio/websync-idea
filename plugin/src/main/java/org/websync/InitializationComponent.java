@@ -7,7 +7,6 @@ import org.websync.debugger.FileParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,9 +26,6 @@ public class InitializationComponent implements BaseComponent {
     DebugFileWatcher debugFileWatcher;
 
     BrowserConnection browserConnection = new BrowserConnection("localhost", 1804);
-
-    private ServerSocket serverSocket;
-    private Thread listenerThread;
 
     public InitializationComponent() {
     }
