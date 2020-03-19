@@ -1,7 +1,7 @@
 package org.websync.websession.models;
 
-import org.websync.websession.psimodels.PsiComponentInstance;
+import org.websync.websession.psimodels.jdi.Locator;
 
 public interface ComponentInstance {
-    PsiComponentInstance.Locator getLocator();
+    Locator getLocator();
 }
