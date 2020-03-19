@@ -82,21 +82,21 @@ public class TestEngine {
         Method test = method;
         test.setAccessible(true);
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder params = new StringBuilder();
         for(int i = 0; i < args.length; i++) {
             if (i != 0) {
-                sb.append(", ");
+                params.append(", ");
             }
             if (args[i] instanceof String) {
-                sb.append("\"" + args[i] + "\"");
+                params.append("\"" + args[i] + "\"");
             } else if (args[i] instanceof Object) {
-                sb.append("Some value of " + args[i].getClass().getName());
+                params.append("Some value of " + args[i].getClass().getName());
             } else {
-                sb.append(args[i]);
+                params.append(args[i]);
             }
         }
 
-        String testMethodName = test.getDeclaringClass().getSimpleName() + "." + test.getName() + "(" + sb.toString() + ")";
+        String testMethodName = test.getDeclaringClass().getSimpleName() + "." + test.getName() + "(" + params + ")";
         String testName = getTestNameByMethodName(test.getName());
 
         if (count < 2) {
