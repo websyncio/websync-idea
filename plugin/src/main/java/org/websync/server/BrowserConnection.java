@@ -1,17 +1,14 @@
-package org.websync;
+package org.websync.server;
 
 import com.intellij.openapi.diagnostic.Logger;
 import org.java_websocket.server.WebSocketServer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 
 
 public class BrowserConnection {
     private static final Logger log = Logger.getInstance(BrowserConnection.class);
-    private ServerSocket serverSocket;
     private WebSocketServer server;
     private Thread listenerThread;
     private String host;
@@ -25,7 +22,7 @@ public class BrowserConnection {
     }
 
     public void initConnection() {
-        server = new Server(port);
+        server = new Server(port, new CommandHandler());
         server.start();
         log.info("Listening " + port);
     }
