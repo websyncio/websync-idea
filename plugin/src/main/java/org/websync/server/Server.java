@@ -1,4 +1,4 @@
-package org.websync;
+package org.websync.server;
 
 
 import org.java_websocket.WebSocket;
@@ -13,8 +13,15 @@ import java.nio.ByteBuffer;
 
 public class Server extends WebSocketServer {
 
+    private CommandHandler commandHandler;
+
     public Server(int port) {
         super(new InetSocketAddress( port ));
+    }
+
+    public Server(int port, CommandHandler commandHandler) {
+        this(port);
+        this.commandHandler = commandHandler;
     }
 
     @Override
@@ -32,6 +39,9 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
+        if (null != commandHandler) {
+            commandHandler.handle(conn, message);
+        }
     }
 
     @Override

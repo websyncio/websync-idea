@@ -8,6 +8,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.debugger.commands.CommandInitProject;
 import org.websync.debugger.commands.CommandTestAttributes;
 import org.websync.ember.EmberSerializer;
 import org.websync.websession.PsiWebSessionProvider;
@@ -33,6 +34,7 @@ public class FileParser {
 
         String command = lines.get(0);
         System.out.println(String.format("COMMAND '%s' is performing...", command));
+        long startTime = System.nanoTime();
         switch (command) {
             case "a":
                 System.out.println("COMMAND 'a' something doing.");
@@ -58,10 +60,17 @@ public class FileParser {
             case "test attributes":
                 CommandTestAttributes.run();
                 break;
+            case "init project":
+                ApplicationManager.getApplication().runReadAction(() -> {
+                    CommandInitProject.run();
+                });
+                break;
             default:
                 System.out.println(String.format("COMMAND '%s' is unknown", command));
         }
-        System.out.println(String.format("COMMAND '%s' is performed", command));
+        long endTime = System.nanoTime();
+        System.out.println(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
+                (double) (endTime - startTime) / 1000000000));
     }
 
     private void testSerializer() {
