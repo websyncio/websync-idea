@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.java_websocket.WebSocket;
+import org.websync.ember.EmberSerializer;
 import org.websync.ember.dto.ComponentDto;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
@@ -15,7 +16,7 @@ import org.websync.websession.psimodels.PsiComponent;
 import java.util.Map;
 
 public class CommandGiveMePageObject {
-    public static void run(WebSocket conn) {
+    public static void run1(WebSocket conn) {
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         WebSession webSession = PsiWebSessionProvider.getWebSession(project);
         Map<String, Component> components = webSession.getComponents();
@@ -36,5 +37,12 @@ public class CommandGiveMePageObject {
             e.printStackTrace();
         }
         conn.send(serializedObject);
+    }
+
+    public static void run(WebSocket conn) {
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+        String serializedSession = EmberSerializer.getEmberSerializer().serialize(webSession);
+        conn.send(serializedSession);
     }
 }

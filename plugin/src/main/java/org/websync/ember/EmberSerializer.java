@@ -15,12 +15,35 @@ import java.util.stream.Collectors;
 
 public class EmberSerializer implements WebSessionSerializer {
 
+    private static EmberSerializer serializer;
+
+    public static EmberSerializer getEmberSerializer() {
+        if (null == serializer) {
+            serializer = new EmberSerializer();
+        }
+        return serializer;
+    }
+
     @Override
-    public String serialize(Collection<WebSession> webs) {
+    public String serialize(Collection<WebSession> webSessions) {
         EmberDataPayload payload = new EmberDataPayload();
-        for (WebSession web : webs) {
+        for (WebSession web : webSessions) {
             serializeWebSession(payload, web);
         }
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String result = null;
+        try {
+            result = mapper.writeValueAsString(payload);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public String serialize(WebSession webSession) {
+        EmberDataPayload payload = new EmberDataPayload();
+        serializeWebSession(payload, webSession);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         String result = null;
@@ -43,7 +66,6 @@ public class EmberSerializer implements WebSessionSerializer {
     }
 
     private void serializeComponents(EmberDataPayload payload, WebSession web) {
-//        payload.components = new ArrayList<ComponentDto>();
         serializeComponents(payload,
                 (Collection<ComponentContainer>) (Collection<?>) web.getPages().values());
         serializeComponents(payload,
