@@ -10,14 +10,14 @@ public class PsiWebSession extends WebSession {
         super();
     }
 
-    public PsiWebSession(Collection<PsiWebsite> websites, Collection<PsiComponent> components,
+    public PsiWebSession(Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
                          Collection<PsiPageType> pages) {
 
         this.websites = websites.stream()
                 .collect(Collectors.toMap(PsiWebsite::getId, website -> website));
 
         this.componentTypes = components.stream()
-                .collect(Collectors.toMap(PsiComponent::getId, component -> component));
+                .collect(Collectors.toMap(PsiComponentType::getId, component -> component));
 
         this.pageTypes = pages.stream()
                 .collect(Collectors.toMap(PsiPageType::getId, page -> page));

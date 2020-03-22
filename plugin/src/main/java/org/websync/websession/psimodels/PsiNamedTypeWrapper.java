@@ -4,7 +4,6 @@ import com.intellij.psi.PsiClass;
 import lombok.Getter;
 
 public abstract class PsiNamedTypeWrapper<T> extends PsiModelWithId<T> {
-
     @Getter
     public PsiClass psiClass;
 

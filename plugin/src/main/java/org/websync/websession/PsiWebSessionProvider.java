@@ -8,7 +8,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.websession.models.WebSession;
-import org.websync.websession.psimodels.PsiComponent;
+import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiPageType;
 import org.websync.websession.psimodels.PsiWebSession;
 import org.websync.websession.psimodels.PsiWebsite;
@@ -42,7 +42,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         try {
             Collection<PsiWebsite> websites = getWebsites(project);
             Collection<PsiPageType> pages = getPages(project);
-            Collection<PsiComponent> components = getComponents(project);
+            Collection<PsiComponentType> components = getComponents(project);
             return new PsiWebSession(websites, components, pages);
         } catch (Exception ex) {
             throw ex;
@@ -95,12 +95,12 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         return pages;
     }
 
-    private Collection<PsiComponent> getComponents(Project project) {
+    private Collection<PsiComponentType> getComponents(Project project) {
         long startTime = System.nanoTime();
 
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
-        Collection<PsiComponent> components = psiClasses.stream().map(c -> {
-            PsiComponent component = new PsiComponent(c);
+        Collection<PsiComponentType> components = psiClasses.stream().map(c -> {
+            PsiComponentType component = new PsiComponentType(c);
             component.fill();
             return component;
         }).collect(Collectors.toList());

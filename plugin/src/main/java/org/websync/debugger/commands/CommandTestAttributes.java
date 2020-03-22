@@ -6,7 +6,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.websync.debugger.testengine.TestEngine;
 import org.websync.websession.models.ComponentType;
-import org.websync.websession.psimodels.PsiComponent;
+import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
@@ -52,7 +52,7 @@ public class CommandTestAttributes {
         String componentId = components.keySet().stream()
                 .filter(k -> k.contains(givenComponentName))
                 .findFirst().get();
-        PsiComponent psiComponent = (PsiComponent) components.get(componentId);
+        PsiComponentType psiComponent = (PsiComponentType) components.get(componentId);
 
         // STEPS
         // Get attribute names of component instances
