@@ -13,10 +13,9 @@ import org.websync.websession.psimodels.PsiPage;
 import org.websync.websession.psimodels.PsiWebSession;
 import org.websync.websession.psimodels.PsiWebsite;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
@@ -24,36 +23,40 @@ import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
 public class PsiWebSessionProvider implements WebSessionPovider {
+    private final List<Project> projects;
 
-    private Project project;
-    private WebSession cachedWebSession;
-
-    public PsiWebSessionProvider(Project project) {
-        this.project = project;
+    public PsiWebSessionProvider() {
+        projects = new ArrayList<Project>();
     }
 
-//    public WebSession getWebSession(Project project) {
-//        Collection<WebSession> sessions = getWebSessions(true);
-//        WebSession session = sessions.stream().findFirst().get();
-//        return session;
-//    }
+    @Override
+    public List<WebSession> getWebSessions(boolean useCache) {
+        List<WebSession> webSessions = new ArrayList<WebSession>();
+        for (Project project : projects) {
+            webSessions.add(getWebSessionFromProject(project));
+        }
+        return webSessions;
+    }
+
+    private WebSession getWebSessionFromProject(Project project) {
+        try {
+            Collection<PsiWebsite> websites = getWebsites(project);
+            Collection<PsiPage> pages = getPages(project);
+            Collection<PsiComponent> components = getComponents(project);
+            return new PsiWebSession(websites, components, pages);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
     @Override
-    public WebSession getWebSession(boolean useCache) {
-        if (cachedWebSession == null || !useCache) {
-            try {
-                Collection<PsiWebsite> websites = getWebsites(project);
-                Collection<PsiPage> pages = getPages(project);
-                Collection<PsiComponent> components = getComponents(project);
+    public void removeProject(Project project) {
+        this.projects.add(project);
+    }
 
-                PsiWebSession webSession = new PsiWebSession(websites, components, pages);
-                cacheWebSession(webSession);
-                return webSession;
-            } catch (Exception ex) {
-                throw ex;
-            }
-        }
-        return cachedWebSession;
+    @Override
+    public void addProject(Project project) {
+        this.projects.remove(project);
     }
 
     private Collection<PsiWebsite> getWebsites(Project project) {
@@ -116,9 +119,5 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass,
                 GlobalSearchScope.projectScope(project), true).findAll();
         return classes;
-    }
-
-    private void cacheWebSession(WebSession webSession) {
-        cachedWebSession = webSession;
     }
 }

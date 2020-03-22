@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
  * Depends on org.intellij.sdk.maxOpenProjects.ProjectCountingService
  */
 public class ProjectOpenCloseListener implements ProjectManagerListener {
-
     /**
      * Invoked on project open.
      *
@@ -20,20 +19,7 @@ public class ProjectOpenCloseListener implements ProjectManagerListener {
      */
     @Override
     public void projectOpened(@NotNull Project project) {
-        // Ensure this isn't part of testing
-        if (ApplicationManager.getApplication().isUnitTestMode()) return;
-        // Get the counting service
-        ProjectCountingService projectCountingService = ServiceManager.getService(ProjectCountingService.class);
-        // Increment the project count
-        projectCountingService.incrProjectCount();
-        // See if the total # of projects violates the limit.
-        if (projectCountingService.projectLimitExceeded()) {
-            // Transitioned to outside the limit
-            String title = String.format("Opening Project \"%s\"", project.getName());
-            String message = "<br>The number of open projects exceeds the SDK plugin max_opened_projects limit.<br><br>" +
-                    "This is not an error<br><br>";
-            Messages.showMessageDialog(project, message, title, Messages.getInformationIcon());
-        }
+        ServiceManager.getService(WebSyncService.class).addProject(project);
     }
 
     /**
@@ -43,12 +29,6 @@ public class ProjectOpenCloseListener implements ProjectManagerListener {
      */
     @Override
     public void projectClosed(@NotNull Project project) {
-        // Ensure this isn't part of testing
-        if (ApplicationManager.getApplication().isUnitTestMode()) return;
-        // Get the counting service
-        ProjectCountingService projectCountingService = ServiceManager.getService(ProjectCountingService.class);
-        // Decrement the count because a project just closed
-        projectCountingService.decrProjectCount();
+        ServiceManager.getService(WebSyncService.class).removeProject(project);
     }
-
 }

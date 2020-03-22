@@ -11,12 +11,13 @@ import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReactSerializer implements WebSessionSerializer {
-    public String serialize(WebSession webSession) {
+    public String serialize(List<WebSession> webSessions) {
         EmberDataPayload payload = new EmberDataPayload();
-        serializeWebSession(payload, webSession);
+        serializeWebSession(payload, webSessions);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         String result = null;
@@ -28,7 +29,9 @@ public class ReactSerializer implements WebSessionSerializer {
         return result;
     }
 
-    private void serializeWebSession(EmberDataPayload payload, WebSession web) {
+    private void serializeWebSession(EmberDataPayload payload, List<WebSession> webSessions) {
+        // TODO: refactor this
+        WebSession web = webSessions.get(0);
         payload.websites = web.websites.values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pages = web.getPages().values().stream()

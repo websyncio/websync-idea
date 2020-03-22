@@ -12,26 +12,21 @@ import org.websync.websession.WebSessionPovider;
 
 public class BrowserConnection {
     private static final Logger log = Logger.getInstance(BrowserConnection.class);
+    private final CommandHandler commandHandler;
     private Server server;
     private String host;
     private Integer port;
 
-    public BrowserConnection(String host, Integer port) {
+    public BrowserConnection(String host, Integer port, CommandHandler commandHandler) {
         this.host = host;
         this.port = port;
+        this.commandHandler = commandHandler;
     }
 
     public void start() {
-        WebSessionPovider provider = GetWebSesstionProvider();
-        WebSessionSerializer serializer = new ReactSerializer();
-        server = new Server(port, new CommandHandler(provider, serializer));
+        server = new Server(port, commandHandler);
         server.start();
         log.info("Listening port:" + port);
-    }
-
-    private PsiWebSessionProvider GetWebSesstionProvider() {
-        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        return new PsiWebSessionProvider(project);
     }
 
     public void disposeConnection() {

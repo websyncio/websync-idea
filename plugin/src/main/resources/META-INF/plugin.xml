@@ -10,19 +10,13 @@
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.idea.maven</depends>
 
-<!--    <application-components>-->
-<!--        <component>-->
-<!--            &lt;!&ndash;      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>&ndash;&gt;-->
-<!--            <implementation-class>org.websync.InitializationComponent</implementation-class>-->
-<!--        </component>-->
-<!--    </application-components>-->
-
     <applicationListeners>
         <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.websync.ProjectCountingService"/>
+        <applicationService serviceImplementation="org.websync.WebSyncService"/>
+        <preloadingActivity implementation="org.websync.WebSyncPreloadingActivity"/>
     </extensions>
 
     <actions>

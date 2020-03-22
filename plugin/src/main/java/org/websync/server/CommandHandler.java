@@ -2,7 +2,7 @@ package org.websync.server;
 
 import org.java_websocket.WebSocket;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.server.command.RetrieveWebSession;
+import org.websync.server.command.GetWebSessionCommand;
 import org.websync.websession.WebSessionPovider;
 
 public class CommandHandler {
@@ -18,7 +18,7 @@ public class CommandHandler {
     public String handle(String command) {
         switch (command) {
             case CMD_GIVE_ME_PAGEOBECT:
-                return new RetrieveWebSession(webSessionPovider, webSessionSerializer).execute();
+                return new GetWebSessionCommand(webSessionPovider, webSessionSerializer).execute();
         }
         return null;
     }

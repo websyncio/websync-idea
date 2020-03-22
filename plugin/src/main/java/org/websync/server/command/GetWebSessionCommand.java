@@ -5,12 +5,14 @@ import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.websession.WebSessionPovider;
 import org.websync.websession.models.WebSession;
 
+import java.util.List;
 
-public class RetrieveWebSession {
+
+public class GetWebSessionCommand {
     private final WebSessionSerializer serializer;
     private final WebSessionPovider webSessionPovider;
 
-    public RetrieveWebSession(WebSessionPovider webSessionPovider, WebSessionSerializer serializer) {
+    public GetWebSessionCommand(WebSessionPovider webSessionPovider, WebSessionSerializer serializer) {
         this.webSessionPovider = webSessionPovider;
         this.serializer = serializer;
     }
@@ -39,7 +41,6 @@ public class RetrieveWebSession {
 //    }
 
     public String execute() {
-        WebSession webSession = webSessionPovider.getWebSession(false);
-        return this.serializer.serialize(webSession);
+        return this.serializer.serialize(webSessionPovider.getWebSessions(false));
     }
 }

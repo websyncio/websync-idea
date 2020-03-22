@@ -12,15 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+// TODO: get rid of this class
 public class InitializationComponent implements BaseComponent {
     DebugFileWatcher debugFileWatcher;
-    BrowserConnection browserConnection;
 
     public InitializationComponent() {
     }
 
     public void initComponent() {
-        InitBrowserConnection();
         InitDebugFileWatcher();
     }
 
@@ -35,10 +34,6 @@ public class InitializationComponent implements BaseComponent {
         return debugFilePath;
     }
 
-    private void InitBrowserConnection() {
-        browserConnection = new BrowserConnection("localhost", 1804);
-        browserConnection.start();
-    }
 
     private Path createDebugFile(String projectDir) {
         Path debugFilePath = Paths.get(projectDir + "/debug.txt");
@@ -61,7 +56,6 @@ public class InitializationComponent implements BaseComponent {
     public void disposeComponent() {
         System.out.println("Disposing...");
         debugFileWatcher.stop();
-        browserConnection.disposeConnection();
         System.out.println("Disposed.");
     }
 
