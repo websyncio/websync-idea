@@ -11,6 +11,10 @@ public class WebSyncService {
     BrowserConnection browserConnection;
     WebSessionPovider provider;
 
+    public WebSyncService(){
+        init();
+    }
+
     public void init() {
         // .init
         this.provider = new PsiWebSessionProvider();

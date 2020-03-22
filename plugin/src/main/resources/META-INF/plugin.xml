@@ -15,8 +15,7 @@
     </applicationListeners>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.websync.WebSyncService"/>
-        <preloadingActivity implementation="org.websync.WebSyncPreloadingActivity"/>
+        <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
     </extensions>
 
     <actions>

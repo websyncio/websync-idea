@@ -50,12 +50,12 @@ public class PsiWebSessionProvider implements WebSessionPovider {
     }
 
     @Override
-    public void removeProject(Project project) {
+    public void addProject(Project project) {
         this.projects.add(project);
     }
 
     @Override
-    public void addProject(Project project) {
+    public void removeProject(Project project) {
         this.projects.remove(project);
     }
 
