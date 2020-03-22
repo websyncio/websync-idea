@@ -6,9 +6,9 @@ import java.util.Map;
 
 public abstract class WebSession {
     @Getter
-    protected Map<String, Page> pages;
+    public Map<String, Page> pages;
     @Getter
-    protected Map<String, Website> websites;
+    public Map<String, Website> websites;
     @Getter
-    protected Map<String, Component> components;
+    public Map<String, Component> components;
 }

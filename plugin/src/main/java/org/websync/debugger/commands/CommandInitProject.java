@@ -8,6 +8,6 @@ import org.websync.websession.models.WebSession;
 public class CommandInitProject {
     public static void run() {
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+        //WebSession webSession = PsiWebSessionProvider.getWebSession(project);
     }
 }

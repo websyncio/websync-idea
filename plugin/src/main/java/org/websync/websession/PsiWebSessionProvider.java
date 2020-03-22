@@ -26,40 +26,34 @@ import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 public class PsiWebSessionProvider implements WebSessionPovider {
 
     private Project project;
-    private Collection<WebSession> cachedWebSessions;
-
-    private static PsiWebSessionProvider webSessionProvider;
-
-    public static WebSession getWebSession(Project project) {
-        if (null == webSessionProvider) {
-            webSessionProvider = new PsiWebSessionProvider(project);
-        }
-        Collection<WebSession> sessions = webSessionProvider.getWebSessions(true);
-        WebSession session = sessions.stream().findFirst().get();
-        return session;
-    }
+    private WebSession cachedWebSession;
 
     public PsiWebSessionProvider(Project project) {
         this.project = project;
     }
 
+//    public WebSession getWebSession(Project project) {
+//        Collection<WebSession> sessions = getWebSessions(true);
+//        WebSession session = sessions.stream().findFirst().get();
+//        return session;
+//    }
+
     @Override
-    public Collection<WebSession> getWebSessions(boolean useCache) {
-        if (cachedWebSessions == null || !useCache) {
+    public WebSession getWebSession(boolean useCache) {
+        if (cachedWebSession == null || !useCache) {
             try {
                 Collection<PsiWebsite> websites = getWebsites(project);
                 Collection<PsiPage> pages = getPages(project);
                 Collection<PsiComponent> components = getComponents(project);
 
                 PsiWebSession webSession = new PsiWebSession(websites, components, pages);
-                List<WebSession> webSessions = Arrays.asList(webSession);
-                cacheWebSession(webSessions);
-                return webSessions;
+                cacheWebSession(webSession);
+                return webSession;
             } catch (Exception ex) {
                 throw ex;
             }
         }
-        return cachedWebSessions;
+        return cachedWebSession;
     }
 
     private Collection<PsiWebsite> getWebsites(Project project) {
@@ -79,15 +73,13 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting website PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return websites;
     }
 
     private Collection<PsiPage> getPages(Project project) {
         long startTime = System.nanoTime();
-
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.value);
-
         Collection<PsiPage> pages = psiClasses.stream().map(c -> {
             PsiPage page = new PsiPage(c);
             page.fill();
@@ -96,7 +88,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting page PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return pages;
     }
 
@@ -104,7 +96,6 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         long startTime = System.nanoTime();
 
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
-
         Collection<PsiComponent> components = psiClasses.stream().map(c -> {
             PsiComponent component = new PsiComponent(c);
             component.fill();
@@ -113,7 +104,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting component PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return components;
     }
 
@@ -127,7 +118,7 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         return classes;
     }
 
-    private void cacheWebSession(List<WebSession> webSessions) {
-        cachedWebSessions = webSessions;
+    private void cacheWebSession(WebSession webSession) {
+        cachedWebSession = webSession;
     }
 }

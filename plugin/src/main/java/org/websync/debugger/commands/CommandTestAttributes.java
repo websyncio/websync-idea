@@ -31,7 +31,7 @@ public class CommandTestAttributes {
     public static void testValidNamesOfAttributesInSeveralComponents() {
         // PREREQUISITE
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
 
         Map<String, Component> components = webSession.getComponents();
         List<String> givenComponentNames = Arrays.asList("CustomElement", "CustomBaseElement");
@@ -87,7 +87,7 @@ public class CommandTestAttributes {
     public static void testValidNamesOfAttributesInComponent() {
         // PREREQUISITES
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
+        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
         Map<String, Component> components = webSession.getComponents();
 
         // TEST FOR GIVEN COMPONENT NAME

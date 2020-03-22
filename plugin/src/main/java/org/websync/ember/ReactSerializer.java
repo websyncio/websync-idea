@@ -13,34 +13,7 @@ import org.websync.websession.models.WebSession;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class EmberSerializer implements WebSessionSerializer {
-
-    private static EmberSerializer serializer;
-
-    public static EmberSerializer getEmberSerializer() {
-        if (null == serializer) {
-            serializer = new EmberSerializer();
-        }
-        return serializer;
-    }
-
-    @Override
-    public String serialize(Collection<WebSession> webSessions) {
-        EmberDataPayload payload = new EmberDataPayload();
-        for (WebSession web : webSessions) {
-            serializeWebSession(payload, web);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        String result = null;
-        try {
-            result = mapper.writeValueAsString(payload);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+public class ReactSerializer implements WebSessionSerializer {
     public String serialize(WebSession webSession) {
         EmberDataPayload payload = new EmberDataPayload();
         serializeWebSession(payload, webSession);
@@ -56,7 +29,7 @@ public class EmberSerializer implements WebSessionSerializer {
     }
 
     private void serializeWebSession(EmberDataPayload payload, WebSession web) {
-        payload.websites = web.getWebsites().values().stream()
+        payload.websites = web.websites.values().stream()
                 .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pages = web.getPages().values().stream()
                 .map(p -> new PageDto(p)).collect(Collectors.toList());
@@ -84,7 +57,7 @@ public class EmberSerializer implements WebSessionSerializer {
     }
 
     @Override
-    public Collection<WebSession> deserialize(String data) {
+    public WebSession deserialize(String data) {
         throw new NotImplementedException();
 //        ObjectMapper mapper = new ObjectMapper();
 ////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);

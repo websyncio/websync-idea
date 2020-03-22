@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
+// https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class Server extends WebSocketServer {
 
     private CommandHandler commandHandler;
@@ -40,7 +41,7 @@ public class Server extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         if (null != commandHandler) {
-            commandHandler.handle(conn, message);
+            commandHandler.handle(message);
         }
     }
 

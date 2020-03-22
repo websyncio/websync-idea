@@ -13,39 +13,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class InitializationComponent implements BaseComponent {
-
-    String projectDir;
-
-    {
-        String path = InitializationComponent.class.getResource("").getPath();
-        projectDir = Paths.get(path
-                .replace("file:/", "")
-                .replaceFirst("[!].*", ""))
-                .getParent().toString();
-    }
-
     DebugFileWatcher debugFileWatcher;
-
-    BrowserConnection browserConnection = new BrowserConnection("localhost", 1804);
+    BrowserConnection browserConnection;
 
     public InitializationComponent() {
     }
 
     public void initComponent() {
-        System.out.println("Initializing...");
-
-        Path debugFilePath = createDebugFile();
-        debugFileWatcher = new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
-        debugFileWatcher.start();
-        browserConnection.initConnection();
-
-        System.out.println("Initialized.");
-
-        System.out.println(String.format("Project directory is '%s'.", projectDir));
-        System.out.println(String.format("Debug file path is '%s'.", debugFilePath));
+        InitBrowserConnection();
+        InitDebugFileWatcher();
     }
 
-    private Path createDebugFile() {
+    @NotNull
+    private Path InitDebugFileWatcher() {
+        String projectDir = GetProjectDir();
+        Path debugFilePath = createDebugFile(projectDir);
+        debugFileWatcher = new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
+        debugFileWatcher.start();
+        System.out.println(String.format("Project directory is '%s'.", projectDir));
+        System.out.println(String.format("Debug file path is '%s'.", debugFilePath));
+        return debugFilePath;
+    }
+
+    private void InitBrowserConnection() {
+        browserConnection = new BrowserConnection("localhost", 1804);
+        browserConnection.start();
+    }
+
+    private Path createDebugFile(String projectDir) {
         Path debugFilePath = Paths.get(projectDir + "/debug.txt");
         try {
             Files.write(debugFilePath, "command".getBytes());
@@ -55,9 +50,16 @@ public class InitializationComponent implements BaseComponent {
         return debugFilePath;
     }
 
+    private String GetProjectDir() {
+        String path = InitializationComponent.class.getResource("").getPath();
+        return Paths.get(path
+                .replace("file:/", "")
+                .replaceFirst("[!].*", ""))
+                .getParent().toString();
+    }
+
     public void disposeComponent() {
         System.out.println("Disposing...");
-
         debugFileWatcher.stop();
         browserConnection.disposeConnection();
         System.out.println("Disposed.");

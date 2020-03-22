@@ -10,7 +10,7 @@ import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.debugger.commands.CommandInitProject;
 import org.websync.debugger.commands.CommandTestAttributes;
-import org.websync.ember.EmberSerializer;
+import org.websync.ember.ReactSerializer;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.Component;
 import org.websync.websession.models.WebSession;
@@ -18,7 +18,6 @@ import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,11 +77,11 @@ public class FileParser {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
             PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
 
-            Collection<WebSession> sessions = webProvider.getWebSessions(false);
+            WebSession session = webProvider.getWebSession(false);
 
-            WebSessionSerializer serializer = new EmberSerializer();
-            String json = serializer.serialize(sessions);
-            sessions = serializer.deserialize(json);
+            WebSessionSerializer serializer = new ReactSerializer();
+            String json = serializer.serialize(session);
+            session = serializer.deserialize(json);
         });
     }
 
@@ -90,7 +89,7 @@ public class FileParser {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
             PsiWebSessionProvider webProvider = new PsiWebSessionProvider(project);
-            webProvider.getWebSessions(true);
+            webProvider.getWebSession(true);
         });
     }
 
@@ -125,7 +124,7 @@ public class FileParser {
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = PsiWebSessionProvider.getWebSession(project);
+            WebSession session = new PsiWebSessionProvider(project).getWebSession(false);
             Map<String, Component> components = session.getComponents();
 
             System.out.println(String.format("Components: %s", components.size()));
@@ -140,7 +139,7 @@ public class FileParser {
     private void testFieldsOfPsiClasses() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = PsiWebSessionProvider.getWebSession(project);
+            WebSession session = new PsiWebSessionProvider(project).getWebSession(false);
             Map<String, Component> components = session.getComponents();
 
             String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
