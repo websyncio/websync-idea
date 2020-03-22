@@ -12,8 +12,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
-
     private PsiField psiFiled;
+
+    @Override
+    public String getFieldName() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getComponentTypeId() {
+        return null;
+    }
 
     public PsiComponentInstance(PsiField psiFiled) {
         this.psiFiled = psiFiled;
@@ -90,4 +104,5 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         );
         return attribute;
     }
+
 }

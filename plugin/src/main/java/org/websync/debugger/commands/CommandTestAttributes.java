@@ -1,20 +1,15 @@
 package org.websync.debugger.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.websync.debugger.testengine.TestEngine;
-import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.models.Component;
-import org.websync.websession.models.WebSession;
+import org.websync.websession.models.ComponentType;
 import org.websync.websession.psimodels.PsiComponent;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +44,7 @@ public class CommandTestAttributes {
 //        });
     }
 
-    static void testValidNamesOfAttributesInComponent(Map<String, Component> components, String componentsName) {
+    static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 

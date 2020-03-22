@@ -1,13 +1,7 @@
 package org.websync.server;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import org.java_websocket.server.WebSocketServer;
-import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.ember.ReactSerializer;
-import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.WebSessionPovider;
 
 
 public class BrowserConnection {

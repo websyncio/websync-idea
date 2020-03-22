@@ -1,7 +1,7 @@
 package org.websync;
 import com.intellij.openapi.project.Project;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.ember.ReactSerializer;
+import org.websync.react.ReactSerializer;
 import org.websync.server.BrowserConnection;
 import org.websync.server.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;

@@ -1,16 +1,17 @@
-package org.websync.ember.dto;
+package org.websync.react.dto;
 
-import lombok.Getter;
 import org.websync.websession.models.ComponentContainer;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ComponentsContainerDto extends BaseDto {
-    @Getter
-    private List<String> components;
+    public List<ComponentInstanceDto> componentsInstances;
+
     public ComponentsContainerDto(ComponentContainer container) {
         super(container.getId());
-        components = container.getComponentInstances().stream().map(i -> i.getId()).collect(Collectors.toList());
+        componentsInstances = container.getComponentInstances()
+                .stream().map(i -> new ComponentInstanceDto(i))
+                .collect(Collectors.toList());
     }
 }

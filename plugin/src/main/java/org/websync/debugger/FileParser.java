@@ -7,19 +7,10 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.debugger.commands.CommandInitProject;
 import org.websync.debugger.commands.CommandTestAttributes;
-import org.websync.ember.ReactSerializer;
-import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.models.Component;
-import org.websync.websession.models.WebSession;
-import org.websync.websession.psimodels.PsiComponent;
-import org.websync.websession.psimodels.PsiComponentInstance;
-import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
