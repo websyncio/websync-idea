@@ -10,13 +10,13 @@
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.idea.maven</depends>
 
-    <applicationListeners>
-        <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
-
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
     </extensions>
+
+    <applicationListeners>
+        <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
 
     <actions>
         <!--    <action id="updateBy" class="com.epam.sha.intellij.locatorupdater.updater.UpdateElement" text="Update-Element" />-->

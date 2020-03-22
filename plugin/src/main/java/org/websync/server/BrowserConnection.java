@@ -23,7 +23,7 @@ public class BrowserConnection {
         log.info("Listening port:" + port);
     }
 
-    public void disposeConnection() {
+    public void stop() {
         try {
             server.stop(1000);
         } catch (InterruptedException e) {
