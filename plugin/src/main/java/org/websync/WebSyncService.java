@@ -1,11 +1,11 @@
 package org.websync;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import org.websync.browserConnection.BrowserConnection;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.react.ReactSerializer;
-import org.websync.browserConnection.BrowserConnection;
 import org.websync.browserConnection.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionPovider;
@@ -44,7 +44,7 @@ public class WebSyncService {
 
     private BrowserConnection createBrowserConnection(CommandHandler commandHandler) {
         // TODO: get port from settings
-        return new BrowserConnection("localhost", 1804, commandHandler);
+        return new BrowserConnection( 1804, commandHandler);
     }
 
     @NotNull
@@ -74,7 +74,7 @@ public class WebSyncService {
                 .getParent().toString();
     }
 
-    public void dispose() {
+    public void dispose() throws IOException,InterruptedException {
         browserConnection.stop();
         debugFileWatcher.stop();
     }
