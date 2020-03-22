@@ -1,11 +1,8 @@
-package org.websync.server.command;
+package org.websync.browserConnection.commands;
 
 import org.java_websocket.WebSocket;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.websession.WebSessionPovider;
-import org.websync.websession.models.WebSession;
-
-import java.util.List;
 
 
 public class GetWebSessionCommand {

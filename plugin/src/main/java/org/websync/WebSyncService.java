@@ -5,8 +5,8 @@ import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.react.ReactSerializer;
-import org.websync.server.BrowserConnection;
-import org.websync.server.CommandHandler;
+import org.websync.browserConnection.BrowserConnection;
+import org.websync.browserConnection.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionPovider;
 

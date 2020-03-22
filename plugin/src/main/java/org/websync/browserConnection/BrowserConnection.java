@@ -1,4 +1,4 @@
-package org.websync.server;
+package org.websync.browserConnection;
 
 import com.intellij.openapi.diagnostic.Logger;
 import org.java_websocket.server.WebSocketServer;
@@ -7,7 +7,7 @@ import org.java_websocket.server.WebSocketServer;
 public class BrowserConnection {
     private static final Logger log = Logger.getInstance(BrowserConnection.class);
     private final CommandHandler commandHandler;
-    private Server server;
+    private WebsocketServer server;
     private String host;
     private Integer port;
 
@@ -18,7 +18,7 @@ public class BrowserConnection {
     }
 
     public void start() {
-        server = new Server(port, commandHandler);
+        server = new WebsocketServer(port, commandHandler);
         server.start();
         log.info("Listening port:" + port);
     }
