@@ -49,14 +49,14 @@ public class WebSyncService {
 
     @NotNull
     private DebugFileWatcher createDebugFileWatcher() {
-        String projectDir = GetProjectDir();
+        Path projectDir = getProjectDir();
         Path debugFilePath = createDebugFile(projectDir);
         System.out.println(String.format("Project directory is '%s'.", projectDir));
         System.out.println(String.format("Debug file path is '%s'.", debugFilePath));
         return new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
     }
 
-    private Path createDebugFile(String projectDir) {
+    private Path createDebugFile(Path projectDir) {
         Path debugFilePath = Paths.get(projectDir + "/debug.txt");
         try {
             Files.write(debugFilePath, "command".getBytes());
@@ -66,12 +66,12 @@ public class WebSyncService {
         return debugFilePath;
     }
 
-    private String GetProjectDir() {
+    private Path getProjectDir() {
         String path = WebSyncService.class.getResource("").getPath();
         return Paths.get(path
                 .replace("file:/", "")
                 .replaceFirst("[!].*", ""))
-                .getParent().toString();
+                .getParent();
     }
 
     public void dispose() throws IOException,InterruptedException {
