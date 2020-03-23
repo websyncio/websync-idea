@@ -3,6 +3,7 @@ package org.websync.server.command;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.java_websocket.WebSocket;
@@ -41,8 +42,11 @@ public class CommandGiveMePageObject {
 
     public static void run(WebSocket conn) {
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
-        String serializedSession = EmberSerializer.getEmberSerializer().serialize(webSession);
+        final WebSession[] webSession = {null};
+        ApplicationManager.getApplication().runReadAction(() -> {
+            webSession[0] = PsiWebSessionProvider.getWebSession(project);
+        });
+        String serializedSession = EmberSerializer.getEmberSerializer().serialize(webSession[0]);
         conn.send(serializedSession);
     }
 }
