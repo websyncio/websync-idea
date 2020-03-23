@@ -5,7 +5,6 @@ import com.intellij.psi.util.PsiUtil;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
-import org.websync.websession.psimodels.psi.LiteralExpression;
 import org.websync.websession.psimodels.psi.NameValuePair;
 
 import java.util.ArrayList;
@@ -15,11 +14,6 @@ import java.util.List;
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
     private final String parentId;
     private final PsiField psiFiled;
-
-    @Override
-    public String getFieldName() {
-        return psiFiled.getName();
-    }
 
     @Override
     public String getName() {
@@ -47,6 +41,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         return new Locator(psiFiled.getAnnotations()[0]);
     }
 
+    @Override
     public InstanceAnnotation getInstanceAttribute() {
         if (psiFiled.getAnnotations().length == 0) {
             return null;
@@ -72,8 +67,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
                     if (psiLiteralExpression != null) {
                         Object value = psiLiteralExpression.getValue();
-                        attribute.getAnnotationParameterList().add(
-                                new NameValuePair(identifier, new LiteralExpression(value)));
+                        attribute.getAnnotationParameterList().add(new NameValuePair(identifier, value));
                     }
 
                     PsiArrayInitializerMemberValue psiArrayInitializerMemberValue =
@@ -83,20 +77,43 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
                     if (psiArrayInitializerMemberValue != null) {
 
-                        ArrayList<LiteralExpression> arrayInitializerMemberValue = new ArrayList<>();
+                        ArrayList<Object> arrayInitializerMemberValue = new ArrayList<>();
 
                         Arrays.asList(psiArrayInitializerMemberValue.getInitializers())
                                 .forEach(psiAnnotationMemberValue -> {
-                                    // This is the dummy for @UI.List
+                                    // This is the dummy for @UI.List and @FindBys
                                     if (PsiAnnotation.class.isInstance(psiAnnotationMemberValue)) {
-                                        LiteralExpression literalExpression = new LiteralExpression(null);
-                                        arrayInitializerMemberValue.add(literalExpression);
+                                        PsiAnnotation psiAnnotation = (PsiAnnotation) psiAnnotationMemberValue;
+
+                                        String javaCodeReference1 = Arrays.asList(psiAnnotation.getChildren()).stream()
+                                                .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
+                                                .findFirst().get().getText();
+                                        InstanceAnnotation instanceAnnotation = new InstanceAnnotation(javaCodeReference1);
+
+                                        List<PsiNameValuePair> psiNameValuePairs1 = Arrays.asList(psiAnnotation.
+                                                getParameterList().getAttributes());
+
+                                        psiNameValuePairs1.stream().forEach(
+                                                p -> {
+                                                    String n = p.getName();
+                                                    List<PsiElement> l = Arrays.asList(p.getChildren());
+
+                                                    PsiLiteralExpression expr = (PsiLiteralExpression) l.stream()
+                                                            .filter(e1 -> PsiLiteralExpression.class.isInstance(e1))
+                                                            .findFirst().orElse(null);
+
+                                                    if (expr != null) {
+                                                        Object value = expr.getValue();
+                                                        instanceAnnotation.getAnnotationParameterList().add(new NameValuePair(n, value));
+                                                    }
+                                                });
+
+                                        arrayInitializerMemberValue.add(instanceAnnotation);
                                     }
                                     // This works for @ByText, @Css, @JDropdown, @JMenu, @JTable, @UI, @WithText, @XPath
                                     if (PsiLiteralExpression.class.isInstance(psiAnnotationMemberValue)) {
                                         Object value = ((PsiLiteralExpression) psiAnnotationMemberValue).getValue();
-                                        LiteralExpression literalExpression = new LiteralExpression(value);
-                                        arrayInitializerMemberValue.add(literalExpression);
+                                        arrayInitializerMemberValue.add(value);
                                     }
                                 });
 

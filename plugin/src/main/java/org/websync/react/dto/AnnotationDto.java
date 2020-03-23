@@ -30,8 +30,15 @@ public class AnnotationDto {
 
         parameters = instanceAttribute.getAnnotationParameterList().stream().map(p -> {
             String name = p.getIdentifier();
-            List<Object> values = p.getArrayInitializerMemberValue().stream().map(m -> m.getValue())
-                    .collect(Collectors.toList());
+            List<Object> values = p.getArrayInitializerMemberValue();
+
+            for(int i = 0; i < values.size(); i++) {
+                Object object = values.get(i);
+                if (InstanceAnnotation.class.isInstance(object)) {
+                    AnnotationDto annotationDto = new AnnotationDto((InstanceAnnotation) object);
+                    values.set(i, annotationDto);
+                }
+            }
 
             return new Parameter(name, values);
         }).collect(Collectors.toList());

@@ -3,8 +3,6 @@ package org.websync.websession.models;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
 public interface ComponentInstance extends CodeModelWithId {
-    String getFieldName();
-
     String getName();
 
     String getComponentTypeId();
