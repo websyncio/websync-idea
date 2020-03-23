@@ -29,7 +29,7 @@ public class ReactSerializer implements WebSessionSerializer {
     @Nullable
     private String serializePayload(ReactDataPayload payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         return mapper.writeValueAsString(payload);
     }
 

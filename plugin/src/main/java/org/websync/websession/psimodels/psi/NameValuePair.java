@@ -8,13 +8,12 @@ public class NameValuePair {
     @Getter
     private final String identifier;
     @Getter
-    private LiteralExpression literalExpression;
-    @Getter
     private ArrayList<LiteralExpression> arrayInitializerMemberValue;
 
     public NameValuePair(String identifier, LiteralExpression literalExpression) {
         this.identifier = identifier;
-        this.literalExpression = literalExpression;
+        this.arrayInitializerMemberValue = new ArrayList<>();
+        this.arrayInitializerMemberValue.add(literalExpression);
     }
 
     public NameValuePair(String identifier, ArrayList<LiteralExpression> arrayInitializerMemberValue) {
@@ -26,7 +25,6 @@ public class NameValuePair {
     public String toString() {
         return "NameValuePair{" +
                 "identifier='" + identifier + '\'' +
-                ", literalExpression=" + literalExpression +
                 ", arrayInitializerMemberValue=" + arrayInitializerMemberValue +
                 '}';
     }
