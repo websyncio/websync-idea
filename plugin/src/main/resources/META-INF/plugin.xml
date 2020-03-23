@@ -2,7 +2,7 @@
     <id>org.websync</id>
     <name>WebSync</name>
     <version>0.0.0</version>
-    <vendor email="email@gmail.com" url="https://github.com/websyncio/websync-idea">First Name &amp; Last Name</vendor>
+    <vendor email="wsbaser@gmail.com" url="https://github.com/websyncio/websync-idea">Volkov Aleksey</vendor>
 
     <description>
         IntelliJ IDEA plugin for updating selenium locators via remote call.
@@ -10,17 +10,13 @@
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.idea.maven</depends>
 
-    <application-components>
-        <component>
-            <!--      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>-->
-            <implementation-class>org.websync.InitializationComponent</implementation-class>
-        </component>
-    </application-components>
-
     <extensions defaultExtensionNs="com.intellij">
-        <!--    <applicationService serviceImplementation="com.epam.sha.intellij.locatorupdater.settings.LocatorUpdaterSettings"/>-->
-        <!--    <postStartupActivity implementation="InitializationStartupActivity" />-->
+        <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
     </extensions>
+
+    <applicationListeners>
+        <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
 
     <actions>
         <!--    <action id="updateBy" class="com.epam.sha.intellij.locatorupdater.updater.UpdateElement" text="Update-Element" />-->

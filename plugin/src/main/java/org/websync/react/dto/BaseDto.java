@@ -1,7 +1,7 @@
-package org.websync.ember.dto;
+package org.websync.react.dto;
 
 public class BaseDto {
-    private String id;
+    public String id;
 
     public BaseDto(String id) {
         this.id = id;
