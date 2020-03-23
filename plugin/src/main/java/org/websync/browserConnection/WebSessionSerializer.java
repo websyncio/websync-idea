@@ -3,10 +3,10 @@ package org.websync.browserConnection;
 import org.websync.websession.models.WebSession;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface WebSessionSerializer {
-    String serialize(Collection<WebSession> webSessions);
-    String serialize(WebSession webSession);
+    String serialize(List<WebSession> webSessions);
 
-    Collection<WebSession> deserialize(String data);
+    WebSession deserialize(String json);
 }

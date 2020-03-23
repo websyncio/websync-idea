@@ -1,4 +1,4 @@
-package org.websync.server;
+package org.websync.browserConnection;
 
 
 import org.java_websocket.WebSocket;
@@ -11,16 +11,12 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
-public class Server extends WebSocketServer {
-
+// https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
+public class BrowserConnection extends WebSocketServer {
     private CommandHandler commandHandler;
 
-    public Server(int port) {
-        super(new InetSocketAddress( port ));
-    }
-
-    public Server(int port, CommandHandler commandHandler) {
-        this(port);
+    public BrowserConnection(int port, CommandHandler commandHandler) {
+        super(new InetSocketAddress(port));
         this.commandHandler = commandHandler;
     }
 
@@ -40,7 +36,8 @@ public class Server extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         if (null != commandHandler) {
-            commandHandler.handle(conn, message);
+            String json = commandHandler.handle(message);
+            conn.send(json);
         }
     }
 
@@ -63,10 +60,7 @@ public class Server extends WebSocketServer {
     public static void main(String[] args) throws IOException {
         int port = 1804;
 
-        //WebSocketServer server = new Server( port);
-        //server.run();
-
-        Server s = new Server( port );
+        BrowserConnection s = new BrowserConnection( port, null);
         s.start();
         System.out.println( "ChatServer started on port: " + s.getPort() );
 

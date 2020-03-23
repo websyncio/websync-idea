@@ -1,5 +1,6 @@
 package org.websync.websession;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -8,15 +9,14 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.websession.models.WebSession;
-import org.websync.websession.psimodels.PsiComponent;
-import org.websync.websession.psimodels.PsiPage;
+import org.websync.websession.psimodels.PsiComponentType;
+import org.websync.websession.psimodels.PsiPageType;
 import org.websync.websession.psimodels.PsiWebSession;
 import org.websync.websession.psimodels.PsiWebsite;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
@@ -24,42 +24,40 @@ import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
 public class PsiWebSessionProvider implements WebSessionPovider {
+    private final List<Project> projects;
 
-    private Project project;
-    private Collection<WebSession> cachedWebSessions;
-
-    private static PsiWebSessionProvider webSessionProvider;
-
-    public static WebSession getWebSession(Project project) {
-        if (null == webSessionProvider) {
-            webSessionProvider = new PsiWebSessionProvider(project);
-        }
-        Collection<WebSession> sessions = webSessionProvider.getWebSessions(true);
-        WebSession session = sessions.stream().findFirst().get();
-        return session;
-    }
-
-    public PsiWebSessionProvider(Project project) {
-        this.project = project;
+    public PsiWebSessionProvider() {
+        projects = new ArrayList<Project>();
     }
 
     @Override
-    public Collection<WebSession> getWebSessions(boolean useCache) {
-        if (cachedWebSessions == null || !useCache) {
-            try {
-                Collection<PsiWebsite> websites = getWebsites(project);
-                Collection<PsiPage> pages = getPages(project);
-                Collection<PsiComponent> components = getComponents(project);
-
-                PsiWebSession webSession = new PsiWebSession(websites, components, pages);
-                List<WebSession> webSessions = Arrays.asList(webSession);
-                cacheWebSession(webSessions);
-                return webSessions;
-            } catch (Exception ex) {
-                throw ex;
-            }
+    public List<WebSession> getWebSessions(boolean useCache) {
+        List<WebSession> webSessions = new ArrayList<WebSession>();
+        for (Project project : projects) {
+            webSessions.add(getWebSessionFromProject(project));
         }
-        return cachedWebSessions;
+        return webSessions;
+    }
+
+    private WebSession getWebSessionFromProject(Project project) {
+        try {
+            Collection<PsiWebsite> websites = getWebsites(project);
+            Collection<PsiPageType> pages = getPages(project);
+            Collection<PsiComponentType> components = getComponents(project);
+            return new PsiWebSession(websites, components, pages);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @Override
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+
+    @Override
+    public void removeProject(Project project) {
+        this.projects.remove(project);
     }
 
     private Collection<PsiWebsite> getWebsites(Project project) {
@@ -79,41 +77,38 @@ public class PsiWebSessionProvider implements WebSessionPovider {
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting website PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return websites;
     }
 
-    private Collection<PsiPage> getPages(Project project) {
+    private Collection<PsiPageType> getPages(Project project) {
         long startTime = System.nanoTime();
-
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.value);
-
-        Collection<PsiPage> pages = psiClasses.stream().map(c -> {
-            PsiPage page = new PsiPage(c);
+        Collection<PsiPageType> pages = psiClasses.stream().map(c -> {
+            PsiPageType page = new PsiPageType(c);
             page.fill();
             return page;
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting page PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return pages;
     }
 
-    private Collection<PsiComponent> getComponents(Project project) {
+    private Collection<PsiComponentType> getComponents(Project project) {
         long startTime = System.nanoTime();
 
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
-
-        Collection<PsiComponent> components = psiClasses.stream().map(c -> {
-            PsiComponent component = new PsiComponent(c);
+        Collection<PsiComponentType> components = psiClasses.stream().map(c -> {
+            PsiComponentType component = new PsiComponentType(c);
             component.fill();
             return component;
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
         System.out.println(String.format("Getting component PSI classes. Time = %.3f s.",
-                (double)(endTime - startTime) / 1000000000));
+                (double) (endTime - startTime) / 1000000000));
         return components;
     }
 
@@ -125,9 +120,5 @@ public class PsiWebSessionProvider implements WebSessionPovider {
         Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass,
                 GlobalSearchScope.projectScope(project), true).findAll();
         return classes;
-    }
-
-    private void cacheWebSession(List<WebSession> webSessions) {
-        cachedWebSessions = webSessions;
     }
 }

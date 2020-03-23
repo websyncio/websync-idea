@@ -1,6 +1,7 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiUtil;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
@@ -12,15 +13,31 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
+    private final String parentId;
+    private final PsiField psiFiled;
 
-    private PsiField psiFiled;
+    @Override
+    public String getFieldName() {
+        return psiFiled.getName();
+    }
 
-    public PsiComponentInstance(PsiField psiFiled) {
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getComponentTypeId() {
+        return PsiUtil.resolveClassInType(psiFiled.getType()).getQualifiedName();
+    }
+
+    public PsiComponentInstance(String parentId, PsiField psiFiled) {
+        this.parentId = parentId;
         this.psiFiled = psiFiled;
     }
 
     public void fill() {
-        id = psiFiled.toString();
+        id = parentId + "." + psiFiled.toString();
     }
 
     public Locator getLocator() {
@@ -90,4 +107,5 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         );
         return attribute;
     }
+
 }

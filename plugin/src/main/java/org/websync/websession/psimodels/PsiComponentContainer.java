@@ -13,21 +13,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> implements ComponentContainer {
-
-    List<ComponentInstance> componentInstances = new ArrayList<>();
-
-    public PsiComponentContainer(PsiClass psiClass) {
-        super(psiClass);
-    }
+    private List<ComponentInstance> componentInstances;
 
     public List<ComponentInstance> getComponentInstances() {
         return componentInstances;
+    }
+
+    public PsiComponentContainer(PsiClass psiClass) {
+        super(psiClass);
     }
 
     @Override
     public void fill() {
         super.fill();
 
+        this.componentInstances = new ArrayList<>();
         List<PsiField> fieldsList = Arrays.asList(psiClass.getFields());
 
         fieldsList.stream().forEach(f -> {
@@ -39,9 +39,9 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
                     });
 
             if (isElement) {
-                PsiComponentInstance psiComponentInstance = new PsiComponentInstance(f);
+                PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), f);
                 psiComponentInstance.fill();
-                componentInstances.add(psiComponentInstance);
+                this.componentInstances.add(psiComponentInstance);
             }
         });
     }

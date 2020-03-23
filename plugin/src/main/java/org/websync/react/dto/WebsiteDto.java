@@ -1,4 +1,4 @@
-package org.websync.ember.dto;
+package org.websync.react.dto;
 
 import org.websync.websession.models.Website;
 
