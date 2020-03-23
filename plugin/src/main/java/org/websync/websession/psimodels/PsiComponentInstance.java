@@ -17,7 +17,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
     @Override
     public String getName() {
-        return null;
+        return psiFiled.getName();
     }
 
     @Override
