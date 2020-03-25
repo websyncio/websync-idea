@@ -21,4 +21,5 @@
     <actions>
         <!--    <action id="updateBy" class="com.epam.sha.intellij.locatorupdater.updater.UpdateElement" text="Update-Element" />-->
     </actions>
+    <idea-version since-build="193"/>
 </idea-plugin>

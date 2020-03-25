@@ -36,7 +36,10 @@ public class BrowserConnection extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         if (null != commandHandler) {
-            commandHandler.handle(message);
+            String response = commandHandler.handle(message);
+            if (null != response) {
+                conn.send(response);
+            }
         }
     }
 

@@ -29,13 +29,13 @@ public class ReactSerializer implements WebSessionSerializer {
     @Nullable
     private String serializePayload(ReactDataPayload payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         return mapper.writeValueAsString(payload);
     }
 
     @NotNull
     private ReactDataPayload getReactDataPayload(WebSession web) {
-        ReactDataPayload payload = new ReactDataPayload();
+       ReactDataPayload payload = new ReactDataPayload();
 //        payload.websites = web.websites.values().stream()
 //                .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pages = web.getPageTypes().values().stream()

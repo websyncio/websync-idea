@@ -1,10 +1,12 @@
 package org.websync.websession.models;
 
-public interface ComponentInstance extends CodeModelWithId {
-    String getFieldName();
+import org.websync.websession.psimodels.psi.InstanceAnnotation;
 
+public interface ComponentInstance extends CodeModelWithId {
     String getName();
 
     String getComponentTypeId();
 //    Scss.Scss RootSelector { get; }
+
+    InstanceAnnotation getInstanceAttribute();
 }

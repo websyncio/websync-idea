@@ -1,5 +1,6 @@
 package org.websync.browserConnection.commands;
 
+import com.intellij.openapi.application.ApplicationManager;
 import org.java_websocket.WebSocket;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.websession.WebSessionPovider;
@@ -38,6 +39,10 @@ public class GetWebSessionCommand {
 //    }
 
     public String execute() {
-        return this.serializer.serialize(webSessionPovider.getWebSessions(false));
+        final String[] json = new String[1];
+        ApplicationManager.getApplication().runReadAction(() -> {
+            json[0] = this.serializer.serialize(webSessionPovider.getWebSessions(false));
+        });
+        return json[0];
     }
 }
