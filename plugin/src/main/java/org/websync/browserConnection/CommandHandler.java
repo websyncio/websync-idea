@@ -1,7 +1,5 @@
 package org.websync.browserConnection;
 
-import com.intellij.openapi.application.ApplicationManager;
-import org.java_websocket.WebSocket;
 import org.websync.browserConnection.commands.GetWebSessionCommand;
 import org.websync.websession.WebSessionPovider;
 
