@@ -1,6 +1,8 @@
 package org.websync.browserConnection;
 
 
+import com.google.gson.Gson;
+import com.intellij.openapi.project.Project;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -10,10 +12,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
     private CommandHandler commandHandler;
+    private List<Project> projects = new ArrayList<>();
 
     public BrowserConnection(int port, CommandHandler commandHandler) {
         super(new InetSocketAddress(port));
@@ -38,7 +45,15 @@ public class BrowserConnection extends WebSocketServer {
         if (null != commandHandler) {
             String response = commandHandler.handle(message);
             if (null != response) {
+                System.out.println("send response");
                 conn.send(response);
+            }
+            List<Project> sessionProject = commandHandler.webSessionProvider.getProjects();
+            if (!projects.equals(sessionProject)){
+                projects = sessionProject;
+                System.out.println("send projects info");
+                String names = new Gson().toJson(projects.stream().map(Project::getName).collect(Collectors.toList()));
+                conn.send(String.format("{\"projects\": \"%s\"}", names));
             }
         }
     }

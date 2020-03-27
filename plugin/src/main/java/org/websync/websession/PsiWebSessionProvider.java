@@ -1,6 +1,5 @@
 package org.websync.websession;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -23,7 +22,7 @@ import static org.websync.jdi.JdiAttribute.JDI_JSITE;
 import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
-public class PsiWebSessionProvider implements WebSessionPovider {
+public class PsiWebSessionProvider implements WebSessionProvider {
     private final List<Project> projects;
 
     public PsiWebSessionProvider() {
@@ -53,6 +52,11 @@ public class PsiWebSessionProvider implements WebSessionPovider {
     @Override
     public void addProject(Project project) {
         this.projects.add(project);
+    }
+
+    @Override
+    public List<Project> getProjects() {
+        return this.projects;
     }
 
     @Override
