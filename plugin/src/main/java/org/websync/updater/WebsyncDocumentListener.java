@@ -9,7 +9,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
-import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.websync.WebSyncService;
 import org.websync.jdi.JdiElement;
