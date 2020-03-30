@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
     private CommandHandler commandHandler;
-    private List<Project> projects = new ArrayList<>();
 
     public BrowserConnection(int port, CommandHandler commandHandler) {
         super(new InetSocketAddress(port));
@@ -43,13 +42,6 @@ public class BrowserConnection extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         if (null != commandHandler) {
-            List<Project> sessionProject = commandHandler.webSessionProvider.getProjects();
-            if (!sessionProject.isEmpty() && (!projects.equals(sessionProject) || message.equals(commandHandler.CMD_GET_PAGEOBJECTS))){
-                projects = sessionProject;
-                System.out.println("send projects info");
-                String names = new Gson().toJson(projects.stream().map(Project::getName).collect(Collectors.toList()));
-                conn.send(String.format("{\"projects\": %s}", names));
-            }
             String response = commandHandler.handle(message);
             if (null != response) {
                 System.out.println("send response");
