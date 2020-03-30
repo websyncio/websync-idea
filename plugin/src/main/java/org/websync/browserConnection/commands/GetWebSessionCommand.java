@@ -1,8 +1,12 @@
 package org.websync.browserConnection.commands;
 
+import com.google.gson.Gson;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.websession.WebSessionProvider;
+
+import java.util.stream.Collectors;
 
 
 public class GetWebSessionCommand {
@@ -39,9 +43,11 @@ public class GetWebSessionCommand {
 
     public String execute() {
         final String[] json = new String[1];
+        String projects = new Gson().toJson(webSessionProvider.getProjects().stream().map(Project::getName).collect(Collectors.toList()));
         ApplicationManager.getApplication().runReadAction(() -> {
             json[0] = this.serializer.serialize(webSessionProvider.getWebSessions(false));
         });
+        json[0] = json[0].replaceFirst("\\{", String.format("{\"projects\": %s,", projects));
         return json[0];
     }
 }
