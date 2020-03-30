@@ -1,5 +1,17 @@
 package org.websync;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.ModificationTracker;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.newvfs.BulkFileListener;
+import com.intellij.psi.PsiDocumentListener;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.util.PsiModificationTracker;
+import com.intellij.util.messages.MessageBusConnection;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.websync.browserConnection.BrowserConnection;
 import org.websync.browserConnection.WebSessionSerializer;
@@ -18,6 +30,7 @@ import java.nio.file.Paths;
 
 public class WebSyncService {
     BrowserConnection browserConnection;
+    @Getter
     WebSessionPovider provider;
     DebugFileWatcher debugFileWatcher;
 

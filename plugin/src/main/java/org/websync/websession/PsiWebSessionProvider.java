@@ -8,6 +8,7 @@ import com.intellij.psi.impl.PsiElementFactoryImpl;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import lombok.Getter;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiPageType;
@@ -24,6 +25,7 @@ import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
 public class PsiWebSessionProvider implements WebSessionPovider {
+    @Getter
     private final List<Project> projects;
 
     public PsiWebSessionProvider() {
