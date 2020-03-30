@@ -17,9 +17,6 @@ import org.websync.websession.PsiWebSessionProvider;
 
 import java.util.Arrays;
 
-import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
-import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
-
 public class WebsyncDocumentListener implements DocumentListener {
 
     @Override
