@@ -26,6 +26,15 @@ public class ReactSerializer implements WebSessionSerializer {
         }
     }
 
+    public String serialize(WebSession webSession) {
+        ReactDataPayload payload = getReactDataPayload(webSession);
+        try {
+            return serializePayload(payload);
+        } catch (JsonProcessingException e) {
+            return "{error:'Error occured during serialization.'}";
+        }
+    }
+
     @Nullable
     private String serializePayload(ReactDataPayload payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -15,12 +15,12 @@ import org.websync.websession.psimodels.PsiWebsite;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
-import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
-import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
+import static org.websync.jdi.JdiElement.*;
 
 public class PsiWebSessionProvider implements WebSessionProvider {
     private final List<Project> projects;
@@ -36,6 +36,10 @@ public class PsiWebSessionProvider implements WebSessionProvider {
             webSessions.add(getWebSessionFromProject(project));
         }
         return webSessions;
+    }
+
+    public WebSession getWebSession(Project project) {
+        return getWebSessionFromProject(project);
     }
 
     private WebSession getWebSessionFromProject(Project project) {
@@ -121,6 +125,9 @@ public class PsiWebSessionProvider implements WebSessionProvider {
         GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
         PsiClass psiClass = javaPsiFacade.findClass(classQualifiedName, scope);
+        if (psiClass == null) {
+            return Collections.emptyList();
+        }
         Collection<PsiClass> classes = ClassInheritorsSearch.search(psiClass,
                 GlobalSearchScope.projectScope(project), true).findAll();
         return classes;
