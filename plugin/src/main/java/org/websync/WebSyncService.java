@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class WebSyncService {
+    @Getter
     BrowserConnection browserConnection;
     @Getter
     WebSessionPovider provider;

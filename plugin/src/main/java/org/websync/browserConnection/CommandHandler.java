@@ -4,7 +4,7 @@ import org.websync.browserConnection.commands.GetWebSessionCommand;
 import org.websync.websession.WebSessionPovider;
 
 public class CommandHandler {
-    final String CMD_GET_PAGEOBJECTS = "get-web-session";
+    public static final String CMD_GET_PAGEOBJECTS = "get-web-session";
 
     WebSessionPovider webSessionPovider;
     WebSessionSerializer webSessionSerializer;

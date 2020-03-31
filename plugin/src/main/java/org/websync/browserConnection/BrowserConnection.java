@@ -1,6 +1,7 @@
 package org.websync.browserConnection;
 
 
+import lombok.Getter;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -13,6 +14,7 @@ import java.nio.ByteBuffer;
 
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
+    @Getter
     private CommandHandler commandHandler;
 
     public BrowserConnection(int port, CommandHandler commandHandler) {
