@@ -1,6 +1,8 @@
 package org.websync.browserConnection;
 
 
+import com.google.gson.Gson;
+import com.intellij.openapi.project.Project;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -10,6 +12,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
@@ -38,6 +44,7 @@ public class BrowserConnection extends WebSocketServer {
         if (null != commandHandler) {
             String response = commandHandler.handle(message);
             if (null != response) {
+                System.out.println("send response");
                 conn.send(response);
             }
         }

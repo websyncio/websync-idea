@@ -8,7 +8,7 @@ import org.websync.debugger.FileParser;
 import org.websync.react.ReactSerializer;
 import org.websync.browserConnection.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.WebSessionPovider;
+import org.websync.websession.WebSessionProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 
 public class WebSyncService {
     BrowserConnection browserConnection;
-    WebSessionPovider provider;
+    WebSessionProvider provider;
     DebugFileWatcher debugFileWatcher;
 
     public WebSyncService() {
@@ -86,4 +86,5 @@ public class WebSyncService {
     public void removeProject(Project project) {
         this.provider.removeProject(project);
     }
+
 }

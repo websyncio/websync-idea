@@ -29,7 +29,7 @@ dependencies {
 sourceSets {
     test {
         java {
-//            exclude 'org/**'
+            exclude 'org/**'
         }
     }
 }

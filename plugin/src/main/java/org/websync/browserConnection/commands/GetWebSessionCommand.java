@@ -1,17 +1,20 @@
 package org.websync.browserConnection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
-import org.java_websocket.WebSocket;
+import com.intellij.openapi.project.Project;
 import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.websession.WebSessionPovider;
+import org.websync.websession.WebSessionProvider;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class GetWebSessionCommand {
     private final WebSessionSerializer serializer;
-    private final WebSessionPovider webSessionPovider;
+    private final WebSessionProvider webSessionProvider;
 
-    public GetWebSessionCommand(WebSessionPovider webSessionPovider, WebSessionSerializer serializer) {
-        this.webSessionPovider = webSessionPovider;
+    public GetWebSessionCommand(WebSessionProvider webSessionProvider, WebSessionSerializer serializer) {
+        this.webSessionProvider = webSessionProvider;
         this.serializer = serializer;
     }
 //
@@ -40,9 +43,28 @@ public class GetWebSessionCommand {
 
     public String execute() {
         final String[] json = new String[1];
+        List<String> projects = webSessionProvider.getProjects().stream().map(Project::getName).collect(Collectors.toList());
+        if (projects.isEmpty()) {
+            return null;
+        }
         ApplicationManager.getApplication().runReadAction(() -> {
-            json[0] = this.serializer.serialize(webSessionPovider.getWebSessions(false));
+            json[0] = this.serializer.serialize(webSessionProvider.getWebSessions(false));
         });
+        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": %s,", projects.get(0)));
         return json[0];
     }
+
+    public String execute(String projectName) {
+        final String[] json = new String[1];
+        int index = webSessionProvider.getProjects().stream().map(Project::getName).collect(Collectors.toList()).indexOf(projectName);
+        if (index < 0) {
+            return null;
+        }
+        ApplicationManager.getApplication().runReadAction(() -> {
+            json[0] = this.serializer.serialize(webSessionProvider.getWebSession(webSessionProvider.getProjects().get(index)));
+        });
+        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": \"%s\",", projectName));
+        return json[0];
+    }
+
 }
