@@ -2,17 +2,16 @@ package org.websync.browserConnection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
 import org.java_websocket.WebSocket;
+import org.websync.WebSyncService;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.websession.WebSessionPovider;
 
 
 public class GetWebSessionCommand {
-    private final WebSessionSerializer serializer;
-    private final WebSessionPovider webSessionPovider;
+    private final WebSyncService webSyncService;
 
-    public GetWebSessionCommand(WebSessionPovider webSessionPovider, WebSessionSerializer serializer) {
-        this.webSessionPovider = webSessionPovider;
-        this.serializer = serializer;
+    public GetWebSessionCommand(WebSyncService webSyncService) {
+        this.webSyncService = webSyncService;
     }
 //
 //    public static void run1(WebSocket conn) {
@@ -38,11 +37,12 @@ public class GetWebSessionCommand {
 //        conn.send(serializedObject);
 //    }
 
-    public String execute() {
+    public void execute() {
         final String[] json = new String[1];
         ApplicationManager.getApplication().runReadAction(() -> {
-            json[0] = this.serializer.serialize(webSessionPovider.getWebSessions(false));
+            json[0] = webSyncService.getSerializer().serialize(
+                    webSyncService.getProvider().getWebSessions(false));
         });
-        return json[0];
+        webSyncService.getBrowserConnection().broadcast(json[0]);
     }
 }

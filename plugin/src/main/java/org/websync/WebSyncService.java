@@ -34,6 +34,10 @@ public class WebSyncService {
     @Getter
     WebSessionPovider provider;
     DebugFileWatcher debugFileWatcher;
+    @Getter
+    WebSessionSerializer serializer;
+    @Getter
+    CommandHandler commandHandler;
 
     public WebSyncService() {
         init();
@@ -44,9 +48,10 @@ public class WebSyncService {
         this.provider = new PsiWebSessionProvider();
 
         // .init browser connection
-        WebSessionSerializer serializer = new ReactSerializer();
-        CommandHandler commandHandler = new CommandHandler(this.provider, serializer);
+        this.commandHandler = new CommandHandler(this);
         this.browserConnection = createBrowserConnection(commandHandler);
+
+        this.serializer = new ReactSerializer();
 
         // .init debug file watcher
         this.debugFileWatcher = createDebugFileWatcher();
