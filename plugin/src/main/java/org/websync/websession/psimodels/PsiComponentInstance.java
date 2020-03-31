@@ -2,6 +2,7 @@ package org.websync.websession.psimodels;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
+import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
 import org.websync.websession.psimodels.psi.InstanceAnnotation;
@@ -11,42 +12,56 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.websync.jdi.JdiAttribute.JDI_NAME;
+
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
     private final String parentId;
-    private final PsiField psiFiled;
+    private final PsiField psiField;
 
     @Override
     public String getName() {
-        return psiFiled.getName();
+        return retrieveName();
     }
 
     @Override
     public String getComponentTypeId() {
-        return PsiUtil.resolveClassInType(psiFiled.getType()).getQualifiedName();
+        return PsiUtil.resolveClassInType(psiField.getType()).getQualifiedName();
     }
 
-    public PsiComponentInstance(String parentId, PsiField psiFiled) {
+    public PsiComponentInstance(String parentId, PsiField psiField) {
         this.parentId = parentId;
-        this.psiFiled = psiFiled;
+        this.psiField = psiField;
     }
 
     public void fill() {
-        id = parentId + "." + psiFiled.toString();
+        id = parentId + "." + psiField.toString();
     }
 
     public Locator getLocator() {
-        if (psiFiled.getAnnotations().length == 0) {
+        if (psiField.getAnnotations().length == 0) {
             return null;
         }
-        return new Locator(psiFiled.getAnnotations()[0]);
+        return new Locator(psiField.getAnnotations()[0]);
+    }
+
+    public String retrieveName() {
+        String name = null;
+        if (psiField.getAnnotations().length == 0) {
+            return null;
+        } else for (int i = 0; i < psiField.getAnnotations().length; i++) {
+            if (JdiAttribute.valueOfStr(psiField.getAnnotations()[i].getQualifiedName()).equals(JDI_NAME)) {
+                name = psiField.getAnnotations()[i].getParameterList().getAttributes()[0].getLiteralValue();
+            }
+        }
+        return name;
     }
 
     @Override
     public InstanceAnnotation getInstanceAttribute() {
-        if (psiFiled.getAnnotations().length == 0) {
+        if (psiField.getAnnotations().length == 0) {
             return null;
         }
-        PsiAnnotation annotation = psiFiled.getAnnotations()[0];
+        PsiAnnotation annotation = psiField.getAnnotations()[0];
 
         // Get tag name of annotation
         String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
