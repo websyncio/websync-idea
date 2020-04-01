@@ -47,7 +47,7 @@ public class GetWebSessionCommand {
         ApplicationManager.getApplication().runReadAction(() -> {
             json[0] = webSyncService.getSerializer().serialize(webSyncService.getProvider().getWebSessions(false));
         });
-        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": %s,", projects.get(0)));
+        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": \"%s\",", projects.get(0)));
         webSyncService.getBrowserConnection().broadcast(json[0]);
     }
 

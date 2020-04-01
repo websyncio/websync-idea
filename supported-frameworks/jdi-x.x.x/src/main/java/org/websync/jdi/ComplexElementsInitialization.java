@@ -11,7 +11,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.JDropdown;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.JMenu;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable;
 
-public class ComplexElementsInitialization extends WebPage {
+public class ComplexElementsInitial2ization extends WebPage {
 
     @JDropdown("test")
     public Dropdown initializedDropdown;
