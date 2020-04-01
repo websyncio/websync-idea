@@ -11,7 +11,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
 import org.jetbrains.annotations.NotNull;
 import org.websync.WebSyncService;
-import org.websync.browserConnection.BrowserConnection;
 import org.websync.browserConnection.CommandHandler;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
@@ -27,7 +26,7 @@ public class WebsyncDocumentListener implements DocumentListener {
         VirtualFile file = fileDocumentManager.getFile(document);
 
         WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
-        PsiWebSessionProvider provider = (PsiWebSessionProvider)webSyncService.getProvider();
+        PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
         Project project = provider.getProjects().get(0);
 
         System.out.println(String.format("documentChanged: '%s'", file.getPath()));
@@ -50,7 +49,7 @@ public class WebsyncDocumentListener implements DocumentListener {
 
     private boolean isPage(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-            .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.value));
     }
 
     private PsiClass getPsiClassFromPsiFile(PsiFile psiFile) {

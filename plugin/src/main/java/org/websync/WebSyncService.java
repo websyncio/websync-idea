@@ -20,7 +20,7 @@ import org.websync.debugger.FileParser;
 import org.websync.react.ReactSerializer;
 import org.websync.browserConnection.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.WebSessionPovider;
+import org.websync.websession.WebSessionProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class WebSyncService {
     @Getter
     BrowserConnection browserConnection;
     @Getter
-    WebSessionPovider provider;
+    WebSessionProvider provider;
     DebugFileWatcher debugFileWatcher;
     @Getter
     WebSessionSerializer serializer;
@@ -105,4 +105,5 @@ public class WebSyncService {
     public void removeProject(Project project) {
         this.provider.removeProject(project);
     }
+
 }

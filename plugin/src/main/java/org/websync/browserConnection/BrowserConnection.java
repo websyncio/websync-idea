@@ -1,6 +1,5 @@
 package org.websync.browserConnection;
 
-
 import lombok.Getter;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -61,12 +60,12 @@ public class BrowserConnection extends WebSocketServer {
     public static void main(String[] args) throws IOException {
         int port = 1804;
 
-        BrowserConnection s = new BrowserConnection( port, null);
+        BrowserConnection s = new BrowserConnection(port, null);
         s.start();
-        System.out.println( "ChatServer started on port: " + s.getPort() );
+        System.out.println("ChatServer started on port: " + s.getPort());
 
-        BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
-        while ( true ) {
+        BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
             //String in = sysin.readLine();
             //s.broadcast( in );
 //            if( in.equals( "exit" ) ) {
