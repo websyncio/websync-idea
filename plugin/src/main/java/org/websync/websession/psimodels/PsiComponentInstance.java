@@ -57,16 +57,16 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     @Override
-    public AnnotationInstance getInstanceAttribute() {
+    public AnnotationInstance getAttributeInstance() {
         if (psiField.getAnnotations().length == 0) {
             return null;
         }
         PsiAnnotation annotation = psiField.getAnnotations()[0];
 
-        return getInstanceAttribute(annotation);
+        return getAttributeInstance(annotation);
     }
 
-    private AnnotationInstance getInstanceAttribute(PsiAnnotation psiAnnotation) {
+    private AnnotationInstance getAttributeInstance(PsiAnnotation psiAnnotation) {
         return getAnnotationInstance(psiAnnotation);
     }
 

@@ -59,7 +59,7 @@ public class CommandTestAttributes {
         List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
                 .map(instance -> {
                     AnnotationInstance annotationInstance =
-                            ((PsiComponentInstance) instance).getInstanceAttribute();
+                            ((PsiComponentInstance) instance).getAttributeInstance();
                     return annotationInstance.getCodeReferenceElement();
                 })
                 .collect(Collectors.toList());

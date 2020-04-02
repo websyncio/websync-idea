@@ -8,5 +8,5 @@ public interface ComponentInstance extends CodeModelWithId {
     String getComponentTypeId();
 //    Scss.Scss RootSelector { get; }
 
-    AnnotationInstance getInstanceAttribute();
+    AnnotationInstance getAttributeInstance();
 }

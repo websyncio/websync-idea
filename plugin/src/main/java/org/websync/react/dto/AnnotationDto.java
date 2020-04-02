@@ -25,14 +25,14 @@ public class AnnotationDto {
     @Getter
     private List<Parameter> parameters;
 
-    public AnnotationDto(AnnotationInstance instanceAttribute) {
-        name = instanceAttribute.getCodeReferenceElement();
+    public AnnotationDto(AnnotationInstance attributeInstance) {
+        name = attributeInstance.getCodeReferenceElement();
 
-        parameters = instanceAttribute.getAnnotationParameterList().stream().map(p -> {
+        parameters = attributeInstance.getAnnotationParameterList().stream().map(p -> {
             String name = p.getIdentifier();
             List<Object> values = p.getArrayInitializerMemberValue();
 
-            for(int i = 0; i < values.size(); i++) {
+            for (int i = 0; i < values.size(); i++) {
                 Object object = values.get(i);
                 if (AnnotationInstance.class.isInstance(object)) {
                     AnnotationDto annotationDto = new AnnotationDto((AnnotationInstance) object);
