@@ -3,7 +3,6 @@ package org.websync.websession.psimodels.psi;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NameValuePair {
     @Getter
@@ -11,7 +10,7 @@ public class NameValuePair {
     @Getter
     private ArrayList<Object> arrayInitializerMemberValue;
     @Getter
-    private ArrayList<InstanceAnnotation> arrayInitializerMemberValueAnnotation;
+    private ArrayList<AnnotationInstance> arrayInitializerMemberValueAnnotation;
 
     public NameValuePair(String identifier, Object literalExpression) {
         this.identifier = identifier;
@@ -24,7 +23,7 @@ public class NameValuePair {
         this.arrayInitializerMemberValue = arrayInitializerMemberValue;
     }
 
-    public NameValuePair(ArrayList<InstanceAnnotation> arrayInitializerMemberValue) {
+    public NameValuePair(ArrayList<AnnotationInstance> arrayInitializerMemberValue) {
         this.identifier = null;
         this.arrayInitializerMemberValueAnnotation = arrayInitializerMemberValue;
     }

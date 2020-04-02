@@ -5,7 +5,7 @@ import com.intellij.psi.util.PsiUtil;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
-import org.websync.websession.psimodels.psi.InstanceAnnotation;
+import org.websync.websession.psimodels.psi.AnnotationInstance;
 import org.websync.websession.psimodels.psi.NameValuePair;
 
 import java.util.ArrayList;
@@ -57,23 +57,31 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     @Override
-    public InstanceAnnotation getInstanceAttribute() {
+    public AnnotationInstance getInstanceAttribute() {
         if (psiField.getAnnotations().length == 0) {
             return null;
         }
         PsiAnnotation annotation = psiField.getAnnotations()[0];
 
-        // Get tag name of annotation
-        String javaCodeReference = Arrays.asList(annotation.getChildren()).stream()
+        return getInstanceAttribute(annotation);
+    }
+
+    private AnnotationInstance getInstanceAttribute(PsiAnnotation psiAnnotation) {
+        return getAnnotationInstance(psiAnnotation);
+    }
+
+    private AnnotationInstance getAnnotationInstance(PsiAnnotation psiAnnotation) {
+        String javaCodeReference = Arrays.asList(psiAnnotation.getChildren()).stream()
                 .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
                 .findFirst().get().getText();
-        InstanceAnnotation attribute = new InstanceAnnotation(javaCodeReference);
+        AnnotationInstance attribute = new AnnotationInstance(javaCodeReference);
 
-        // Processing of values of annotation
-        List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(annotation.getParameterList().getAttributes());
-        psiNameValuePairs.stream().forEach(
+        List<PsiNameValuePair> psiNameValuePairs1 = Arrays.asList(psiAnnotation.
+                getParameterList().getAttributes());
+
+        psiNameValuePairs1.stream().forEach(
                 psiNameValuePair -> {
-                    String identifier = psiNameValuePair.getName();
+                    String name = psiNameValuePair.getName();
                     List<PsiElement> psiElements = Arrays.asList(psiNameValuePair.getChildren());
 
                     PsiLiteralExpression psiLiteralExpression = (PsiLiteralExpression) psiElements.stream()
@@ -82,7 +90,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
                     if (psiLiteralExpression != null) {
                         Object value = psiLiteralExpression.getValue();
-                        attribute.getAnnotationParameterList().add(new NameValuePair(identifier, value));
+                        attribute.getAnnotationParameterList().add(new NameValuePair(name, value));
                     }
 
                     PsiArrayInitializerMemberValue psiArrayInitializerMemberValue =
@@ -96,35 +104,14 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
                         Arrays.asList(psiArrayInitializerMemberValue.getInitializers())
                                 .forEach(psiAnnotationMemberValue -> {
-                                    // This is the dummy for @UI.List and @FindBys
+                                    // If the annotation contains other annotations
+                                    // This works for  @UI.List and @FindBys
                                     if (PsiAnnotation.class.isInstance(psiAnnotationMemberValue)) {
-                                        PsiAnnotation psiAnnotation = (PsiAnnotation) psiAnnotationMemberValue;
-
-                                        String javaCodeReference1 = Arrays.asList(psiAnnotation.getChildren()).stream()
-                                                .filter(psiElement -> PsiJavaCodeReferenceElement.class.isInstance(psiElement))
-                                                .findFirst().get().getText();
-                                        InstanceAnnotation instanceAnnotation = new InstanceAnnotation(javaCodeReference1);
-
-                                        List<PsiNameValuePair> psiNameValuePairs1 = Arrays.asList(psiAnnotation.
-                                                getParameterList().getAttributes());
-
-                                        psiNameValuePairs1.stream().forEach(
-                                                p -> {
-                                                    String n = p.getName();
-                                                    List<PsiElement> l = Arrays.asList(p.getChildren());
-
-                                                    PsiLiteralExpression expr = (PsiLiteralExpression) l.stream()
-                                                            .filter(e1 -> PsiLiteralExpression.class.isInstance(e1))
-                                                            .findFirst().orElse(null);
-
-                                                    if (expr != null) {
-                                                        Object value = expr.getValue();
-                                                        instanceAnnotation.getAnnotationParameterList().add(new NameValuePair(n, value));
-                                                    }
-                                                });
-
-                                        arrayInitializerMemberValue.add(instanceAnnotation);
+                                        PsiAnnotation psiAnnotation1 = (PsiAnnotation) psiAnnotationMemberValue;
+                                        AnnotationInstance annotationInstance = getAnnotationInstance(psiAnnotation1);
+                                        arrayInitializerMemberValue.add(annotationInstance);
                                     }
+                                    // If the annotation contains pairs of values
                                     // This works for @ByText, @Css, @JDropdown, @JMenu, @JTable, @UI, @WithText, @XPath
                                     if (PsiLiteralExpression.class.isInstance(psiAnnotationMemberValue)) {
                                         Object value = ((PsiLiteralExpression) psiAnnotationMemberValue).getValue();
@@ -133,10 +120,9 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                                 });
 
                         attribute.getAnnotationParameterList().add(
-                                new NameValuePair(identifier, arrayInitializerMemberValue));
+                                new NameValuePair(name, arrayInitializerMemberValue));
                     }
-                }
-        );
+                });
         return attribute;
     }
 

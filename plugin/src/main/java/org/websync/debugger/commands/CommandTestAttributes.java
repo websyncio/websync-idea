@@ -8,7 +8,7 @@ import org.websync.debugger.testengine.TestEngine;
 import org.websync.websession.models.ComponentType;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiComponentInstance;
-import org.websync.websession.psimodels.psi.InstanceAnnotation;
+import org.websync.websession.psimodels.psi.AnnotationInstance;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,9 +58,9 @@ public class CommandTestAttributes {
         // Get attribute names of component instances
         List<String> actualAttributeNames = psiComponent.getComponentInstances().stream()
                 .map(instance -> {
-                    InstanceAnnotation instanceAnnotation =
+                    AnnotationInstance annotationInstance =
                             ((PsiComponentInstance) instance).getInstanceAttribute();
-                    return instanceAnnotation.getCodeReferenceElement();
+                    return annotationInstance.getCodeReferenceElement();
                 })
                 .collect(Collectors.toList());
 
