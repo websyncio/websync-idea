@@ -12,7 +12,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.websync.jdi.JdiAttribute.JDI_BY_TEXT;
+import static org.websync.jdi.JdiAttribute.JDI_CSS;
+import static org.websync.jdi.JdiAttribute.JDI_JDROPDOWN;
+import static org.websync.jdi.JdiAttribute.JDI_JMENU;
+import static org.websync.jdi.JdiAttribute.JDI_JTABLE;
+import static org.websync.jdi.JdiAttribute.JDI_UI;
+import static org.websync.jdi.JdiAttribute.JDI_WITH_TEXT;
+import static org.websync.jdi.JdiAttribute.JDI_XPATH;
+
 public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> implements ComponentContainer {
+    public static final List<String> INITIALIZATION_ATTRIBUTES = Arrays.asList(JDI_BY_TEXT.value, JDI_CSS.value, JDI_JDROPDOWN.value, JDI_JMENU.value, JDI_JTABLE.value, JDI_UI.value,
+            JDI_WITH_TEXT.value, JDI_XPATH.value);
+
     private List<ComponentInstance> componentInstances;
 
     public List<ComponentInstance> getComponentInstances() {
@@ -40,8 +52,10 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
 
             if (isElement) {
                 PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), f);
-                psiComponentInstance.fill();
-                this.componentInstances.add(psiComponentInstance);
+                if (INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(psiComponentInstance.getAttributeInstance().getCodeReferenceElement())))) {
+                    psiComponentInstance.fill();
+                    this.componentInstances.add(psiComponentInstance);
+                }
             }
         });
     }
