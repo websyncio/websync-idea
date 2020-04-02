@@ -1,8 +1,6 @@
 package org.websync.browserConnection;
 
-
-import com.google.gson.Gson;
-import com.intellij.openapi.project.Project;
+import lombok.Getter;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -12,13 +10,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
+    @Getter
     private CommandHandler commandHandler;
 
     public BrowserConnection(int port, CommandHandler commandHandler) {
@@ -42,11 +37,7 @@ public class BrowserConnection extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         if (null != commandHandler) {
-            String response = commandHandler.handle(message);
-            if (null != response) {
-                System.out.println("send response");
-                conn.send(response);
-            }
+            commandHandler.handle(message);
         }
     }
 
@@ -69,12 +60,12 @@ public class BrowserConnection extends WebSocketServer {
     public static void main(String[] args) throws IOException {
         int port = 1804;
 
-        BrowserConnection s = new BrowserConnection( port, null);
+        BrowserConnection s = new BrowserConnection(port, null);
         s.start();
-        System.out.println( "ChatServer started on port: " + s.getPort() );
+        System.out.println("ChatServer started on port: " + s.getPort());
 
-        BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
-        while ( true ) {
+        BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
             //String in = sysin.readLine();
             //s.broadcast( in );
 //            if( in.equals( "exit" ) ) {

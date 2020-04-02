@@ -5,13 +5,13 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstanceAnnotation {
+public class AnnotationInstance {
     @Getter
     private final String codeReferenceElement;
     @Getter
     private final List<NameValuePair> annotationParameterList = new ArrayList<>();
 
-    public InstanceAnnotation(String javaCodeReferenceElement) {
+    public AnnotationInstance(String javaCodeReferenceElement) {
         this.codeReferenceElement = javaCodeReferenceElement;
     }
 

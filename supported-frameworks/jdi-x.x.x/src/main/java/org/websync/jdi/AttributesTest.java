@@ -5,10 +5,10 @@ import com.epam.jdi.light.elements.composite.Section;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 
 public class AttributesTest extends Section {
-    @ByText(value = "value1")
+    @ByText(value = "value")
     Label byText;
-    @Css(value = "value1")
-    Label css;
+    @Css(value = "value")
+    Label css1;
     @JDropdown(root = "root1", value = "value1", expand = "expand1", list = "list1", autoclose = true)
     Label jDropdown;
     @JMenu(value = {"value1", "value2"}, group = "group1")

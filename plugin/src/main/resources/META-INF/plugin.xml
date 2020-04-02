@@ -12,14 +12,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
+        <editorFactoryDocumentListener implementation="org.websync.updater.WebsyncDocumentListener"/>
     </extensions>
+
 
     <applicationListeners>
         <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
-
-    <actions>
-        <!--    <action id="updateBy" class="com.epam.sha.intellij.locatorupdater.updater.UpdateElement" text="Update-Element" />-->
-    </actions>
     <idea-version since-build="193"/>
 </idea-plugin>

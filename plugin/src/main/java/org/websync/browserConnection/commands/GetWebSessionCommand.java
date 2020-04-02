@@ -2,20 +2,17 @@ package org.websync.browserConnection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
-import org.websync.browserConnection.WebSessionSerializer;
-import org.websync.websession.WebSessionProvider;
+import org.websync.WebSyncService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 public class GetWebSessionCommand {
-    private final WebSessionSerializer serializer;
-    private final WebSessionProvider webSessionProvider;
+    private final WebSyncService webSyncService;
 
-    public GetWebSessionCommand(WebSessionProvider webSessionProvider, WebSessionSerializer serializer) {
-        this.webSessionProvider = webSessionProvider;
-        this.serializer = serializer;
+    public GetWebSessionCommand(WebSyncService webSyncService) {
+        this.webSyncService = webSyncService;
     }
 //
 //    public static void run1(WebSocket conn) {
@@ -41,30 +38,30 @@ public class GetWebSessionCommand {
 //        conn.send(serializedObject);
 //    }
 
-    public String execute() {
+    public void execute() {
         final String[] json = new String[1];
-        List<String> projects = webSessionProvider.getProjects().stream().map(Project::getName).collect(Collectors.toList());
+        List<String> projects = webSyncService.getProvider().getProjects().stream().map(Project::getName).collect(Collectors.toList());
         if (projects.isEmpty()) {
-            return null;
+            return;
         }
         ApplicationManager.getApplication().runReadAction(() -> {
-            json[0] = this.serializer.serialize(webSessionProvider.getWebSessions(false));
+            json[0] = webSyncService.getSerializer().serialize(webSyncService.getProvider().getWebSessions(false));
         });
-        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": %s,", projects.get(0)));
-        return json[0];
+        json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": \"%s\",", projects.get(0)));
+        webSyncService.getBrowserConnection().broadcast(json[0]);
     }
 
-    public String execute(String projectName) {
+    public void execute(String projectName) {
         final String[] json = new String[1];
-        int index = webSessionProvider.getProjects().stream().map(Project::getName).collect(Collectors.toList()).indexOf(projectName);
+        int index = webSyncService.getProvider().getProjects().stream().map(Project::getName).collect(Collectors.toList()).indexOf(projectName);
         if (index < 0) {
-            return null;
+            return;
         }
         ApplicationManager.getApplication().runReadAction(() -> {
-            json[0] = this.serializer.serialize(webSessionProvider.getWebSession(webSessionProvider.getProjects().get(index)));
+            json[0] = webSyncService.getSerializer().serialize(webSyncService.getProvider().getWebSession(
+                    webSyncService.getProvider().getProjects().get(index)));
         });
         json[0] = json[0].replaceFirst("\\{", String.format("{\"project\": \"%s\",", projectName));
-        return json[0];
+        webSyncService.getBrowserConnection().broadcast(json[0]);
     }
-
 }
