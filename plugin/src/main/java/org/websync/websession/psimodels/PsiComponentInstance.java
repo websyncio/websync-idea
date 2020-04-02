@@ -76,13 +76,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
                 .findFirst().get().getText();
         AnnotationInstance attribute = new AnnotationInstance(javaCodeReference);
 
-        List<PsiNameValuePair> psiNameValuePairs1 = Arrays.asList(psiAnnotation.
+        List<PsiNameValuePair> psiNameValuePairs = Arrays.asList(psiAnnotation.
                 getParameterList().getAttributes());
 
-        psiNameValuePairs1.stream().forEach(
-                psiNameValuePair -> {
-                    String name = psiNameValuePair.getName();
-                    List<PsiElement> psiElements = Arrays.asList(psiNameValuePair.getChildren());
+        psiNameValuePairs.stream().forEach(
+                pair -> {
+                    String name = pair.getName();
+                    List<PsiElement> psiElements = Arrays.asList(pair.getChildren());
 
                     PsiLiteralExpression psiLiteralExpression = (PsiLiteralExpression) psiElements.stream()
                             .filter(psiElement -> PsiLiteralExpression.class.isInstance(psiElement))
