@@ -20,7 +20,9 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
     @Override
     public String getName() {
-        return retrieveName();
+        String name = retrieveName();
+        name = name != null ? name : psiField.getName();
+        return name;
     }
 
     @Override
