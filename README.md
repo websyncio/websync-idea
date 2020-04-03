@@ -18,8 +18,9 @@ Provides support for updating broken selenium locators with healed one via remot
 - In IntelliJ Idea select <kbd>Edit Configuration</kbd> > <kbd>Gradle</kbd> with parameters:
     - Gradle project: <kbd>C:\path-to-directory-of\websync-idea</kbd>
     - Tasks: <kbd>:runIde</kbd>
-- When the instance of the IntelliJ Idea is run and the dialog window ‘Welcome to IntelliJ IDEA’ is shown
-click button ‘Open’ and select directory <kbd>C:\path-to-directory-of\websync-idea\supported-frameworks\jdi-x.x.x</kbd>
+- When the instance of the IntelliJ Idea is run and the dialog window ‘Welcome to IntelliJ IDEA’ is shown:
+    - Click button ‘Open’
+    - Select directory <kbd>C:\path-to-directory-of\websync-idea\supported-frameworks\jdi-x.x.x</kbd>
 - Wait for the project to opened and INDEXED.
 
 ## Creating new test project with JDI page objects:
