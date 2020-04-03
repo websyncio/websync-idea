@@ -14,7 +14,7 @@ Provides support for updating broken selenium locators with healed one via remot
     
 ## Run plugin
 
-- Clone source of websync plugin from https://github.com/websyncio/websync-idea 
+- Clone source of websync plugin from https://github.com/websyncio/websync-idea/plugin 
 - In IntelliJ Idea select <kbd>Edit Configuration</kbd> > <kbd>Gradle</kbd> with parameters:
     - Gradle project: <kbd>C:\path-to-directory-of\websync-idea</kbd>
     - Tasks: <kbd>:runIde</kbd>
