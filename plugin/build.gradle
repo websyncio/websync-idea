@@ -8,7 +8,11 @@ plugins {
 group 'com.epam.sha.intellij.locatorupdater'
 version '2.0.1'
 
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
 
 repositories {
     mavenCentral()
@@ -22,8 +26,16 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
     compile "com.epam.jdi:jdi-light:1.1.15"
     compile "com.epam.jdi:jdi-light-html:1.1.15"
-    implementation 'org.jetbrains:annotations:15.0'
     compile "org.java-websocket:Java-WebSocket:1.4.0"
+}
+
+configurations {
+    all*.exclude group: "org.slf4j", module: 'slf4j-log4j12'
+    all*.exclude group: "org.slf4j", module: 'slf4j-api'
+    all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-1.2-api'
+    all*.exclude group: "org.apache.logging.log4j", module: 'log4j-core'
+    all*.exclude group: "org.apache.logging.log4j", module: 'log4j-slf4j-impl'
+    all*.exclude group: "org.apache.logging.log4j", module: 'log4j-api'
 }
 
 sourceSets {
@@ -61,9 +73,9 @@ publishPlugin {
 patchPluginXml {
     changeNotes """Fix dependency plugin version. Update gradle version."""
 }
-test {
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-    }
-}
+//test {
+//    testLogging {
+//        events "passed", "skipped", "failed"
+//        exceptionFormat "full"
+//    }
+//}

@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
 import org.jetbrains.annotations.NotNull;
+import org.websync.logger.Logger;
 import org.websync.WebSyncService;
 import org.websync.browserConnection.CommandHandler;
 import org.websync.jdi.JdiElement;
@@ -29,15 +30,15 @@ public class WebsyncDocumentListener implements DocumentListener {
         PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
         Project project = provider.getProjects().get(0);
 
-        System.out.println(String.format("documentChanged: '%s'", file.getPath()));
+        Logger.print(String.format("documentChanged: '%s'", file.getPath()));
 
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
-        System.out.println(String.format("psiFile of this file: '%s'", psiFile));
+        Logger.print(String.format("psiFile of this file: '%s'", psiFile));
 
         PsiClass psiClass = getPsiClassFromPsiFile(psiFile);
         boolean isPage = this.isPage(psiClass);
         boolean isComponent = this.isComponent(psiClass);
-        System.out.println(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
+        Logger.print(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
 
         webSyncService.getCommandHandler().handle(CommandHandler.CMD_GET_PAGEOBJECTS);
     }

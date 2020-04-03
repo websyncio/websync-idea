@@ -1,5 +1,7 @@
 package org.websync.debugger;
 
+import org.websync.logger.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,9 +35,9 @@ public class DebugFileWatcher extends FileWatcher {
 
     @Override
     protected void onChange(File file) {
-        System.out.println("Command file " + file.getName() + " has changed.");
+        Logger.print("Command file " + file.getName() + " has changed.");
         if (fileParser == null) {
-            System.out.println("File parser is not defined in DebugFileWatcher.");
+            Logger.print("File parser is not defined in DebugFileWatcher.");
             return;
         }
         try {

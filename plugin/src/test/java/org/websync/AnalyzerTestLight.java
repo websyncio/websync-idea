@@ -9,10 +9,9 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Test;
+import org.websync.logger.Logger;
 import org.websync.websession.PsiWebSessionProvider;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,46 +43,46 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
     @Test
     public void test0() {
-        System.out.println(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
+        Logger.print(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
 
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        System.out.println(
+        Logger.print(
                 String.format("Copy from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
-        System.out.println();
-        System.out.println("Filenames:");
+        Logger.print();
+        Logger.print("Filenames:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
-            System.out.println("- " + f);
+            Logger.print("- " + f);
         });
 
         GlobalSearchScope projectScope = GlobalSearchScope.allScope(getProject());
 
-        System.out.println();
-        System.out.println("PsiFiles:");
+        Logger.print();
+        Logger.print("PsiFiles:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
             Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope)).forEach(psiFile -> {
-                System.out.println("- " + psiFile.getVirtualFile().getPath());
+                Logger.print("- " + psiFile.getVirtualFile().getPath());
             });
         });
 
-        System.out.println();
-        System.out.println("Classes:");
+        Logger.print();
+        Logger.print("Classes:");
         Arrays.stream(PsiShortNamesCache.getInstance(getProject()).getAllClassNames()).forEach(c -> {
-            System.out.println("- " + c);
+            Logger.print("- " + c);
         });
 
-        System.out.println();
-        System.out.println("PsiClasses:");
+        Logger.print();
+        Logger.print("PsiClasses:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject()))
                 .filter(f -> f.endsWith(".java"))
                 .forEach(f -> {
                     Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope))
                             .forEach(psiFile -> {
                                 PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
-                                System.out.println("- " + psiClass.getQualifiedName());
+                                Logger.print("- " + psiClass.getQualifiedName());
                             });
                 });
 
@@ -93,7 +92,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         // Some tests
         // ...
 
-        System.out.println();
+        Logger.print();
     }
 
     @Test
@@ -101,7 +100,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        System.out.println(
+        Logger.print(
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
@@ -119,19 +118,19 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 .collect(Collectors.toList());
 
         psiWebPages.forEach(c -> {
-            System.out.println(c.getQualifiedName());
+            Logger.print(c.getQualifiedName());
 
-            System.out.println(
+            Logger.print(
                     String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSuperTypes())
                                     .map(s -> s.getClassName())
                                     .collect(Collectors.toList()))));
 
-            System.out.println(String.format("     SuperClassType: %s", c.getSuperClassType().getName()));
+            Logger.print(String.format("     SuperClassType: %s", c.getSuperClassType().getName()));
 
-            System.out.println(String.format("     SuperClass: %s", c.getSuperClass()));
+            Logger.print(String.format("     SuperClass: %s", c.getSuperClass()));
 
-            System.out.println(
+            Logger.print(
                     String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSupers())
                                     .map(s -> s.getName())
@@ -144,7 +143,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        System.out.println(
+        Logger.print(
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
@@ -164,7 +163,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 javaPath + classPath + "UsersPage.java"
         );
         long endTime = System.nanoTime();
-        System.out.println(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
+        Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
 
         // example
         PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
@@ -182,7 +181,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         PsiFile psiFile = myFixture.getPsiManager().findFile(virtualFile);
 
         long endTime = System.nanoTime();
-        System.out.println(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
+        Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
 
         // example
         PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
