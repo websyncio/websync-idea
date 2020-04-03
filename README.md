@@ -40,4 +40,4 @@ dependencies {
     compile "com.epam.jdi:jdi-light-html:1.1.15" 
 } 
 ````
-- Add classes inherited from WebPage and Segment to created project
+- Add classes inherited from WebPage and Segment to created project with page objects
