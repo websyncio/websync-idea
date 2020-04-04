@@ -3,6 +3,7 @@ package org.websync.debugger.testengine;
 import javafx.util.Pair;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.websync.logger.Logger;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ public class TestEngine {
     }
 
     synchronized public static void printToOut(String line) {
-        System.out.println(line);
+        Logger.print(line);
     }
 
     synchronized public static void printToErr(String line) {
