@@ -8,7 +8,6 @@
         IntelliJ IDEA plugin for updating selenium locators via remote call.
     </description>
     <depends>com.intellij.modules.java</depends>
-    <depends>org.jetbrains.idea.maven</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
