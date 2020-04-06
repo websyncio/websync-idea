@@ -28,7 +28,6 @@ script:
   - export GRADLE_HOME=$PWD/gradle-4.10
   - export PATH=$GRADLE_HOME/bin:$PATH
   - echo $GRADLE_HOME
-  - cd ./plugin
   - gradle-4.10/bin/gradle clean test build jacocoTestReport --refresh-dependencies
 #  - ./gradlew clean build --refresh-dependencies
 
