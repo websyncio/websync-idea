@@ -24,6 +24,9 @@ public class WebsyncDocumentListener implements DocumentListener {
         Document document = event.getDocument();
         FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
         VirtualFile file = fileDocumentManager.getFile(document);
+        if(file == null) {
+            return;
+        }
 
         WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
         PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
