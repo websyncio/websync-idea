@@ -46,4 +46,5 @@ dependencies {
 - Add next lines to Help > Edit Custom Properties:
 idea.is.internal=true
 - Tools -> View PSI Structure in order to research Psi Structure of project
+see more details https://www.jetbrains.com/help/idea/psi-viewer.html
 
