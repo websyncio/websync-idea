@@ -11,6 +11,7 @@ import org.websync.websession.models.ComponentInstance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.websync.jdi.JdiAttribute.JDI_BY_TEXT;
 import static org.websync.jdi.JdiAttribute.JDI_CSS;
@@ -33,6 +34,13 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
 
     public PsiComponentContainer(PsiClass psiClass) {
         super(psiClass);
+    }
+
+    @Override
+    public boolean updateComponentInstance(String oldName, String newName) {
+        Optional<ComponentInstance> found = componentInstances.stream().filter(c -> c.getName().equals(oldName)).findFirst();
+        found.ifPresent(c -> ((PsiComponentInstance) c).setFieldName(newName));
+        return found.isPresent();
     }
 
     @Override

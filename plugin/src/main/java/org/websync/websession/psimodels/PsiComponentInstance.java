@@ -2,6 +2,7 @@ package org.websync.websession.psimodels;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
+import org.jetbrains.annotations.NotNull;
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
@@ -21,8 +22,11 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     @Override
     public String getName() {
         String name = retrieveName();
-        name = name != null ? name : psiField.getName();
-        return name;
+        return name != null ? name : psiField.getName();
+    }
+
+    public void setFieldName(String name) {
+        psiField.setName(name);
     }
 
     @Override
@@ -48,11 +52,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
     public String retrieveName() {
         String name = null;
-        if (psiField.getAnnotations().length == 0) {
+        @NotNull PsiAnnotation[] annotations = psiField.getAnnotations();
+        if (annotations.length == 0) {
             return null;
-        } else for (int i = 0; i < psiField.getAnnotations().length; i++) {
-            if (JdiAttribute.valueOfStr(psiField.getAnnotations()[i].getQualifiedName()).equals(JDI_NAME)) {
-                name = psiField.getAnnotations()[i].getParameterList().getAttributes()[0].getLiteralValue();
+        }
+        for (PsiAnnotation annotation : annotations) {
+            if (JdiAttribute.valueOfStr(annotation.getQualifiedName()).equals(JDI_NAME)) {
+                name = annotation.getParameterList().getAttributes()[0].getLiteralValue();
             }
         }
         return name;
