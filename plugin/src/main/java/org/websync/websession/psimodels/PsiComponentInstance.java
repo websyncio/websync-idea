@@ -134,4 +134,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         return attribute;
     }
 
+    public void synchronize(ComponentInstance changedInstance) {
+
+    }
 }

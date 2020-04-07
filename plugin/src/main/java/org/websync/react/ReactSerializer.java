@@ -1,6 +1,8 @@
 package org.websync.react;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.NotImplementedException;
@@ -11,7 +13,9 @@ import org.websync.react.dto.*;
 import org.websync.websession.models.ComponentContainer;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.WebSession;
+import org.websync.websession.psimodels.PsiWebSession;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,18 +90,16 @@ public class ReactSerializer implements WebSessionSerializer {
 
     @Override
     public WebSession deserialize(String data) {
-        throw new NotImplementedException();
-//        ObjectMapper mapper = new ObjectMapper();
-////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 //        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-//        Collection<EmberDataPayload> payload = null;
-//        try {
-////            sessions = mapper.readValue(data, new TypeReference<Collection<PsiWebSession>>() {
-//            payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
+        try {
+            ReactDataPayload payload = mapper.readValue(data, ReactDataPayload.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//            payload = mapper.readValue(data, new TypeReference<Collection<ReactDataPayload>>() {
 //            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
+      return null;
     }
 }
