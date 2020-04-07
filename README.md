@@ -8,11 +8,11 @@ websync-plugin
 
 ## Plugin for [IntelliJ IDEA](http://plugins.jetbrains.com/plugin/13171-locator-updater) to support [WebSync-Chrome](https://github.com/websyncio/websync-chrome). ##
 
-Provides support for updating broken selenium locators with healed one via remote call with with IntelliJ IDEA.
+Provides support for updating broken selenium locators with healed one via remote call with with IntelliJ IDEA
 
 **Last version (0.0.1) released on 01.01.2021**
     
-## Run plugin
+## Run plugin ##
 
 - Clone source of websync plugin from https://github.com/websyncio/websync-idea/plugin 
 - In IntelliJ Idea select <kbd>Edit Configuration</kbd> > <kbd>Gradle</kbd> with parameters:
@@ -23,7 +23,7 @@ Provides support for updating broken selenium locators with healed one via remot
     - Select directory <kbd>C:\path-to-directory-of\websync-idea\supported-frameworks\jdi-x.x.x</kbd>
 - Wait for the project to opened and INDEXED.
 
-## Creating new test project with JDI page objects:
+## Creating new test project with JDI page objects ##
 
 In the IntelliJ Idea follow next steps: 
 - Click <kbd>File</kbd> > <kbd>New</kbd> > <kbd>Project</kbd>
