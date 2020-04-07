@@ -7,6 +7,7 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import org.websync.debugger.commands.CommandTestSerializer;
 import org.websync.logger.Logger;
 import org.websync.debugger.commands.CommandInitProject;
 import org.websync.debugger.commands.CommandTestAttributes;
@@ -40,7 +41,8 @@ public class FileParser {
                 testWebSessionProvider();
                 break;
             case "test serializer":
-                testSerializer();
+//                testSerializer();
+                CommandTestSerializer.run();
                 break;
             case "print components":
                 testPrintComponents();
