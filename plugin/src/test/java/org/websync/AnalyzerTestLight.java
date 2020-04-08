@@ -31,16 +31,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         return srcPath;
     }
 
-//    @Override
-//    public String getBasePath() {
-//        return srcPath;
-//    }
-//
-//    //    @Override
-//    protected Path getProjectDirOrFile() {
-//        return path;
-//    }
-
     @Test
     public void test0() {
         Logger.print(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
@@ -52,7 +42,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 String.format("Copy from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
-        Logger.print();
         Logger.print("Filenames:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
             Logger.print("- " + f);
@@ -60,7 +49,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
         GlobalSearchScope projectScope = GlobalSearchScope.allScope(getProject());
 
-        Logger.print();
         Logger.print("PsiFiles:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
             Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope)).forEach(psiFile -> {
@@ -68,13 +56,11 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
             });
         });
 
-        Logger.print();
         Logger.print("Classes:");
         Arrays.stream(PsiShortNamesCache.getInstance(getProject()).getAllClassNames()).forEach(c -> {
             Logger.print("- " + c);
         });
 
-        Logger.print();
         Logger.print("PsiClasses:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject()))
                 .filter(f -> f.endsWith(".java"))
@@ -91,8 +77,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
         // Some tests
         // ...
-
-        Logger.print();
     }
 
     @Test
