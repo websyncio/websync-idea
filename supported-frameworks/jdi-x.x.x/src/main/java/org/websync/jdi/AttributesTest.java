@@ -2,7 +2,6 @@ package org.websync.jdi;
 
 import com.epam.jdi.light.elements.common.Label;
 import com.epam.jdi.light.elements.composite.Section;
-import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 
 public class AttributesTest extends Section {
     @ByText(value = "value")

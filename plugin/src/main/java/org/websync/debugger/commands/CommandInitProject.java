@@ -6,6 +6,5 @@ import com.intellij.openapi.project.ProjectManager;
 public class CommandInitProject {
     public static void run() {
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        //WebSession webSession = PsiWebSessionProvider.getWebSession(project);
     }
 }

@@ -2,6 +2,7 @@ package org.websync.websession.psimodels;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
+
 import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
@@ -11,6 +12,7 @@ import org.websync.websession.psimodels.psi.NameValuePair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 import static org.websync.jdi.JdiAttribute.JDI_NAME;
 

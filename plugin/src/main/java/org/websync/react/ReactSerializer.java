@@ -8,11 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.react.dto.*;
-import org.websync.websession.models.ComponentContainer;
-import org.websync.websession.models.ComponentInstance;
+
 import org.websync.websession.models.WebSession;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,8 +43,6 @@ public class ReactSerializer implements WebSessionSerializer {
     @NotNull
     private ReactDataPayload getReactDataPayload(WebSession web) {
        ReactDataPayload payload = new ReactDataPayload();
-//        payload.websites = web.websites.values().stream()
-//                .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pages = web.getPageTypes().values().stream()
                 .map(p -> new PageTypeDto(p)).collect(Collectors.toList());
         payload.components = web.getComponentTypes().values().stream()
@@ -87,17 +83,6 @@ public class ReactSerializer implements WebSessionSerializer {
     @Override
     public WebSession deserialize(String data) {
         throw new NotImplementedException();
-//        ObjectMapper mapper = new ObjectMapper();
-////        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-//        Collection<EmberDataPayload> payload = null;
-//        try {
-////            sessions = mapper.readValue(data, new TypeReference<Collection<PsiWebSession>>() {
-//            payload = mapper.readValue(data, new TypeReference<Collection<EmberDataPayload>>() {
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
+
     }
 }
