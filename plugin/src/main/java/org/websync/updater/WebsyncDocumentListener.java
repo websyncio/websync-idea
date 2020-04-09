@@ -48,12 +48,12 @@ public class WebsyncDocumentListener implements DocumentListener {
 
     private boolean isComponent(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.className));
     }
 
     private boolean isPage(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.className));
     }
 
     private PsiClass getPsiClassFromPsiFile(PsiFile psiFile) {
