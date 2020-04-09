@@ -56,26 +56,15 @@ public enum JdiElement {
     JDI_UI_BASE_ELEMENT("com.epam.jdi.light.elements.base.UIBaseElement"),
     JDI_UI_LIST_BASE("com.epam.jdi.light.elements.base.UIListBase");
 
-    public final String value;
+    public final String className;
 
-    JdiElement(final String value) {
-        this.value = value;
+    JdiElement(final String className) {
+        this.className = className;
     }
 
     @Override
     public String toString() {
-        return value;
+        return className;
     }
 
-    /**
-     * @throws EnumConstantNotPresentException
-     */
-    public static JdiElement valueOfStr(String value) {
-        for (JdiElement v : values()) {
-            if (v.value.equals(value)) {
-                return v;
-            }
-        }
-        throw new EnumConstantNotPresentException(JdiElement.class, "No enum const " + JdiElement.class + "@value." + value);
-    }
 }
