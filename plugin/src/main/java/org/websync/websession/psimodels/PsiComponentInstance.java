@@ -3,7 +3,6 @@ package org.websync.websession.psimodels;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
-import org.websync.jdi.JdiAttribute;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.psimodels.jdi.Locator;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
@@ -12,7 +11,6 @@ import org.websync.websession.psimodels.psi.NameValuePair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 
 import static org.websync.jdi.JdiAttribute.JDI_NAME;
 
@@ -41,7 +39,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     public void fill() {
-        id = parentId + "." + psiField.toString();
+        setId(parentId + "." + psiField.getName());
     }
 
     public Locator getLocator() {
@@ -58,7 +56,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
             return null;
         }
         for (PsiAnnotation annotation : annotations) {
-            if (JdiAttribute.valueOfStr(annotation.getQualifiedName()).equals(JDI_NAME)) {
+            if (JDI_NAME.className.equals(annotation.getQualifiedName())) {
                 name = annotation.getParameterList().getAttributes()[0].getLiteralValue();
             }
         }

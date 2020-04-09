@@ -5,13 +5,13 @@ import lombok.Getter;
 
 public abstract class PsiNamedTypeWrapper<T> extends PsiModelWithId<T> {
     @Getter
-    public PsiClass psiClass;
+    private final PsiClass psiClass;
 
     public PsiNamedTypeWrapper(PsiClass psiClass) {
         this.psiClass = psiClass;
     }
 
     public void fill() {
-        id = psiClass.toString();
+        setId(psiClass.getQualifiedName());
     }
 }
