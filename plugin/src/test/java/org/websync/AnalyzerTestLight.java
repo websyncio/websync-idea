@@ -162,13 +162,9 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
     public void test2() {
         long startTime = System.nanoTime();
         VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
-        PsiFile psiFile = myFixture.getPsiManager().findFile(virtualFile);
 
         long endTime = System.nanoTime();
         Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
-
-        // example
-        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
 
         // example
         PsiShortNamesCache.getInstance(getProject()).getAllClassNames();
