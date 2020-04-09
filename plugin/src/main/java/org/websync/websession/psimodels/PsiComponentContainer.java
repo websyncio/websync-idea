@@ -55,7 +55,7 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
                     .stream()
                     .anyMatch(s -> {
                         PsiClass c = PsiUtil.resolveClassInType(s);
-                        return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.value);
+                        return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.className);
                     });
 
             if (isElement) {

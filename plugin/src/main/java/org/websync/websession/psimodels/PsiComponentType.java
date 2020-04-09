@@ -15,7 +15,7 @@ public class PsiComponentType extends PsiComponentContainer<ComponentType> imple
     @Override
     public void fill() {
         super.fill();
-        baseComponentTypeId = getId().equals(JDI_UI_BASE_ELEMENT.value) ?
+        baseComponentTypeId = getId().equals(JDI_UI_BASE_ELEMENT.className) ?
                 null :
                 getPsiClass().getSuperClass().getQualifiedName();
     }
