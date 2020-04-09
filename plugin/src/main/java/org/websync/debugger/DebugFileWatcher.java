@@ -10,8 +10,8 @@ import java.util.Timer;
 
 public class DebugFileWatcher extends FileWatcher {
 
-    Timer timer;
-    FileParser fileParser;
+    private Timer timer;
+    private FileParser fileParser;
 
     public DebugFileWatcher(File file, FileParser fileParser) {
         super(file);

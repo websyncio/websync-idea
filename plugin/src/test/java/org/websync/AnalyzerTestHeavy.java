@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
     //    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
-    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
+    private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
     Path path = Paths.get(srcPath);
     File file = new File(srcPath);
 
@@ -46,6 +46,7 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
             e.printStackTrace();
         }
 
+        //TODO
         FileDocumentManagerImpl impl = (FileDocumentManagerImpl) FileDocumentManager.getInstance();
 //        new PsiSessionWebProvider(getProject()).getSessionWebs(false);
     }

@@ -20,14 +20,14 @@ import java.nio.file.Paths;
 
 public class WebSyncService {
     @Getter
-    BrowserConnection browserConnection;
+    private BrowserConnection browserConnection;
     @Getter
-    WebSessionProvider provider;
-    DebugFileWatcher debugFileWatcher;
+    private WebSessionProvider provider;
+    private DebugFileWatcher debugFileWatcher;
     @Getter
-    WebSessionSerializer serializer;
+    private WebSessionSerializer serializer;
     @Getter
-    CommandHandler commandHandler;
+    private CommandHandler commandHandler;
 
     public WebSyncService() {
         init();
