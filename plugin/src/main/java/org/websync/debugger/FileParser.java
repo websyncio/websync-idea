@@ -107,7 +107,7 @@ public class FileParser {
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.value, allScope);
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.className, allScope);
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 
