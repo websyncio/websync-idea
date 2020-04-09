@@ -20,9 +20,9 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
     // see https://www.jetbrains.org/intellij/sdk/docs/basics/testing_plugins/test_project_and_testdata_directories.html
     // first paragraph about 'src'
-    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
-    String javaPath = "main\\java\\";
-    String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
+    private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
+    private String javaPath = "main\\java\\";
+    private String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
 //    String exampleClassFile = "DatesPage.java";
 //    Path path = Paths.get(srcPath);
 
@@ -30,16 +30,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
     public String getTestDataPath() {
         return srcPath;
     }
-
-//    @Override
-//    public String getBasePath() {
-//        return srcPath;
-//    }
-//
-//    //    @Override
-//    protected Path getProjectDirOrFile() {
-//        return path;
-//    }
 
     @Test
     public void test0() {
@@ -87,7 +77,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
         // Some tests
         // ...
-
     }
 
     @Test
@@ -173,13 +162,9 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
     public void test2() {
         long startTime = System.nanoTime();
         VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
-        PsiFile psiFile = myFixture.getPsiManager().findFile(virtualFile);
 
         long endTime = System.nanoTime();
         Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
-
-        // example
-        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
 
         // example
         PsiShortNamesCache.getInstance(getProject()).getAllClassNames();

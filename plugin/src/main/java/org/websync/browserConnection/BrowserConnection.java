@@ -65,13 +65,9 @@ public class BrowserConnection extends WebSocketServer {
         s.start();
         Logger.print("ChatServer started on port: " + s.getPort());
 
-        BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
+
         while (true) {
-            //String in = sysin.readLine();
-            //s.broadcast( in );
-//            if( in.equals( "exit" ) ) {
-//                //s.stop(1000);
-//                break;
+            //TODO if neccesary; content removed,Reason: all content were commented out
 //            }
         }
     }

@@ -1,8 +1,6 @@
 package org.websync.jdi;
 
 import com.epam.jdi.light.elements.pageobjects.annotations.FindBy;
-import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
-import com.epam.jdi.light.ui.html.elements.common.*;
 
 public class InheritedPageObject2 extends InheritedPageObject {
 

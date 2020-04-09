@@ -1,8 +1,6 @@
 package org.websync.react;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.NotImplementedException;
@@ -10,13 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.browserConnection.WebSessionSerializer;
 import org.websync.react.dto.*;
-import org.websync.websession.models.ComponentContainer;
-import org.websync.websession.models.ComponentInstance;
-import org.websync.websession.models.WebSession;
-import org.websync.websession.psimodels.PsiWebSession;
 
-import java.io.IOException;
-import java.util.Collection;
+import org.websync.websession.models.WebSession;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +43,6 @@ public class ReactSerializer implements WebSessionSerializer {
     @NotNull
     private ReactDataPayload getReactDataPayload(WebSession web) {
        ReactDataPayload payload = new ReactDataPayload();
-//        payload.websites = web.websites.values().stream()
-//                .map(s -> new WebsiteDto(s)).collect(Collectors.toList());
         payload.pages = web.getPageTypes().values().stream()
                 .map(p -> new PageTypeDto(p)).collect(Collectors.toList());
         payload.components = web.getComponentTypes().values().stream()
@@ -90,16 +82,7 @@ public class ReactSerializer implements WebSessionSerializer {
 
     @Override
     public WebSession deserialize(String data) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        try {
-            ReactDataPayload payload = mapper.readValue(data, ReactDataPayload.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//            payload = mapper.readValue(data, new TypeReference<Collection<ReactDataPayload>>() {
-//            });
-      return null;
+        throw new NotImplementedException();
+
     }
 }

@@ -16,8 +16,7 @@ import java.nio.file.Paths;
 
 public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
-    //    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
-    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
+    private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
     Path path = Paths.get(srcPath);
     File file = new File(srcPath);
 
@@ -32,21 +31,17 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
         }
 
         importFromSources(file);
-        VirtualFile src = ProjectRootManager.getInstance(getProject()).getContentSourceRoots()[0];
         this.importFromSources(new File(srcPath));
         try {
-            project = doCreateProject(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        VirtualFile virtualFile;
         try {
-            virtualFile = createTestProjectStructure(srcPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        //TODO
         FileDocumentManagerImpl impl = (FileDocumentManagerImpl) FileDocumentManager.getInstance();
-//        new PsiSessionWebProvider(getProject()).getSessionWebs(false);
     }
 }

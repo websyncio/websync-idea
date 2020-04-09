@@ -1,31 +1,22 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.jetbrains.idea.maven;
 
-import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.application.ex.ApplicationManagerEx;
-import com.intellij.openapi.application.impl.ApplicationImpl;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.progress.EmptyProgressIndicator;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.project.ex.ProjectManagerEx;
-import com.intellij.openapi.project.impl.ProjectManagerImpl;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.rt.execution.junit.FileComparisonFailure;
-import com.intellij.serviceContainer.PlatformComponentManagerImpl;
 import com.intellij.testFramework.EdtTestUtil;
 import com.intellij.testFramework.PsiTestUtil;
 import com.intellij.testFramework.RunAll;

@@ -15,29 +15,6 @@ public class GetWebSessionCommand {
         this.webSyncService = webSyncService;
     }
 //
-//    public static void run1(WebSocket conn) {
-//        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        WebSession webSession = PsiWebSessionProvider.getWebSession(project);
-//        Map<String, Component> components = webSession.getComponents();
-//
-//        String componentName = "AttributesTest";
-//        String componentId = components.keySet().stream()
-//                .filter(k -> k.contains(componentName))
-//                .findFirst().get();
-//        PsiComponent psiComponent = (PsiComponent) components.get(componentId);
-//        ComponentDto componentDto = new ComponentDto(psiComponent);
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//        String serializedObject = null;
-//        try {
-//            serializedObject = mapper.writeValueAsString(componentDto);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        conn.send(serializedObject);
-//    }
-
     public void execute() {
         final String[] json = new String[1];
         List<String> projects = webSyncService.getProvider().getProjects().stream().map(Project::getName).collect(Collectors.toList());

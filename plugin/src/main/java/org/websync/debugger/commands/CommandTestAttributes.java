@@ -1,16 +1,13 @@
 package org.websync.debugger.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.websync.WebSyncService;
 import org.websync.debugger.testengine.TestEngine;
 import org.websync.websession.models.ComponentType;
-import org.websync.websession.models.WebSession;
-import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.PsiComponentType;
+import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
 
 import java.util.Arrays;
@@ -26,25 +23,8 @@ public class CommandTestAttributes {
     }
 
     @Test
-    public static void testValidNamesOfAttributesInSeveralComponents() {
-//        // PREREQUISITE
-//        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        List<WebSession> webSession = new PsiWebSessionProvider().getWebSessions(false);
-//
-//        Map<String, Component> components = webSession.getComponents();
-//        List<String> givenComponentNames = Arrays.asList("CustomElement", "CustomBaseElement");
-//
-//        // TESTS FOR EACH GIVEN COMPONENT NAME
-//        givenComponentNames.stream().forEach(name -> {
-//            Method method = null;
-//            try {
-//                method = CommandTestAttributes.class.getDeclaredMethod("testValidNamesOfAttributesInComponent",
-//                        Map.class, String.class);
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//            }
-//            TestEngine.run(method, components, name);
-//        });
+    private void testValidNamesOfAttributesInSeveralComponents() {
+    //TODO
     }
 
     static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
@@ -77,13 +57,14 @@ public class CommandTestAttributes {
     }
 
     @Test
-    public static void testDummyAndFailed() {
+    public void testDummyAndFailed() {
         MatcherAssert.assertThat(true, Matchers.is(false));
     }
 
     @Test
-    public static void testValidNamesOfAttributesInComponent() {
-//        // PREREQUISITES
+    public void testValidNamesOfAttributesInComponent() {
+     //TODO
+// PREREQUISITES
 //        Project project = ProjectManager.getInstance().getOpenProjects()[0];
 //        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
 //        Map<String, Component> components = webSession.getComponents();
@@ -94,4 +75,8 @@ public class CommandTestAttributes {
 //        testValidNamesOfAttributesInComponent(components, givenComponentName);
     }
 
+    @Test
+    public void testValidNamesOfAttributesInPages() {
+    //TODO
+    }
 }

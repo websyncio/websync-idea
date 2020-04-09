@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import static org.websync.jdi.JdiAttribute.JDI_NAME;
 
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
