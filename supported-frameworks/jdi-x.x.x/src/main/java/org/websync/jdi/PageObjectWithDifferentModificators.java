@@ -17,10 +17,10 @@ public class PageObjectWithDifferentModificators extends WebPage {
     public Link publicLink;
     @XPath("//testXpath")
     protected DateTimeSelector protectedDateTimeSelector;
-    @ByText("test")
+    private @ByText("test")
     TextArea packagePrivateTextArea;
     @Css(".testCss")
     private FileInput privateFileInput;
-    @FindBy(xpath = "//test")
+    private @FindBy(xpath = "//test")
     static NumberSelector staticNumberSelector;
 }

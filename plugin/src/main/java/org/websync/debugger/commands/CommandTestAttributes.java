@@ -23,25 +23,8 @@ public class CommandTestAttributes {
     }
 
     @Test
-    public static void testValidNamesOfAttributesInSeveralComponents() {
-//        // PREREQUISITE
-//        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        List<WebSession> webSession = new PsiWebSessionProvider().getWebSessions(false);
-//
-//        Map<String, Component> components = webSession.getComponents();
-//        List<String> givenComponentNames = Arrays.asList("CustomElement", "CustomBaseElement");
-//
-//        // TESTS FOR EACH GIVEN COMPONENT NAME
-//        givenComponentNames.stream().forEach(name -> {
-//            Method method = null;
-//            try {
-//                method = CommandTestAttributes.class.getDeclaredMethod("testValidNamesOfAttributesInComponent",
-//                        Map.class, String.class);
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//            }
-//            TestEngine.run(method, components, name);
-//        });
+    private void testValidNamesOfAttributesInSeveralComponents() {
+    //TODO
     }
 
     static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
@@ -74,13 +57,14 @@ public class CommandTestAttributes {
     }
 
     @Test
-    public static void testDummyAndFailed() {
+    public void testDummyAndFailed() {
         MatcherAssert.assertThat(true, Matchers.is(false));
     }
 
     @Test
-    public static void testValidNamesOfAttributesInComponent() {
-//        // PREREQUISITES
+    public void testValidNamesOfAttributesInComponent() {
+     //TODO
+// PREREQUISITES
 //        Project project = ProjectManager.getInstance().getOpenProjects()[0];
 //        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
 //        Map<String, Component> components = webSession.getComponents();
@@ -92,7 +76,7 @@ public class CommandTestAttributes {
     }
 
     @Test
-    public static void testValidNamesOfAttributesInPages() {
-
+    public void testValidNamesOfAttributesInPages() {
+    //TODO
     }
 }

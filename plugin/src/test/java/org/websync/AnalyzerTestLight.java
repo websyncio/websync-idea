@@ -20,9 +20,9 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
     // see https://www.jetbrains.org/intellij/sdk/docs/basics/testing_plugins/test_project_and_testdata_directories.html
     // first paragraph about 'src'
-    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
-    String javaPath = "main\\java\\";
-    String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
+    private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
+    private String javaPath = "main\\java\\";
+    private String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
 //    String exampleClassFile = "DatesPage.java";
 //    Path path = Paths.get(srcPath);
 
