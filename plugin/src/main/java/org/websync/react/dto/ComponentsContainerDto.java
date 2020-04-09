@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 public class ComponentsContainerDto extends BaseDto {
     public List<ComponentInstanceDto> componentsInstances;
 
+    public ComponentsContainerDto() {
+    }
+
     public ComponentsContainerDto(ComponentContainer container) {
         super(container.getId());
         componentsInstances = container.getComponentInstances()
