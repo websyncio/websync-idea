@@ -1,4 +1,4 @@
-package org.websync.browserConnection;
+package org.websync.websocket;
 
 import lombok.Getter;
 import org.java_websocket.WebSocket;
@@ -6,9 +6,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.websync.logger.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 

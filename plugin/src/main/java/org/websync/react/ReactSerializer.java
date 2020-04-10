@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.websocket.WebSessionSerializer;
 import org.websync.react.dto.*;
 
 import org.websync.websession.models.WebSession;

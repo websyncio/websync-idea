@@ -1,4 +1,4 @@
-package org.websync.browserConnection.commands;
+package org.websync.websocket.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;

@@ -1,9 +1,9 @@
-package org.websync.browserConnection;
+package org.websync.websocket;
 
 import com.google.gson.Gson;
 import com.intellij.openapi.project.Project;
 import org.websync.WebSyncService;
-import org.websync.browserConnection.commands.GetWebSessionCommand;
+import org.websync.websocket.commands.GetWebSessionCommand;
 
 import java.util.stream.Collectors;
 
