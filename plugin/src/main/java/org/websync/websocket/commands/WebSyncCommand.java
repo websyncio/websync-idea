@@ -13,6 +13,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * JSON commands are processed by the WebSyncCommand class in this way:
+ * {"command":"get-modules", ...} is mapped to GetModulesCommand
+ * {"command":"update-component-instance", ...} is mapped to UpdateComponentInstanceCommand
+ * etc
+ */
 public abstract class WebSyncCommand {
 
     @Getter
