@@ -29,11 +29,16 @@ public abstract class WebSyncCommand {
     public Object execute(@NotNull String inputMessageString) throws WebSyncException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        final Message message;
         try {
-            Message message = mapper.readValue(inputMessageString, getMessageClass());
-            return execute(message);
-        } catch (IOException e) {
+            message = mapper.readValue(inputMessageString, getMessageClass());
+        } catch (Exception e) {
             throw new WebSyncException("Cannot read command from '" + inputMessageString + "'", e);
+        }
+        try {
+            return execute(message);
+        } catch (Exception e) {
+            throw new WebSyncException("Command failed", e);
         }
     }
 
