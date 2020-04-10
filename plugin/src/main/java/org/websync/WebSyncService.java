@@ -2,13 +2,13 @@ package org.websync;
 import com.intellij.openapi.project.Project;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.websync.browserConnection.BrowserConnection;
-import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.websocket.BrowserConnection;
+import org.websync.websocket.WebSessionSerializer;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.logger.Logger;
 import org.websync.react.ReactSerializer;
-import org.websync.browserConnection.CommandHandler;
+import org.websync.websocket.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionProvider;
 

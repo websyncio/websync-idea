@@ -1,4 +1,4 @@
-package org.websync.browserConnection;
+package org.websync.websocket;
 
 import org.websync.websession.models.WebSession;
 
