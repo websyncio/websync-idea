@@ -1,12 +1,9 @@
-package org.websync.browserConnection;
+package org.websync.websocket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.intellij.openapi.project.Project;
-import org.apache.commons.lang.NotImplementedException;
 import org.websync.WebSyncService;
-import org.websync.browserConnection.commands.GetWebSessionCommand;
-import org.websync.websession.models.WebSession;
+import org.websync.websocket.commands.GetWebSessionCommand;
 
 import java.util.stream.Collectors;
 
@@ -37,12 +34,5 @@ public class CommandHandler {
                 break;
             }
         }
-    }
-
-    public Object deserialize(String data) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        Object object = mapper.readValue(data);
-//        return null;
-        return webSyncService.getSerializer().deserialize(data);
     }
 }

@@ -12,7 +12,7 @@ import com.intellij.psi.util.InheritanceUtil;
 import org.jetbrains.annotations.NotNull;
 import org.websync.logger.Logger;
 import org.websync.WebSyncService;
-import org.websync.browserConnection.CommandHandler;
+import org.websync.websocket.CommandHandler;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
 

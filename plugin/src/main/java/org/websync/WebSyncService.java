@@ -2,13 +2,13 @@ package org.websync;
 import com.intellij.openapi.project.Project;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.websync.browserConnection.BrowserConnection;
-import org.websync.browserConnection.CommandHandler;
-import org.websync.browserConnection.WebSessionSerializer;
+import org.websync.websocket.BrowserConnection;
+import org.websync.websocket.WebSessionSerializer;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.logger.Logger;
 import org.websync.react.ReactSerializer;
+import org.websync.websocket.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionProvider;
 
@@ -52,12 +52,8 @@ public class WebSyncService {
     }
 
     private BrowserConnection createBrowserConnection(CommandHandler commandHandler) {
-        return new BrowserConnection(getPortFromConfig(), commandHandler);
-    }
-
-    public static int getPortFromConfig() {
         // TODO: get port from settings
-        return 1804;
+        return new BrowserConnection( 1804, commandHandler);
     }
 
     @NotNull
