@@ -12,7 +12,6 @@ import com.intellij.psi.util.InheritanceUtil;
 import org.jetbrains.annotations.NotNull;
 import org.websync.logger.Logger;
 import org.websync.WebSyncService;
-import org.websync.websocket.CommandHandler;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
 
@@ -43,7 +42,6 @@ public class WebsyncDocumentListener implements DocumentListener {
         boolean isComponent = this.isComponent(psiClass);
         Logger.print(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
 
-        webSyncService.getCommandHandler().handle(CommandHandler.CMD_GET_PAGEOBJECTS);
     }
 
     private boolean isComponent(PsiClass psiClass) {

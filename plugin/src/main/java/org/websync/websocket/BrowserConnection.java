@@ -1,23 +1,22 @@
 package org.websync.websocket;
 
-import lombok.Getter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.websync.WebSyncException;
 import org.websync.logger.Logger;
+import org.websync.react.ReactSerializer;
+import org.websync.websocket.commands.WebSyncCommand;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
 // https://github.com/TooTallNate/Java-WebSocket/blob/master/src/main/example/ChatServer.java
 public class BrowserConnection extends WebSocketServer {
-    @Getter
-    private CommandHandler commandHandler;
 
-    public BrowserConnection(int port, CommandHandler commandHandler) {
+    public BrowserConnection(int port) {
         super(new InetSocketAddress(port));
-        this.commandHandler = commandHandler;
     }
 
     @Override
@@ -35,8 +34,25 @@ public class BrowserConnection extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String message) {
         Logger.print("received message from " + conn.getRemoteSocketAddress() + ": " + message);
-        if (null != commandHandler) {
-            commandHandler.handle(message);
+        Object replyObject;
+        WebSyncCommand command = WebSyncCommand.createByText(message);
+        if(command == null) {
+            String msg = message.replace('"', '\'');
+            broadcast("{\"status\":254,\"error\":\"Unknown message: " + msg + "\"");
+            return;
+        }
+        try {
+            Object result = command.execute(message);
+            replyObject = new OkayReply(result);
+        } catch (WebSyncException e) {
+            e.printStackTrace();
+            replyObject = new ErrorReply(100, e.getMessage());
+        }
+        try {
+            broadcast(new ReactSerializer().serialize(replyObject));
+        } catch (JsonProcessingException e) {
+            Logger.print("CANNOT serialize reply: " + e.getMessage());
+            broadcast("{\"status\":255,\"error\":\"CANNOT serialize reply\"");
         }
     }
 
@@ -55,18 +71,23 @@ public class BrowserConnection extends WebSocketServer {
         Logger.print("server started successfully");
     }
 
+    static class ErrorReply {
+        public int status;
+        public String error;
 
-    public static void main(String[] args) throws IOException {
-        int port = 1804;
+        public ErrorReply(int status, String error) {
+            if(status == 0) throw new IllegalArgumentException("must not be 0");
+            this.status = status;
+            this.error = error;
+        }
+    }
 
-        BrowserConnection s = new BrowserConnection(port, null);
-        s.start();
-        Logger.print("ChatServer started on port: " + s.getPort());
+    static class OkayReply {
+        public int status = 0;
+        public Object data;
 
-
-        while (true) {
-            //TODO if neccesary; content removed,Reason: all content were commented out
-//            }
+        public OkayReply(Object data) {
+            this.data = data;
         }
     }
 }
