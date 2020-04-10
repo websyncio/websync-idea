@@ -58,6 +58,7 @@ public class FileParser {
                 break;
             default:
                 Logger.print(String.format("COMMAND '%s' is unknown", command));
+                break;
         }
         long endTime = System.nanoTime();
         Logger.print(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
