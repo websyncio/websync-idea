@@ -1,14 +1,12 @@
 package org.websync.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.logger.Logger;
+import org.websync.react.ReactSerializer;
 import org.websync.websocket.commands.WebSyncCommand;
 
 import java.net.InetSocketAddress;
@@ -51,18 +49,11 @@ public class BrowserConnection extends WebSocketServer {
             replyObject = new ErrorReply(100, e.getMessage());
         }
         try {
-            broadcast(serialize(replyObject));
+            broadcast(new ReactSerializer().serialize(replyObject));
         } catch (JsonProcessingException e) {
             Logger.print("CANNOT serialize reply: " + e.getMessage());
             broadcast("{\"status\":255,\"error\":\"CANNOT serialize reply\"");
         }
-    }
-
-    @Nullable
-    public String serialize(Object o) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        return mapper.writeValueAsString(o);
     }
 
     @Override

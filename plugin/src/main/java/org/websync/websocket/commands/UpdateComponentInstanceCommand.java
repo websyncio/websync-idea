@@ -2,7 +2,6 @@ package org.websync.websocket.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.websync.WebSyncException;
 import org.websync.react.dto.ComponentInstanceDto;
 
 public class UpdateComponentInstanceCommand extends WebSyncCommand {
@@ -12,16 +11,13 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) {
         ComponentInstanceDto data = ((Message) inputMessage).data;
         int lastDot = data.id.lastIndexOf('.');
         String className = data.id.substring(0, lastDot);
         String oldFieldName = data.id.substring(lastDot + 1);
         String newFieldName = data.name;
-        String message = getWebSyncService().updateComponentInstance(className, oldFieldName, newFieldName);
-        if(message != null) {
-            throw new WebSyncException(message);
-        }
+        getWebSyncService().updateComponentInstance(className, oldFieldName, newFieldName);
         return null;
     }
 }

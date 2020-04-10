@@ -9,15 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * JSON commands are processed by the WebSyncCommand class in this way:
- * {"command":"get-modules", ...} is mapped to GetModulesCommand
- * {"command":"update-component-instance", ...} is mapped to UpdateComponentInstanceCommand
- * etc
- */
 public abstract class WebSyncCommand {
 
     @Getter
@@ -34,16 +29,11 @@ public abstract class WebSyncCommand {
     public Object execute(@NotNull String inputMessageString) throws WebSyncException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        final Message message;
         try {
-            message = mapper.readValue(inputMessageString, getMessageClass());
-        } catch (Exception e) {
-            throw new WebSyncException("Cannot read command from '" + inputMessageString + "'", e);
-        }
-        try {
+            Message message = mapper.readValue(inputMessageString, getMessageClass());
             return execute(message);
-        } catch (Exception e) {
-            throw new WebSyncException("Command failed", e);
+        } catch (IOException e) {
+            throw new WebSyncException("Cannot read command from '" + inputMessageString + "'", e);
         }
     }
 
