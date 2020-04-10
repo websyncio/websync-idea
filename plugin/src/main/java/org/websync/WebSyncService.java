@@ -1,16 +1,20 @@
 package org.websync;
+
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.search.GlobalSearchScope;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.websync.websocket.BrowserConnection;
-import org.websync.websocket.WebSessionSerializer;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.logger.Logger;
-import org.websync.react.ReactSerializer;
-import org.websync.websocket.CommandHandler;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionProvider;
+import org.websync.websocket.BrowserConnection;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,10 +28,6 @@ public class WebSyncService {
     @Getter
     private WebSessionProvider provider;
     private DebugFileWatcher debugFileWatcher;
-    @Getter
-    private WebSessionSerializer serializer;
-    @Getter
-    private CommandHandler commandHandler;
 
     public WebSyncService() {
         init();
@@ -38,10 +38,7 @@ public class WebSyncService {
         this.provider = new PsiWebSessionProvider();
 
         // .init browser connection
-        this.commandHandler = new CommandHandler(this);
-        this.browserConnection = createBrowserConnection(commandHandler);
-
-        this.serializer = new ReactSerializer();
+        this.browserConnection = createBrowserConnection();
 
         // .init debug file watcher
         this.debugFileWatcher = createDebugFileWatcher();
@@ -51,9 +48,13 @@ public class WebSyncService {
         this.debugFileWatcher.start();
     }
 
-    private BrowserConnection createBrowserConnection(CommandHandler commandHandler) {
+    private BrowserConnection createBrowserConnection() {
+        return new BrowserConnection(getPortFromConfig());
+    }
+
+    public static int getPortFromConfig() {
         // TODO: get port from settings
-        return new BrowserConnection( 1804, commandHandler);
+        return 1804;
     }
 
     @NotNull
@@ -83,7 +84,7 @@ public class WebSyncService {
                 .getParent();
     }
 
-    public void dispose() throws IOException,InterruptedException {
+    public void dispose() throws IOException, InterruptedException {
         browserConnection.stop();
         debugFileWatcher.stop();
     }
@@ -96,4 +97,20 @@ public class WebSyncService {
         this.provider.removeProject(project);
     }
 
+    public void updateComponentInstance(String className, String oldFieldName, String newFieldName) {
+        final Project project = provider.getProjects().get(0);
+        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
+        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
+
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
+            if (componentPsiClass == null) {
+                return;
+            }
+            PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
+            if (psiField != null) {
+                psiField.setName(newFieldName);
+            }
+        });
+    }
 }
