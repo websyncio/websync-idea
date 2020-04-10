@@ -21,7 +21,7 @@
     </applicationListeners>
     <idea-version since-build="193"/>
     <actions>
-        <action id="org.websync.SendTestEventAction" class="org.websync.SendTestEventAction" text="Send test event"
+        <action id="org.websync.SendTestEventAction" class="org.websync.SendTestEventAction" text="Send Test Event"
                 description="Send test event to websync-idea plugin">
             <add-to-group group-id="HelpMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt W"/>
