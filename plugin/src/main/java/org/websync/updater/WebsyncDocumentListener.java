@@ -30,7 +30,9 @@ public class WebsyncDocumentListener implements DocumentListener {
         PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
         Project project = provider.getProjects().get(0);
 
-        Logger.print(String.format("documentChanged: '%s'", file.getPath()));
+        if(file.getPath()!=null) {
+            Logger.print(String.format("documentChanged: '%s'", file.getPath()));
+        }
 
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         Logger.print(String.format("psiFile of this file: '%s'", psiFile));
