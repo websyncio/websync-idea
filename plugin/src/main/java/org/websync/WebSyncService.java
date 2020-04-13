@@ -1,6 +1,7 @@
 package org.websync;
 
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.WriteAction;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -96,20 +97,25 @@ public class WebSyncService {
         this.provider.removeProject(project);
     }
 
-    public void updateComponentInstance(String className, String oldFieldName, String newFieldName) {
+    public String updateComponentInstance(String className, String oldFieldName, String newFieldName) {
         final Project project = provider.getProjects().get(0);
 
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-            GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
-            PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
-            if (componentPsiClass == null) {
-                return;
-            }
-            PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
-            if (psiField != null) {
-                psiField.setName(newFieldName);
-            }
+        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
+        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
+        PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
+        if (componentPsiClass == null) {
+            return "Component not found: " + className;
+        }
+        PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
+        if (psiField == null) {
+            return "Field " + oldFieldName + " not found in component: " + className;
+        }
+        WriteAction.runAndWait(() -> {
+            WriteCommandAction.runWriteCommandAction(project,
+                    className + ": rename " + oldFieldName + " to " + newFieldName, "WebSyncAction", () -> {
+                        psiField.setName(newFieldName);
+                    });
         });
+        return null;
     }
 }
