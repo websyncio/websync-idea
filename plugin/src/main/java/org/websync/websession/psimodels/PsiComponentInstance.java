@@ -41,7 +41,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     public void fill() {
-        id = parentId + "." + psiField.toString();
+        id = parentId + ":" + psiField.getName();
     }
 
     public Locator getLocator() {
