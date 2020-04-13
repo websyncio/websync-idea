@@ -1,0 +1,40 @@
+language: java
+
+os: linux
+dist: trusty
+jdk: oraclejdk8
+before_install:
+ - chmod +x gradlew
+ - wget https://services.gradle.org/distributions/gradle-4.10-bin.zip
+ - unzip -qq gradle-4.10-bin.zip
+ - echo $PWD
+ - export GRADLE_HOME=$PWD/gradle-4.10
+ - export PATH=$GRADLE_HOME/bin:$PATH
+ - gradle -v
+
+
+#before_script:
+#  - javac -J-Xmx512m -version
+env:
+  global:
+    - CI=true
+    - CODECOV_TOKEN="a094f593-1d18-4315-828f-ab4eba93646a"
+
+install: skip
+
+ 
+script:
+  - cd ./plugin
+  - ls -la
+  - export GRADLE_HOME=$PWD/gradle-4.10
+  - export PATH=$GRADLE_HOME/bin:$PATH
+  - echo $GRADLE_HOME
+  - gradle-4.10/bin/gradle clean test build jacocoTestReport --refresh-dependencies
+#  - ./gradlew clean build --refresh-dependencies
+
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  
+
+  
