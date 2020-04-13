@@ -22,13 +22,4 @@ public class PsiWebSession extends WebSession {
         this.pageTypes = pages.stream()
                 .collect(Collectors.toMap(PsiPageType::getId, page -> page));
     }
-
-    public void updateComponentInstanceInType(String id, String oldName, String newName) {
-        componentTypes.get(id).updateComponentInstance(oldName, newName);
-    }
-
-    public void updateComponentInstanceInPage(String id, String oldName, String newName) {
-        pageTypes.get(id).updateComponentInstance(oldName, newName);
-    }
-
 }
