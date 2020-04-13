@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
