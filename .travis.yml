@@ -4,7 +4,6 @@ os: linux
 dist: trusty
 jdk: oraclejdk8
 before_install:
- - chmod +x gradlew
  - wget https://services.gradle.org/distributions/gradle-4.10-bin.zip
  - unzip -qq gradle-4.10-bin.zip
  - echo $PWD
@@ -29,7 +28,8 @@ script:
   - export PATH=$GRADLE_HOME/bin:$PATH
   - echo $GRADLE_HOME
   - cd ./plugin
-  - gradle-4.10/bin/gradle clean test build jacocoTestReport --refresh-dependencies
+  - chmod +x gradlew
+  - gradle clean test build jacocoTestReport --refresh-dependencies
 #  - ./gradlew clean build --refresh-dependencies
 
 
