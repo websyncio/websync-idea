@@ -29,7 +29,7 @@ script:
   - echo $GRADLE_HOME
   - cd ./plugin
   - chmod +x gradlew
-  - gradle-4.10/bin/gradle clean test build jacocoTestReport --refresh-dependencies
+  - gradle clean test build jacocoTestReport --refresh-dependencies
 #  - ./gradlew clean build --refresh-dependencies
 
 
