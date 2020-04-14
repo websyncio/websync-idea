@@ -26,10 +26,6 @@ public class CommandTestSerializer {
         WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
 
         WebSessionProvider provider = webSyncService.getProvider();
-        String json = webSyncService.getSerializer().serialize(provider.getWebSession(
-                provider.getProjects().get(0)));
-
-        WebSession websession = webSyncService.getSerializer().deserialize(json);
 
         WebSession webSession0 = provider.getWebSessions(true).get(0);
         WebSession webSession1 = provider.getWebSessions(true).get(0);

@@ -6,5 +6,5 @@ import lombok.Setter;
 public abstract class PsiModelWithId<T> {
     @Getter
     @Setter
-    public String id;
+    private String id;
 }

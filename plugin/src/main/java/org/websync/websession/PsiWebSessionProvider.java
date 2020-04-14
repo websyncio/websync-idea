@@ -93,7 +93,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
 
     private Collection<PsiPageType> getPages(Project project) {
         long startTime = System.nanoTime();
-        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.className);
         Collection<PsiPageType> pages = psiClasses.stream().map(c -> {
             PsiPageType page = new PsiPageType(c);
             page.fill();
@@ -109,7 +109,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
     private Collection<PsiComponentType> getComponents(Project project) {
         long startTime = System.nanoTime();
 
-        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.className);
         Collection<PsiComponentType> components = psiClasses.stream().map(c -> {
             PsiComponentType component = new PsiComponentType(c);
             component.fill();
