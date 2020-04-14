@@ -8,11 +8,14 @@ import java.util.stream.Collectors;
 
 public class AnnotationDto {
 
-    class Parameter {
+    static class Parameter {
         @Getter
         private String name;
         @Getter
         private List<Object> values;
+
+        public Parameter() {
+        }
 
         public Parameter(String name, List<Object> values) {
             this.name = name;
@@ -25,6 +28,9 @@ public class AnnotationDto {
     @Getter
     private List<Parameter> parameters;
 
+    public AnnotationDto() {
+    }
+
     public AnnotationDto(AnnotationInstance attributeInstance) {
         name = attributeInstance.getCodeReferenceElement();
 
@@ -34,7 +40,7 @@ public class AnnotationDto {
 
             for (int i = 0; i < values.size(); i++) {
                 Object object = values.get(i);
-                if (AnnotationInstance.class.isInstance(object)) {
+                if (object instanceof AnnotationInstance) {
                     AnnotationDto annotationDto = new AnnotationDto((AnnotationInstance) object);
                     values.set(i, annotationDto);
                 }

@@ -12,7 +12,6 @@ import com.intellij.psi.util.InheritanceUtil;
 import org.jetbrains.annotations.NotNull;
 import org.websync.logger.Logger;
 import org.websync.WebSyncService;
-import org.websync.websocket.CommandHandler;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
 
@@ -25,6 +24,9 @@ public class WebsyncDocumentListener implements DocumentListener {
         Document document = event.getDocument();
         FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
         VirtualFile file = fileDocumentManager.getFile(document);
+        if(file == null) {
+            return;
+        }
 
         WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
         PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
@@ -42,17 +44,16 @@ public class WebsyncDocumentListener implements DocumentListener {
         boolean isComponent = this.isComponent(psiClass);
         Logger.print(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
 
-        webSyncService.getCommandHandler().handle(CommandHandler.CMD_GET_PAGEOBJECTS);
     }
 
     private boolean isComponent(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.className));
     }
 
     private boolean isPage(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.className));
     }
 
     private PsiClass getPsiClassFromPsiFile(PsiFile psiFile) {

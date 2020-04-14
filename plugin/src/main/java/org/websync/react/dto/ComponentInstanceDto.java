@@ -7,6 +7,9 @@ public class ComponentInstanceDto extends BaseDto {
     public String name;
     public AnnotationDto initializationAttribute;
 
+    public ComponentInstanceDto() {
+    }
+
     public ComponentInstanceDto(ComponentInstance componentInstance) {
         super(componentInstance.getId());
         componentTypeId = componentInstance.getComponentTypeId();

@@ -21,13 +21,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.websync.jdi.JdiAttribute.JDI_JSITE;
-import static org.websync.jdi.JdiElement.*;
+import static org.websync.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
+import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 
 public class PsiWebSessionProvider implements WebSessionProvider {
     private final List<Project> projects;
 
     public PsiWebSessionProvider() {
-        projects = new ArrayList<Project>();
+        projects = new ArrayList<>();
     }
 
     @Override
@@ -56,17 +57,17 @@ public class PsiWebSessionProvider implements WebSessionProvider {
 
     @Override
     public void addProject(Project project) {
-        this.projects.add(project);
+        projects.add(project);
     }
 
     @Override
     public List<Project> getProjects() {
-        return this.projects;
+        return projects;
     }
 
     @Override
     public void removeProject(Project project) {
-        this.projects.remove(project);
+        projects.remove(project);
     }
 
     private Collection<PsiWebsite> getWebsites(Project project) {
@@ -92,7 +93,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
 
     private Collection<PsiPageType> getPages(Project project) {
         long startTime = System.nanoTime();
-        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_WEB_PAGE.className);
         Collection<PsiPageType> pages = psiClasses.stream().map(c -> {
             PsiPageType page = new PsiPageType(c);
             page.fill();
@@ -108,7 +109,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
     private Collection<PsiComponentType> getComponents(Project project) {
         long startTime = System.nanoTime();
 
-        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.value);
+        Collection<PsiClass> psiClasses = getDerivedPsiClasses(project, JDI_UI_BASE_ELEMENT.className);
         Collection<PsiComponentType> components = psiClasses.stream().map(c -> {
             PsiComponentType component = new PsiComponentType(c);
             component.fill();

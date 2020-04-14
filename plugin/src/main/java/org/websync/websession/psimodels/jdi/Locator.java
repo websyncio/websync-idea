@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.websync.jdi.JdiAttribute.*;
+
 public class Locator {
     private PsiAnnotation annotation;
     private List<PsiNameValuePair> attributes;
@@ -41,13 +43,8 @@ public class Locator {
     }
 
     private void setup() {
-        JdiAttribute attr;
-        try {
-            attr = JdiAttribute.valueOfStr(annotation.getQualifiedName());
-        } catch (Exception e) {
-            return;
-        }
-        switch (attr) {
+        JdiAttribute attribute = getByClassName(annotation.getQualifiedName());
+        switch (attribute) {
             case JDI_BY_TEXT: {
                 ByText locator = new ByText();
                 locator.value = getAnnotationValue("value");

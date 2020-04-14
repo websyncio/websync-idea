@@ -160,7 +160,7 @@ public abstract class MavenTestCase extends UsefulTestCase {
         if (files == null) return;
 
         for (File file: files) {
-            Logger.print(file.getAbsolutePath());
+//            Logger.print(file.getAbsolutePath());
 
             if (file.isDirectory()) {
                 printDirectoryContent(file);
@@ -574,7 +574,7 @@ public abstract class MavenTestCase extends UsefulTestCase {
             toPrint += ", because " + message;
         }
         toPrint += ": " + getClass().getSimpleName() + "." + getName();
-        Logger.print(toPrint);
+        //Logger.print(toPrint);
     }
 
     protected <R, E extends Throwable> R runWriteAction(@NotNull ThrowableComputable<R, E> computable) throws E {
