@@ -97,25 +97,23 @@ public class WebSyncService {
         this.provider.removeProject(project);
     }
 
-    public String updateComponentInstance(String className, String oldFieldName, String newFieldName) {
+    public void updateComponentInstance(String className, String oldFieldName, String newFieldName) throws WebSyncException {
         final Project project = provider.getProjects().get(0);
 
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
-        PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
-        if (componentPsiClass == null) {
-            return "Component not found: " + className;
-        }
-        PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
-        if (psiField == null) {
-            return "Field " + oldFieldName + " not found in component: " + className;
-        }
         WriteAction.runAndWait(() -> {
-            WriteCommandAction.runWriteCommandAction(project,
-                    className + ": rename " + oldFieldName + " to " + newFieldName, "WebSyncAction", () -> {
-                        psiField.setName(newFieldName);
-                    });
+            PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
+            if (componentPsiClass == null) {
+                throw new WebSyncException("Component not found: " + className);
+            }
+            PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
+            if (psiField == null) {
+                throw new WebSyncException("Field " + oldFieldName + " not found in component: " + className);
+            }
+            WriteCommandAction.runWriteCommandAction(project, className + ": rename " + oldFieldName + " to " + newFieldName, "WebSyncAction", () -> {
+                psiField.setName(newFieldName);
+            });
         });
-        return null;
     }
 }

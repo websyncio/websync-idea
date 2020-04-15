@@ -18,10 +18,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         String className = data.id.substring(0, lastDot);
         String oldFieldName = data.id.substring(lastDot + 1);
         String newFieldName = data.name;
-        String message = getWebSyncService().updateComponentInstance(className, oldFieldName, newFieldName);
-        if(message != null) {
-            throw new WebSyncException(message);
-        }
+        getWebSyncService().updateComponentInstance(className, oldFieldName, newFieldName);
         return null;
     }
 }
