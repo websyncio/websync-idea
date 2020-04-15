@@ -14,6 +14,14 @@ import java.net.URISyntaxException;
 
 public class SendTestEventAction extends AnAction {
 
+            /*
+             * temporary
+             @SuppressWarnings to fade out Codacy
+             * warning Pattern:Document empty method body
+             * //ToDO: add valuable comment
+             * @param message
+             */
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         final FileChooserDescriptor desc = new FileChooserDescriptor(true, false, false, false, false, false);
@@ -34,25 +42,29 @@ public class SendTestEventAction extends AnAction {
 
     }
 
+    @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
     private WebSocketClient createClient() throws URISyntaxException {
         URI uri = new URI("http://127.0.0.1:" + WebSyncService.getPortFromConfig());
         return new WebSocketClient(uri) {
             @Override
+            @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
             public void onOpen(ServerHandshake handshakedata) {
 
             }
 
-            @Override
+            @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
             public void onMessage(String message) {
 
             }
 
             @Override
+            @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
             public void onClose(int code, String reason, boolean remote) {
 
             }
 
             @Override
+            @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
             public void onError(Exception ex) {
 
             }

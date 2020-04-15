@@ -9,7 +9,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContextWrapper;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiElement;
@@ -24,7 +23,6 @@ import java.util.Arrays;
  */
 public class UpdateElement extends AnAction {
 
-    private static final Logger log = Logger.getInstance(UpdateElement.class);
     private static final String PAGE_AWARE_BY_ANNOTATION = "com.epam.sha.selenium.PageAwareFindBy";
 
     @Override
