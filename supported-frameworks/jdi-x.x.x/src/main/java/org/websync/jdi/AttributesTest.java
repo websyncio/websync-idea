@@ -19,7 +19,7 @@ public class AttributesTest extends Section {
             fromCellToRow = "fromCellToRow1", size = 1, count = 1, firstColumnIndex = 1, columnsMapping = {1,2,3})
     Label jTable;
     @UI(value = "value1", group = "group1")
-    Label ui(value = "value1");
+    Label ui;
     @UI.List({@UI(value = "value1", group = "group1"), @UI(value = "value1", group = "group1")})
     Label uiList;
     @WithText(value = "value1")
