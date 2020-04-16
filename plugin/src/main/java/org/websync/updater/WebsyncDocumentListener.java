@@ -44,6 +44,8 @@ public class WebsyncDocumentListener implements DocumentListener {
         boolean isComponent = this.isComponent(psiClass);
         Logger.print(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
 
+//        webSyncService.getCommandHandler().handle(CommandHandler.CMD_GET_PAGEOBJECTS);
+        webSyncService.getBrowserConnection().broadcast();
     }
 
     private boolean isComponent(PsiClass psiClass) {
