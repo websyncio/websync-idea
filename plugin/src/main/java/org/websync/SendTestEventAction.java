@@ -37,8 +37,8 @@ public class SendTestEventAction extends AnAction {
             /*TODO: implement
             /*
             not implemented yet
-            Document empty method bodyn. (PMD 3.4)
             attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
              */
             public void onOpen(ServerHandshake handshakedata) {
             }
@@ -47,8 +47,8 @@ public class SendTestEventAction extends AnAction {
             /*TODO: implement
             /*
             not implemented yet
-            Document empty method bodyn. (PMD 3.4)
             attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
              */
             public void onMessage(String message) {
             }
@@ -57,8 +57,8 @@ public class SendTestEventAction extends AnAction {
             /*TODO: implement
             /*
             not implemented yet
-            Document empty method bodyn. (PMD 3.4)
             attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
              */
             public void onClose(int code, String reason, boolean remote) {
             }
@@ -67,8 +67,8 @@ public class SendTestEventAction extends AnAction {
             /*TODO: implement
             /*
             not implemented yet
-            Document empty method bodyn. (PMD 3.4)
             attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
              */
             public void onError(Exception ex) {
             }
