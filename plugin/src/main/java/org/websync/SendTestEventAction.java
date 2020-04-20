@@ -33,16 +33,7 @@ public class SendTestEventAction extends AnAction {
         URI uri = new URI("http://127.0.0.1:" + WebSyncService.getPortFromConfig());
         return new WebSocketClient(uri) {
             @Override
-            //temporary comment
-            /*TODO: implement
-            /*
-            not implemented yet
-            attempt to fade out Codacy Warning:
-            Document empty method bodyn. (PMD 3.4)
-             */
             public void onOpen(ServerHandshake handshakedata) {
-            }
-            @Override
             //temporary comment
             /*TODO: implement
             /*
@@ -50,9 +41,9 @@ public class SendTestEventAction extends AnAction {
             attempt to fade out Codacy Warning:
             Document empty method bodyn. (PMD 3.4)
              */
+            }
+            @Override
             public void onMessage(String message) {
-            }
-            @Override
             //temporary comment
             /*TODO: implement
             /*
@@ -60,9 +51,9 @@ public class SendTestEventAction extends AnAction {
             attempt to fade out Codacy Warning:
             Document empty method bodyn. (PMD 3.4)
              */
+            }
+            @Override
             public void onClose(int code, String reason, boolean remote) {
-            }
-            @Override
             //temporary comment
             /*TODO: implement
             /*
@@ -70,7 +61,16 @@ public class SendTestEventAction extends AnAction {
             attempt to fade out Codacy Warning:
             Document empty method bodyn. (PMD 3.4)
              */
+            }
+            @Override
             public void onError(Exception ex) {
+            //temporary comment
+            /*TODO: implement
+            /*
+            not implemented yet
+            attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
+             */
             }
         };
     }
