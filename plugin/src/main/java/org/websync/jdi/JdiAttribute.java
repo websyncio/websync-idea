@@ -68,4 +68,13 @@ public enum JdiAttribute {
     public String getShortName() {
         return className.substring(className.lastIndexOf(".") + 1);
     }
+
+    public static String getQualifiedNameByShortName(String shortName) {
+        for (JdiAttribute attr : values()) {
+            if(attr.getShortName().equals(shortName)) {
+                return attr.className;
+            }
+        }
+        return null;
+    }
 }
