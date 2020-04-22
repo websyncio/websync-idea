@@ -12,6 +12,7 @@ import org.websync.jdi.JdiAttribute;
 import org.websync.logger.Logger;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
+import org.websync.websocket.BrowserConnection;
 
 import java.util.LinkedHashMap;
 
@@ -30,8 +31,9 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         String newFieldName = data.name;
         updateComponentInstance(className, oldFieldName, newFieldName);
         if (data.initializationAttribute.getParameters().size() > 1) {
-            Logger.print("Annotation has more than one parameters. Processing of that case is not implemented.");
-            return null;
+            String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
+            Logger.print(message);
+            return new BrowserConnection.ErrorReply(101, message);
         }
         updateComponentInstanceWithSingleAttribute(className, oldFieldName, data.initializationAttribute);
         return null;
