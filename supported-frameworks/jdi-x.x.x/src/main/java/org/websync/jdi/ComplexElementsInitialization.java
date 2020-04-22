@@ -13,7 +13,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable;
 
 public class ComplexElementsInitialization extends WebPage {
 
-    @JDropdown("tes12t")
+    @JDropdown("test")
     public Dropdown initializedDropdown;
     @JDropdown(root = "test", value = "test1", list = "test2", expand = ".expand", autoclose = true)
     public DropdownExpand initializedDropdownExpand;
