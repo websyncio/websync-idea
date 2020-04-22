@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.jdi.JdiAttribute;
+import org.websync.logger.Logger;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
 
@@ -28,6 +29,10 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         String oldFieldName = data.id.substring(lastDot + 1);
         String newFieldName = data.name;
         updateComponentInstance(className, oldFieldName, newFieldName);
+        if (data.initializationAttribute.getParameters().size() > 1) {
+            Logger.print("Annotation has more than one parameters. Processing of that case is not implemented.");
+            return null;
+        }
         updateComponentInstanceWithSingleAttribute(className, oldFieldName, data.initializationAttribute);
         return null;
     }
@@ -55,7 +60,8 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         });
     }
 
-    public void updateComponentInstanceWithSingleAttribute(String className, String fieldName, AnnotationDto annotationDto) throws WebSyncException {
+    public void updateComponentInstanceWithSingleAttribute(String className, String fieldName,
+                                                           AnnotationDto annotationDto) throws WebSyncException {
         final Project project = getWebSyncService().getProvider().getProjects().get(0);
 
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
@@ -74,6 +80,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             if (attributeQualifiedName == null) {
                 return;
             }
+
             LinkedHashMap params = ((LinkedHashMap) annotationDto.getParameters().get(0).getValues().get(0));
             WriteCommandAction.runWriteCommandAction(project,
                     className + ": update single annotation of field '" + fieldName +
