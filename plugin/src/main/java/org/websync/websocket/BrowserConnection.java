@@ -80,7 +80,7 @@ public class BrowserConnection extends WebSocketServer {
         Logger.print("server started successfully");
     }
 
-    static class ErrorReply {
+    public static class ErrorReply {
         public int status;
         public String error;
 
@@ -91,7 +91,7 @@ public class BrowserConnection extends WebSocketServer {
         }
     }
 
-    static class OkayReply {
+    public static class OkayReply {
         public int status = 0;
         public Object data;
 

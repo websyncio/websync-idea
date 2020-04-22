@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class AnnotationDto {
 
-    static class Parameter {
+    public static class Parameter {
         @Getter
         private String name;
         @Getter
