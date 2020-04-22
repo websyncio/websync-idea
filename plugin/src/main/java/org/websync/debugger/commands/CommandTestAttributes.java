@@ -22,11 +22,6 @@ public class CommandTestAttributes {
         });
     }
 
-    @Test
-    private void testValidNamesOfAttributesInSeveralComponents() {
-    //TODO
-    }
-
     static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
@@ -54,29 +49,5 @@ public class CommandTestAttributes {
                 "Frame", "Name", "Title");
 
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
-    }
-
-    @Test
-    public void testDummyAndFailed() {
-        MatcherAssert.assertThat(true, Matchers.is(false));
-    }
-
-    @Test
-    public void testValidNamesOfAttributesInComponent() {
-     //TODO
-// PREREQUISITES
-//        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
-//        Map<String, Component> components = webSession.getComponents();
-//
-//        // TEST FOR GIVEN COMPONENT NAME
-//        String givenComponentName = "AttributesTest";
-//
-//        testValidNamesOfAttributesInComponent(components, givenComponentName);
-    }
-
-    @Test
-    public void testValidNamesOfAttributesInPages() {
-    //TODO
     }
 }
