@@ -24,8 +24,6 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
     public void test0() {
         Project project = null;
         try {
-            //TODO:
-            //Add exceptionType to catch
             myProject = ProjectManager.getInstance().loadAndOpenProject(srcPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,18 +33,6 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
         importFromSources(file);
         this.importFromSources(new File(srcPath));
-        try {
-            //TODO:
-            //Add exceptionType to catch
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            //TODO:
-            //Add exceptionType to catch
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //TODO:include reasonable assertion
         /*
