@@ -17,6 +17,6 @@ public class InitializedSetOfClasses {
     @Url("page-with-complex-elements.html")
     private ComplexElementsInitialization privatePageObject;
 
-    @Url("another-inherited-page.html")
+    private @Url("another-inherited-page.html")
     static PageObjectWithDifferentModificators staticPageObject;
 }

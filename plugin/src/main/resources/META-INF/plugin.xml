@@ -8,6 +8,7 @@
         IntelliJ IDEA plugin for updating selenium locators via remote call.
     </description>
     <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.idea.maven</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
@@ -25,4 +26,11 @@
         <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
     <idea-version since-build="193"/>
+    <actions>
+        <action id="org.websync.SendTestEventAction" class="org.websync.SendTestEventAction" text="Send Test Event"
+                description="Send test event to websync-idea plugin">
+            <add-to-group group-id="HelpMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt W"/>
+        </action>
+    </actions>
 </idea-plugin>

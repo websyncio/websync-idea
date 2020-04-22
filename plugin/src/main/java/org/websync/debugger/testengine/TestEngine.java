@@ -95,7 +95,6 @@ public class TestEngine {
         }
 
         String testMethodName = test.getDeclaringClass().getSimpleName() + "." + test.getName() + "(" + argsValues + ")";
-        String testName = getTestNameByMethodName(test.getName());
 
         if (count < 2) {
             printToOut(LINE);

@@ -1,5 +1,6 @@
 package org.websync.updater;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.event.DocumentEvent;
@@ -9,14 +10,18 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
+import org.java_websocket.WebSocket;
 import org.jetbrains.annotations.NotNull;
 import org.websync.logger.Logger;
 import org.websync.WebSyncService;
-import org.websync.browserConnection.CommandHandler;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.PsiWebSessionProvider;
+import org.websync.websocket.BrowserConnection;
+import org.websync.websocket.commands.WebSyncCommand;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WebsyncDocumentListener implements DocumentListener {
 
@@ -25,12 +30,17 @@ public class WebsyncDocumentListener implements DocumentListener {
         Document document = event.getDocument();
         FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
         VirtualFile file = fileDocumentManager.getFile(document);
+        if(file == null) {
+            return;
+        }
 
         WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
         PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
         Project project = provider.getProjects().get(0);
 
-        Logger.print(String.format("documentChanged: '%s'", file.getPath()));
+        if(file.getPath()!=null) {
+            Logger.print(String.format("documentChanged: '%s'", file.getPath()));
+        }
 
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         Logger.print(String.format("psiFile of this file: '%s'", psiFile));
@@ -40,17 +50,48 @@ public class WebsyncDocumentListener implements DocumentListener {
         boolean isComponent = this.isComponent(psiClass);
         Logger.print(String.format("isPage: %s, isComponent: %s", isPage, isComponent));
 
-        webSyncService.getCommandHandler().handle(CommandHandler.CMD_GET_PAGEOBJECTS);
+        if (!isPage && !isComponent) {
+            return;
+        }
+        execute();
     }
+
+    public void execute() {
+        WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
+        BrowserConnection browserConnection = webSyncService.getBrowserConnection();
+        WebSocket webSocket = browserConnection.getConnections().stream().findFirst().orElse(null);
+        if (webSocket == null) {
+            return;
+        }
+
+        String message = "{\"command\": \"get-modules\"}";
+        browserConnection.onMessage(webSocket, message);
+    }
+
+//    public void execute(String projectName) {
+//        WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
+//
+//        final String[] json = new String[1];
+//        int index = webSyncService.getProvider().getProjects().stream().map(Project::getName).collect(Collectors.toList()).indexOf(projectName);
+//        if (index < 0) {
+//            return;
+//        }
+//        ApplicationManager.getApplication().runReadAction(() -> {
+//            json[0] = webSyncService.getSerializer().serialize(webSyncService.getProvider().getWebSession(
+//                    webSyncService.getProvider().getProjects().get(index)));
+//        });
+//        json[0] = json[0].replaceFirst("\\{", String.format("{\"module\": \"%s\",", projectName));
+//        webSyncService.getBrowserConnection().broadcast(json[0]);
+//    }
 
     private boolean isComponent(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.className));
     }
 
     private boolean isPage(PsiClass psiClass) {
         return Arrays.asList(psiClass.getSuperTypes()).stream()
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.value));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.className));
     }
 
     private PsiClass getPsiClassFromPsiFile(PsiFile psiFile) {

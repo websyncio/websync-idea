@@ -22,4 +22,5 @@ public class InheritedPageObject2 extends InheritedPageObject {
     public CustomElement initializedCustomElement;
     @UI("#custom-base-element")
     public CustomBaseElement initializedCustomBaseElement;
+
 }

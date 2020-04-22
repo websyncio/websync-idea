@@ -7,6 +7,7 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import org.websync.debugger.commands.CommandTestSerializer;
 import org.websync.logger.Logger;
 import org.websync.debugger.commands.CommandInitProject;
 import org.websync.debugger.commands.CommandTestAttributes;
@@ -40,7 +41,8 @@ public class FileParser {
                 testWebSessionProvider();
                 break;
             case "test serializer":
-                testSerializer();
+//                testSerializer();
+                CommandTestSerializer.run();
                 break;
             case "print components":
                 testPrintComponents();
@@ -58,6 +60,7 @@ public class FileParser {
                 break;
             default:
                 Logger.print(String.format("COMMAND '%s' is unknown", command));
+                break;
         }
         long endTime = System.nanoTime();
         Logger.print(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
@@ -104,7 +107,7 @@ public class FileParser {
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.value, allScope);
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEB_PAGE.className, allScope);
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 

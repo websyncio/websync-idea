@@ -1,66 +1,80 @@
 package org.websync.jdi;
 
+import org.jetbrains.annotations.Nullable;
+
 public enum JdiAttribute {
-    JDI_BY_TEXT("com.epam.jdi.light.elements.pageobjects.annotations.locators.ByText"),
-    JDI_CSS("com.epam.jdi.light.elements.pageobjects.annotations.locators.Css"),
-    JDI_JDROPDOWN("com.epam.jdi.light.elements.pageobjects.annotations.locators.JDropdown"),
-    JDI_JTABLE("com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable"),
-    JDI_JMENU("com.epam.jdi.light.elements.pageobjects.annotations.locators.JMenu"),
-    JDI_JSITE("com.epam.jdi.light.elements.pageobjects.annotations.JSite"),
-    JDI_UI("com.epam.jdi.light.elements.pageobjects.annotations.locators.UI"),
-    JDI_UI_LIST("com.epam.jdi.light.elements.pageobjects.annotations.locators.UI.List"),
-    JDI_WITH_TEXT("com.epam.jdi.light.elements.pageobjects.annotations.locators.WithText"),
-    JDI_XPATH("com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath"),
-    JDI_CLICK_AREA("com.epam.jdi.light.elements.pageobjects.annotations.ClickArea"),
-    JDI_FIND_BY("com.epam.jdi.light.elements.pageobjects.annotations.FindBy"),
-    JDI_FIND_BYS("com.epam.jdi.light.elements.pageobjects.annotations.FindBys"),
-    JDI_FRAME("com.epam.jdi.light.elements.pageobjects.annotations.Frame"),
-    JDI_GET_ANY("com.epam.jdi.light.elements.pageobjects.annotations.GetAny"),
-    JDI_GET_SHOW_IN_VIEW("com.epam.jdi.light.elements.pageobjects.annotations.GetShowInView"),
-    JDI_GET_TEXT_AS("com.epam.jdi.light.elements.pageobjects.annotations.GetTextAs"),
-    JDI_GET_VISIBLE("com.epam.jdi.light.elements.pageobjects.annotations.GetVisible"),
-    JDI_GET_VISIBLE_ENABLED("com.epam.jdi.light.elements.pageobjects.annotations.GetVisibleEnabled"),
-    JDI_MANDATORY("com.epam.jdi.light.elements.pageobjects.annotations.Mandatory"),
-    JDI_NAME("com.epam.jdi.light.elements.pageobjects.annotations.Name"),
-    JDI_NO_CACHE("com.epam.jdi.light.elements.pageobjects.annotations.NoCache"),
-    JDI_NO_WAIT("com.epam.jdi.light.elements.pageobjects.annotations.NoWait"),
-    JDI_ROOT("com.epam.jdi.light.elements.pageobjects.annotations.Root"),
-    JDI_PAGE_NAME("com.epam.jdi.light.elements.pageobjects.annotations.PageName"),
-    JDI_SET_TEXT_AS("com.epam.jdi.light.elements.pageobjects.annotations.SetTextAs"),
-    JDI_TITLE("com.epam.jdi.light.elements.pageobjects.annotations.Title"),
-    JDI_URL("com.epam.jdi.light.elements.pageobjects.annotations.Url"),
-    JDI_VISUAL_CHECK("com.epam.jdi.light.elements.pageobjects.annotations.VisualCheck"),
-    JDI_WAIT_TIMEOUT("com.epam.jdi.light.elements.pageobjects.annotations.WaitTimeout"),
-    JDI_SCLASS("com.epam.jdi.light.elements.pageobjects.annotations.smart.SClass"),
-    JDI_SID("com.epam.jdi.light.elements.pageobjects.annotations.smart.SId"),
-    JDI_SMART("com.epam.jdi.light.elements.pageobjects.annotations.smart.Smart"),
-    JDI_SNAME("com.epam.jdi.light.elements.pageobjects.annotations.smart.SName"),
-    JDI_STEXT("com.epam.jdi.light.elements.pageobjects.annotations.smart.SText");
+    JDI_BY_TEXT("locators.ByText"),
+    JDI_CSS("locators.Css"),
+    JDI_JDROPDOWN("locators.JDropdown"),
+    JDI_JTABLE("locators.JTable"),
+    JDI_JMENU("locators.JMenu"),
+    JDI_JSITE("JSite"),
+    JDI_UI("locators.UI"),
+    JDI_UI_LIST("locators.UI.List"),
+    JDI_WITH_TEXT("locators.WithText"),
+    JDI_XPATH("locators.XPath"),
+    JDI_CLICK_AREA("ClickArea"),
+    JDI_FIND_BY("FindBy"),
+    JDI_FIND_BYS("FindBys"),
+    JDI_FRAME("Frame"),
+    JDI_GET_ANY("GetAny"),
+    JDI_GET_SHOW_IN_VIEW("GetShowInView"),
+    JDI_GET_TEXT_AS("GetTextAs"),
+    JDI_GET_VISIBLE("GetVisible"),
+    JDI_GET_VISIBLE_ENABLED("GetVisibleEnabled"),
+    JDI_MANDATORY("Mandatory"),
+    JDI_NAME("Name"),
+    JDI_NO_CACHE("NoCache"),
+    JDI_NO_WAIT("NoWait"),
+    JDI_ROOT("Root"),
+    JDI_PAGE_NAME("PageName"),
+    JDI_SET_TEXT_AS("SetTextAs"),
+    JDI_TITLE("Title"),
+    JDI_URL("Url"),
+    JDI_VISUAL_CHECK("VisualCheck"),
+    JDI_WAIT_TIMEOUT("WaitTimeout"),
+    JDI_SCLASS("smart.SClass"),
+    JDI_SID("smart.SId"),
+    JDI_SMART("smart.Smart"),
+    JDI_SNAME("smart.SName"),
+    JDI_STEXT("smart.SText");
 
-    public final String value;
+    public final String className;
 
-    JdiAttribute(final String value) {
-        this.value = value;
+    JdiAttribute(final String name) {
+        this.className = BASE_PACKAGE + "." + name;
+    }
+
+    private static final String BASE_PACKAGE = "com.epam.jdi.light.elements.pageobjects.annotations";
+
+    public static boolean isJdiAnnotation(@Nullable String fqn) {
+        return fqn != null && fqn.startsWith(BASE_PACKAGE);
+    }
+
+    public static JdiAttribute getByClassName(@Nullable String className) {
+        for (JdiAttribute attr : values()) {
+            if(attr.className.equals(className)) {
+                return attr;
+            }
+        }
+        return null;
     }
 
     @Override
     public String toString() {
-        return value;
-    }
-
-    /**
-     * @throws EnumConstantNotPresentException
-     */
-    public static JdiAttribute valueOfStr(String value) {
-        for (JdiAttribute v : values()) {
-            if (v.value.equals(value)) {
-                return v;
-            }
-        }
-        throw new EnumConstantNotPresentException(JdiAttribute.class, "No enum const " + JdiAttribute.class + "@value." + value);
+        return className;
     }
 
     public String getShortName() {
-        return value.substring(value.lastIndexOf(".") + 1);
+        return className.substring(className.lastIndexOf(".") + 1);
+    }
+
+    public static String getQualifiedNameByShortName(String shortName) {
+        for (JdiAttribute attr : values()) {
+            if(attr.getShortName().equals(shortName)) {
+                return attr.className;
+            }
+        }
+        return null;
     }
 }
