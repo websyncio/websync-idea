@@ -10,7 +10,6 @@ public class Logger {
 
     public static void print(String message) {
         calendar.setTimeInMillis(System.currentTimeMillis());
-        message = String.format("%s - %s", sdf.format(calendar.getTime()), message);
-        System.out.println(message);
+        System.out.println(String.format("%s - %s", sdf.format(calendar.getTime()), message));
     }
 }

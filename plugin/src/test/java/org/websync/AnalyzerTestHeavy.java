@@ -33,14 +33,6 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
         importFromSources(file);
         this.importFromSources(new File(srcPath));
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //TODO:include reasonable assertion
         /*
