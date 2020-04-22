@@ -91,7 +91,7 @@ public class BrowserConnection extends WebSocketServer {
         }
     }
 
-    static class OkayReply {
+    public static class OkayReply {
         public int status = 0;
         public Object data;
 

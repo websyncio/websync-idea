@@ -36,7 +36,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             return new BrowserConnection.ErrorReply(101, message);
         }
         updateComponentInstanceWithSingleAttribute(className, oldFieldName, data.initializationAttribute);
-        return null;
+        return new BrowserConnection.OkayReply("Attribute was changed.");
     }
 
     public void updateComponentInstance(String className, String oldFieldName, String newFieldName) throws WebSyncException {
