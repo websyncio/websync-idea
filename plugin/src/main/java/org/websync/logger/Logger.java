@@ -9,9 +9,7 @@ public class Logger {
     final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss");
 
     public static void print(String message) {
-        String messageLocalvariable;
         calendar.setTimeInMillis(System.currentTimeMillis());
-        messageLocalvariable = String.format("%s - %s", sdf.format(calendar.getTime()), message);
-        System.out.println(messageLocalvariable);
+        System.out.println(String.format("%s - %s", sdf.format(calendar.getTime()), message));
     }
 }
