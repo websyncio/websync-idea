@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import static org.websync.jdi.JdiAttribute.*;
 
 public class Locator {
+    private Object locator;
     private PsiAnnotation annotation;
     private List<PsiNameValuePair> attributes;
 
@@ -69,11 +70,7 @@ public class Locator {
                             }
                         }
                 );
-//                    locator.root = getAnnotationValue("root");
-//                    locator.value = getAnnotationValue("value");
-//                    locator.expand = getAnnotationValue("expand");
-//                    locator.list = getAnnotationValue("list");
-//                    locator.autoclose = getAnnotationValue("autoclose");
+
                 this.locator = locator;
                 break;
             }
@@ -127,7 +124,6 @@ public class Locator {
         }
     }
 
-    private Object locator;
 
     public Object get() {
         return locator;
