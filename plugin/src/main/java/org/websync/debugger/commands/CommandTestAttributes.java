@@ -71,6 +71,4 @@ public class CommandTestAttributes {
 
         Assert.assertTrue(testValidNamesOfAttributesInComponent(components, givenComponentName));
     }
-
-
 }
