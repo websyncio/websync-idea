@@ -1,11 +1,15 @@
 package org.websync.debugger.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.websync.debugger.testengine.TestEngine;
+import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.ComponentType;
+import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
@@ -50,4 +54,19 @@ public class CommandTestAttributes {
 
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
     }
+
+    @Test
+    public void testValidNamesOfAttributesInComponent() {
+        //PREREQUISITES
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        WebSession webSession = new PsiWebSessionProvider().getWebSession(project);
+        Map<String, ComponentType> components = webSession.getComponentTypes();
+
+        // TEST FOR GIVEN COMPONENT NAME
+        String givenComponentName = "AttributesTest";
+
+        testValidNamesOfAttributesInComponent(components, givenComponentName);
+    }
+
+
 }
