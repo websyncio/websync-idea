@@ -11,9 +11,6 @@ import org.websync.websession.models.ComponentType;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentInstance;
 
-import java.util.List;
-import java.util.Map;
-
 public class CommandTestSerializer {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -28,7 +25,6 @@ public class CommandTestSerializer {
         WebSessionProvider provider = webSyncService.getProvider();
 
         WebSession webSession0 = provider.getWebSessions(true).get(0);
-        WebSession webSession1 = provider.getWebSessions(true).get(0);
         ComponentType componentType = webSession0.getComponentTypes().values().stream().findAny().get();
         ComponentInstance componentInstance = componentType.getComponentInstances().stream().findAny().get();
         PsiComponentInstance psiComponentInstance = (PsiComponentInstance) componentInstance;
