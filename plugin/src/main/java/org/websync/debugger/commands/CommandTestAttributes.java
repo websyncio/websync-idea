@@ -6,8 +6,7 @@ import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.junit.Assert;
-import org.websync.debugger.testengine.TestEngine;
+import org.websync.debugger.testengine.TestEngineUtils;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.ComponentType;
 import org.websync.websession.models.WebSession;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class CommandTestAttributes {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            TestEngine.run(CommandTestAttributes.class);
+            TestEngineUtils.run(CommandTestAttributes.class);
         });
     }
 
