@@ -11,8 +11,6 @@ import org.websync.debugger.commands.CommandTestSerializerUtils;
 import org.websync.logger.LoggerUtils;
 import org.websync.debugger.commands.CommandInitProjectUtils;
 import org.websync.debugger.commands.CommandTestAttributes;
-import org.websync.debugger.commands.CommandTestSerializer;
-import org.websync.logger.Logger;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.ComponentType;
 import org.websync.websession.models.WebSession;
@@ -118,11 +116,11 @@ public class FileParser {
             WebSession session = new PsiWebSessionProvider().getWebSession(project);
             Map<String, ComponentType> components = session.getComponentTypes();
 
-            Logger.print(String.format("Components: %s", components.size()));
+            LoggerUtils.print(String.format("Components: %s", components.size()));
             components.forEach((k, v) -> {
                 String componentName = k;
                 String baseComponentId = v.getBaseComponentTypeId() == null ? "" : v.getBaseComponentTypeId();
-                Logger.print(String.format("%s - %s", componentName, baseComponentId));
+                LoggerUtils.print(String.format("%s - %s", componentName, baseComponentId));
             });
         });
     }
@@ -136,12 +134,12 @@ public class FileParser {
             String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
             PsiComponentType psiComponent = (PsiComponentType) components.get(elementId);
 
-            Logger.print("Attributes:");
+            LoggerUtils.print("Attributes:");
             psiComponent.getComponentInstances().stream().forEach(instance -> {
                 String attr = ((PsiComponentInstance) instance).getId();
-                Logger.print("\t" + attr);
+                LoggerUtils.print("\t" + attr);
                 AnnotationInstance instanceAnnotation = ((PsiComponentInstance) instance).getAttributeInstance();
-                Logger.print(instanceAnnotation.toString());
+                LoggerUtils.print(instanceAnnotation.toString());
             });
         });
     }
