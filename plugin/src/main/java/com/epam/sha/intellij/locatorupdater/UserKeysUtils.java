@@ -6,6 +6,6 @@ import com.intellij.openapi.util.Key;
 /**
  *
  */
-public class UserKeys {
+public class UserKeysUtils {
     public static final Key<RequestData> CUSTOM_DATA = Key.create("customData");
 }

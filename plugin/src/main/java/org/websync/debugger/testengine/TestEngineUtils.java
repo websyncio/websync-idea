@@ -3,14 +3,14 @@ package org.websync.debugger.testengine;
 import javafx.util.Pair;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TestEngine {
+public class TestEngineUtils {
 
     public static String LINE = StringUtils.repeat('-', 80);
     public static int count = 0;
@@ -57,7 +57,7 @@ public class TestEngine {
     }
 
     synchronized public static void printToOut(String line) {
-        Logger.print(line);
+        LoggerUtils.print(line);
     }
 
     synchronized public static void printToErr(String line) {

@@ -7,7 +7,7 @@ import com.intellij.psi.impl.PsiElementFactoryImpl;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiPageType;
@@ -86,7 +86,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
                 }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        Logger.print(String.format("Getting website PSI classes. Time = %.3f s.",
+        LoggerUtils.print(String.format("Getting website PSI classes. Time = %.3f s.",
                 (double) (endTime - startTime) / 1000000000));
         return websites;
     }
@@ -101,7 +101,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        Logger.print(String.format("Getting page PSI classes. Time = %.3f s.",
+        LoggerUtils.print(String.format("Getting page PSI classes. Time = %.3f s.",
                 (double) (endTime - startTime) / 1000000000));
         return pages;
     }
@@ -117,7 +117,7 @@ public class PsiWebSessionProvider implements WebSessionProvider {
         }).collect(Collectors.toList());
 
         long endTime = System.nanoTime();
-        Logger.print(String.format("Getting component PSI classes. Time = %.3f s.",
+        LoggerUtils.print(String.format("Getting component PSI classes. Time = %.3f s.",
                 (double) (endTime - startTime) / 1000000000));
         return components;
     }

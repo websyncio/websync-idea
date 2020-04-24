@@ -1,6 +1,6 @@
 package com.epam.sha.intellij.locatorupdater.updater;
 
-import com.epam.sha.intellij.locatorupdater.UserKeys;
+import com.epam.sha.intellij.locatorupdater.UserKeysUtils;
 import com.epam.sha.intellij.locatorupdater.model.RequestData;
 import com.epam.sha.intellij.locatorupdater.utils.PsiClassUtil;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -34,7 +34,7 @@ public class UpdateElement extends AnAction {
         //Messages.showMessageDialog(e.getProject(), "some message info", "PSI Info", null);
 
         final PsiJavaFile element = (PsiJavaFile) e.getData(CommonDataKeys.PSI_FILE);
-        final RequestData data = new DataContextWrapper(e.getDataContext()).getUserData(UserKeys.CUSTOM_DATA);
+        final RequestData data = new DataContextWrapper(e.getDataContext()).getUserData(UserKeysUtils.CUSTOM_DATA);
 
         Asserts.check(element != null, "Failed to get target file data");
         Asserts.check(data != null, "No request data present");

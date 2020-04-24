@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.jdi.JdiAttribute;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
 import org.websync.websocket.BrowserConnection;
@@ -32,7 +32,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         updateComponentInstance(className, oldFieldName, newFieldName);
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
-            Logger.print(message);
+            LoggerUtils.print(message);
             return new BrowserConnection.ErrorReply(101, message);
         }
         updateComponentInstanceWithSingleAttribute(className, oldFieldName, data.initializationAttribute);

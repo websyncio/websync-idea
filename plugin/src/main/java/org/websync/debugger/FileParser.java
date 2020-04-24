@@ -7,9 +7,9 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import org.websync.debugger.commands.CommandTestSerializer;
-import org.websync.logger.Logger;
-import org.websync.debugger.commands.CommandInitProject;
+import org.websync.debugger.commands.CommandTestSerializerUtils;
+import org.websync.logger.LoggerUtils;
+import org.websync.debugger.commands.CommandInitProjectUtils;
 import org.websync.debugger.commands.CommandTestAttributes;
 
 import java.util.List;
@@ -20,19 +20,19 @@ import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 public class FileParser {
     public void parse(List<String> lines) {
         if (lines == null || lines.size() == 0) {
-            Logger.print("Command file is empty.");
+            LoggerUtils.print("Command file is empty.");
             return;
         }
 
         String command = lines.get(0);
-        Logger.print(String.format("COMMAND '%s' is performing...", command));
+        LoggerUtils.print(String.format("COMMAND '%s' is performing...", command));
         long startTime = System.nanoTime();
         switch (command) {
             case "a":
-                Logger.print("COMMAND 'a' something doing.");
+                LoggerUtils.print("COMMAND 'a' something doing.");
                 break;
             case "b":
-                Logger.print("COMMAND 'b' something doing.");
+                LoggerUtils.print("COMMAND 'b' something doing.");
                 break;
             case "print classes":
                 printClasses();
@@ -42,7 +42,7 @@ public class FileParser {
                 break;
             case "test serializer":
 //                testSerializer();
-                CommandTestSerializer.run();
+                CommandTestSerializerUtils.run();
                 break;
             case "print components":
                 testPrintComponents();
@@ -55,15 +55,15 @@ public class FileParser {
                 break;
             case "init project":
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    CommandInitProject.run();
+                    CommandInitProjectUtils.run();
                 });
                 break;
             default:
-                Logger.print(String.format("COMMAND '%s' is unknown", command));
+                LoggerUtils.print(String.format("COMMAND '%s' is unknown", command));
                 break;
         }
         long endTime = System.nanoTime();
-        Logger.print(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
+        LoggerUtils.print(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
                 (double) (endTime - startTime) / 1000000000));
     }
 
@@ -92,14 +92,14 @@ public class FileParser {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
         if (projects.length == 0) {
             ApplicationManager.getApplication().runReadAction(() -> {
-                Logger.print("None project has not been opened.");
+                LoggerUtils.print("None project has not been opened.");
             });
         }
 
         Project project = projects[0];
         if (!project.isInitialized()) {
             ApplicationManager.getApplication().runReadAction(() -> {
-                Logger.print("Project has not been initialized.");
+                LoggerUtils.print("Project has not been initialized.");
             });
         }
 
@@ -111,8 +111,8 @@ public class FileParser {
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 
-            Logger.print("Classes:");
-            classes.forEach(c -> Logger.print("*" + c.getQualifiedName()));
+            LoggerUtils.print("Classes:");
+            classes.forEach(c -> LoggerUtils.print("*" + c.getQualifiedName()));
         });
     }
 

@@ -4,17 +4,17 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import org.junit.Test;
 import org.websync.WebSyncService;
-import org.websync.debugger.testengine.TestEngine;
+import org.websync.debugger.testengine.TestEngineUtils;
 import org.websync.websession.WebSessionProvider;
 import org.websync.websession.models.ComponentInstance;
 import org.websync.websession.models.ComponentType;
 import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentInstance;
 
-public class CommandTestSerializer {
+public class CommandTestSerializerUtils {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            TestEngine.run(CommandTestSerializer.class);
+            TestEngineUtils.run(CommandTestSerializerUtils.class);
         });
     }
 
