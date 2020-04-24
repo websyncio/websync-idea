@@ -14,6 +14,9 @@ public class AnnotationDto {
         @Getter
         private List<Object> values;
 
+        public Parameter() {
+        }
+
         public Parameter(String name, List<Object> values) {
             this.name = name;
             this.values = values;
