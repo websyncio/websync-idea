@@ -40,12 +40,11 @@ public enum JdiAttribute {
     JDI_STEXT("smart.SText");
 
     public final String className;
+    private static final String BASE_PACKAGE = "com.epam.jdi.light.elements.pageobjects.annotations";
 
     JdiAttribute(final String name) {
         this.className = BASE_PACKAGE + "." + name;
     }
-
-    private static final String BASE_PACKAGE = "com.epam.jdi.light.elements.pageobjects.annotations";
 
     public static boolean isJdiAnnotation(@Nullable String fqn) {
         return fqn != null && fqn.startsWith(BASE_PACKAGE);
