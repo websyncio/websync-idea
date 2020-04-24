@@ -17,6 +17,7 @@ import org.websync.websession.psimodels.psi.AnnotationInstance;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class CommandTestAttributes {
@@ -26,7 +27,7 @@ public class CommandTestAttributes {
         });
     }
 
-    static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
+    static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 
@@ -53,6 +54,7 @@ public class CommandTestAttributes {
                 "Frame", "Name", "Title");
 
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
+        return true;
     }
 
     @Test
@@ -65,8 +67,7 @@ public class CommandTestAttributes {
         // TEST FOR GIVEN COMPONENT NAME
         String givenComponentName = "AttributesTest";
 
-        testValidNamesOfAttributesInComponent(components, givenComponentName);
+
+        Assert.assertTrue(testValidNamesOfAttributesInComponent(components, givenComponentName));
     }
-
-
 }
