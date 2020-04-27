@@ -3,7 +3,7 @@ package org.websync.logger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Logger {
+public class LoggerUtils {
 
     final static Calendar calendar = Calendar.getInstance();
     final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");

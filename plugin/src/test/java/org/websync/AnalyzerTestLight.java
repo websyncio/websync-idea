@@ -10,7 +10,7 @@ import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 import org.websync.websession.PsiWebSessionProvider;
 
 import java.util.Arrays;
@@ -34,42 +34,42 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
     @Test
     public void test0() {
-        Logger.print(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
+        LoggerUtils.print(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
 
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        Logger.print(
+        LoggerUtils.print(
                 String.format("Copy from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
-        Logger.print("Filenames:");
+        LoggerUtils.print("Filenames:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
-            Logger.print("- " + f);
+            LoggerUtils.print("- " + f);
         });
 
         GlobalSearchScope projectScope = GlobalSearchScope.allScope(getProject());
 
-        Logger.print("PsiFiles:");
+        LoggerUtils.print("PsiFiles:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
             Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope)).forEach(psiFile -> {
-                Logger.print("- " + psiFile.getVirtualFile().getPath());
+                LoggerUtils.print("- " + psiFile.getVirtualFile().getPath());
             });
         });
 
-        Logger.print("Classes:");
+        LoggerUtils.print("Classes:");
         Arrays.stream(PsiShortNamesCache.getInstance(getProject()).getAllClassNames()).forEach(c -> {
-            Logger.print("- " + c);
+            LoggerUtils.print("- " + c);
         });
 
-        Logger.print("PsiClasses:");
+        LoggerUtils.print("PsiClasses:");
         Arrays.stream(FilenameIndex.getAllFilenames(getProject()))
                 .filter(f -> f.endsWith(".java"))
                 .forEach(f -> {
                     Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope))
                             .forEach(psiFile -> {
                                 PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
-                                Logger.print("- " + psiClass.getQualifiedName());
+                                LoggerUtils.print("- " + psiClass.getQualifiedName());
                             });
                 });
 
@@ -94,7 +94,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        Logger.print(
+        LoggerUtils.print(
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
@@ -112,19 +112,19 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 .collect(Collectors.toList());
 
         psiWebPages.forEach(c -> {
-            Logger.print(c.getQualifiedName());
+            LoggerUtils.print(c.getQualifiedName());
 
-            Logger.print(
+            LoggerUtils.print(
                     String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSuperTypes())
                                     .map(s -> s.getClassName())
                                     .collect(Collectors.toList()))));
 
-            Logger.print(String.format("     SuperClassType: %s", c.getSuperClassType().getName()));
+            LoggerUtils.print(String.format("     SuperClassType: %s", c.getSuperClassType().getName()));
 
-            Logger.print(String.format("     SuperClass: %s", c.getSuperClass()));
+            LoggerUtils.print(String.format("     SuperClass: %s", c.getSuperClass()));
 
-            Logger.print(
+            LoggerUtils.print(
                     String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSupers())
                                     .map(s -> s.getName())
@@ -146,7 +146,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        Logger.print(
+        LoggerUtils.print(
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
@@ -175,7 +175,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 javaPath + classPath + "UsersPage.java"
         );
         long endTime = System.nanoTime();
-        Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
+        LoggerUtils.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
 
         // example
         PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
@@ -201,7 +201,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
 
         long endTime = System.nanoTime();
-        Logger.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
+        LoggerUtils.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
 
         // example
         PsiShortNamesCache.getInstance(getProject()).getAllClassNames();

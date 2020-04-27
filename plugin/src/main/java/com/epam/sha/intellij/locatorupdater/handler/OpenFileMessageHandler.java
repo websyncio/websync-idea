@@ -1,6 +1,6 @@
 package com.epam.sha.intellij.locatorupdater.handler;
 
-import com.epam.sha.intellij.locatorupdater.UserKeys;
+import com.epam.sha.intellij.locatorupdater.UserKeysUtils;
 import com.epam.sha.intellij.locatorupdater.model.RequestData;
 import com.epam.sha.intellij.locatorupdater.utils.FileNavigator;
 import com.intellij.ide.DataManager;
@@ -56,7 +56,7 @@ public class OpenFileMessageHandler implements RequestHandler {
         DataManager dm = DataManager.getInstance();
 
         dm.getDataContextFromFocusAsync().onSuccess(context -> {
-            dm.saveInDataContext(context, UserKeys.CUSTOM_DATA, request);
+            dm.saveInDataContext(context, UserKeysUtils.CUSTOM_DATA, request);
             AnActionEvent event = new AnActionEvent(null, context,
                     ActionPlaces.UNKNOWN, new Presentation(),
                     ActionManager.getInstance(), 0);
