@@ -2,7 +2,7 @@ package org.websync.websocket.commands;
 
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.module.Module;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 
 public class UpdateComponentInstanceCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
+        public String moduleName;
         public ComponentInstanceDto data;
     }
 
@@ -25,58 +26,52 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
     @Override
     protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
+        String moduleName = ((Message) inputMessage).moduleName;
         int lastDot = data.id.lastIndexOf('.');
         String className = data.id.substring(0, lastDot);
         String oldFieldName = data.id.substring(lastDot + 1);
         String newFieldName = data.name;
-        updateComponentInstance(className, oldFieldName, newFieldName);
+        updateComponentInstance(moduleName, className, oldFieldName, newFieldName);
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
             LoggerUtils.print(message);
             return new BrowserConnection.ErrorReply(101, message);
         }
-        updateComponentInstanceWithSingleAttribute(className, oldFieldName, data.initializationAttribute);
+        updateComponentInstanceWithSingleAttribute(moduleName, className, oldFieldName, data.initializationAttribute);
         return new BrowserConnection.OkayReply("Attribute was changed.");
     }
 
-    public void updateComponentInstance(String className, String oldFieldName, String newFieldName) throws WebSyncException {
-        final Project project = getWebSyncService().getProvider().getProjects().get(0);
+    public void updateComponentInstance(String moduleName, String className, String oldFieldName, String newFieldName) throws WebSyncException {
+        final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
-        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
         WriteAction.runAndWait(() -> {
-            PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
-            if (componentPsiClass == null) {
-                throw new WebSyncException("Component not found: " + className);
-            }
-            PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
-            if (psiField == null) {
-                throw new WebSyncException("Field " + oldFieldName + " not found in component: " + className);
-            }
-            WriteCommandAction.runWriteCommandAction(project,
+            PsiField psiField = findPsiClassInModule(module, className, oldFieldName);
+            WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": rename '" + oldFieldName + "' to '" + newFieldName + "'",
                     "WebSyncAction",
-                    () -> {
-                psiField.setName(newFieldName);
-            });
+                    () -> psiField.setName(newFieldName));
         });
     }
 
-    public void updateComponentInstanceWithSingleAttribute(String className, String fieldName,
-                                                           AnnotationDto annotationDto) throws WebSyncException {
-        final Project project = getWebSyncService().getProvider().getProjects().get(0);
+    private static PsiField findPsiClassInModule(Module module, String className, String fieldName) throws WebSyncException {
+        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
+        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));;
+        if (componentPsiClass == null) {
+            throw new WebSyncException("Component not found: " + className);
+        }
+        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
+        if (psiField == null) {
+            throw new WebSyncException("Field " + fieldName + " not found in component: " + className);
+        }
+        return psiField;
+    }
 
-        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
+    public void updateComponentInstanceWithSingleAttribute(String moduleName, String className, String fieldName,
+                                                           AnnotationDto annotationDto) throws WebSyncException {
+        final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
+
         WriteAction.runAndWait(() -> {
-            PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
-            if (componentPsiClass == null) {
-                throw new WebSyncException("Component not found: " + className);
-            }
-            PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
-            if (psiField == null) {
-                throw new WebSyncException("Field " + fieldName + " not found in component: " + className);
-            }
+            PsiField psiField = findPsiClassInModule(module, className, fieldName);
             String attributeShortName = annotationDto.getName();
             String attributeQualifiedName = JdiAttribute.getQualifiedNameByShortName(attributeShortName);
             if (attributeQualifiedName == null) {
@@ -84,14 +79,14 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             }
 
             LinkedHashMap params = ((LinkedHashMap) annotationDto.getParameters().get(0).getValues().get(0));
-            WriteCommandAction.runWriteCommandAction(project,
+            WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": update single annotation of field '" + fieldName +
                             "' with name '" + attributeShortName + "' and value '" + params.get("value") + "'",
                     "WebSyncAction",
                     () -> {
                         PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
 
-                        PsiElementFactory elementFactory = JavaPsiFacade.getInstance(project).getElementFactory();
+                        PsiElementFactory elementFactory = JavaPsiFacade.getInstance(module.getProject()).getElementFactory();
 
                         annotationDto.getParameters().forEach(p -> {
                             PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(
