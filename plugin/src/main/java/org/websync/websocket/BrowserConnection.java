@@ -8,7 +8,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 import org.websync.websocket.commands.WebSyncCommand;
 
 import java.net.InetSocketAddress;
@@ -25,17 +25,17 @@ public class BrowserConnection extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         conn.send("Welcome to the server!"); //This method sends a message to the new client
         broadcast("new connection: " + handshake.getResourceDescriptor()); //This method sends a message to all clients connected
-        Logger.print("new connection to " + conn.getRemoteSocketAddress());
+        LoggerUtils.print("new connection to " + conn.getRemoteSocketAddress());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        Logger.print("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
+        LoggerUtils.print("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        Logger.print("received message from " + conn.getRemoteSocketAddress() + ": " + message);
+        LoggerUtils.print("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         Object replyObject;
         WebSyncCommand command = WebSyncCommand.createByText(message);
         if(command == null) {
@@ -53,7 +53,7 @@ public class BrowserConnection extends WebSocketServer {
         try {
             broadcast(serialize(replyObject));
         } catch (JsonProcessingException e) {
-            Logger.print("CANNOT serialize reply: " + e.getMessage());
+            LoggerUtils.print("CANNOT serialize reply: " + e.getMessage());
             broadcast("{\"status\":255,\"error\":\"CANNOT serialize reply\"");
         }
     }
@@ -67,7 +67,7 @@ public class BrowserConnection extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer message) {
-        Logger.print("received ByteBuffer from " + conn.getRemoteSocketAddress());
+        LoggerUtils.print("received ByteBuffer from " + conn.getRemoteSocketAddress());
     }
 
     @Override
@@ -77,10 +77,10 @@ public class BrowserConnection extends WebSocketServer {
 
     @Override
     public void onStart() {
-        Logger.print("server started successfully");
+        LoggerUtils.print("server started successfully");
     }
 
-    static class ErrorReply {
+    public static class ErrorReply {
         public int status;
         public String error;
 
@@ -91,7 +91,7 @@ public class BrowserConnection extends WebSocketServer {
         }
     }
 
-    static class OkayReply {
+    public static class OkayReply {
         public int status = 0;
         public Object data;
 

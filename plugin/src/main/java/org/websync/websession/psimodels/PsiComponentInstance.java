@@ -134,6 +134,13 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
     }
 
     public void synchronize(ComponentInstance changedInstance) {
+        //temporary comment
+            /*TODO: implement
+            /*
+            not implemented yet
+            attempt to fade out Codacy Warning:
+            Document empty method bodyn. (PMD 3.4)
+             */
 
     }
 }

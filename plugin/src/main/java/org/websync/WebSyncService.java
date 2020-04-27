@@ -1,17 +1,11 @@
 package org.websync;
 
-import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.search.GlobalSearchScope;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
-import org.websync.logger.Logger;
+import org.websync.logger.LoggerUtils;
 import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.WebSessionProvider;
 import org.websync.websocket.BrowserConnection;
@@ -61,8 +55,8 @@ public class WebSyncService {
     private DebugFileWatcher createDebugFileWatcher() {
         Path projectDir = getProjectDir();
         Path debugFilePath = createDebugFile(projectDir);
-        Logger.print(String.format("Project directory is '%s'.", projectDir));
-        Logger.print(String.format("Debug file path is '%s'.", debugFilePath));
+        LoggerUtils.print(String.format("Project directory is '%s'.", projectDir));
+        LoggerUtils.print(String.format("Debug file path is '%s'.", debugFilePath));
         return new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
     }
 
@@ -95,27 +89,5 @@ public class WebSyncService {
 
     public void removeProject(Project project) {
         this.provider.removeProject(project);
-    }
-
-    public String updateComponentInstance(String className, String oldFieldName, String newFieldName) {
-        final Project project = provider.getProjects().get(0);
-
-        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
-        PsiClass componentPsiClass = javaPsiFacade.findClass(className, allScope);
-        if (componentPsiClass == null) {
-            return "Component not found: " + className;
-        }
-        PsiField psiField = componentPsiClass.findFieldByName(oldFieldName, false);
-        if (psiField == null) {
-            return "Field " + oldFieldName + " not found in component: " + className;
-        }
-        WriteAction.runAndWait(() -> {
-            WriteCommandAction.runWriteCommandAction(project,
-                    className + ": rename " + oldFieldName + " to " + newFieldName, "WebSyncAction", () -> {
-                        psiField.setName(newFieldName);
-                    });
-        });
-        return null;
     }
 }

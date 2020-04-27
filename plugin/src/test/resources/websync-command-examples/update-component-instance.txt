@@ -1,0 +1,1 @@
+{"command":"update-component-instance", "data":{"id":"org.websync.jdi.AttributesInitialization.initializedWithXpath","componentTypeId":"com.epam.jdi.light.elements.common.Label","name":"initializedWithXpath11","initializationAttribute":{"name":"XPath","parameters":[{"name":null,"values":["//testXpath"]}]}}}

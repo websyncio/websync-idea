@@ -1,11 +1,16 @@
 package org.websync.debugger.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
-import org.websync.debugger.testengine.TestEngine;
+import org.websync.debugger.testengine.TestEngineUtils;
+import org.websync.websession.PsiWebSessionProvider;
 import org.websync.websession.models.ComponentType;
+import org.websync.websession.models.WebSession;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
@@ -13,21 +18,17 @@ import org.websync.websession.psimodels.psi.AnnotationInstance;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class CommandTestAttributes {
     public static void run() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            TestEngine.run(CommandTestAttributes.class);
+            TestEngineUtils.run(CommandTestAttributes.class);
         });
     }
 
-    @Test
-    private void testValidNamesOfAttributesInSeveralComponents() {
-    //TODO
-    }
-
-    static void testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
+    static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 
@@ -54,29 +55,20 @@ public class CommandTestAttributes {
                 "Frame", "Name", "Title");
 
         MatcherAssert.assertThat(actualAttributeNames, Matchers.everyItem(Matchers.is(Matchers.in(expectedResults))));
-    }
-
-    @Test
-    public void testDummyAndFailed() {
-        MatcherAssert.assertThat(true, Matchers.is(false));
+        return true;
     }
 
     @Test
     public void testValidNamesOfAttributesInComponent() {
-     //TODO
-// PREREQUISITES
-//        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-//        WebSession webSession = new PsiWebSessionProvider(project).getWebSession(false);
-//        Map<String, Component> components = webSession.getComponents();
-//
-//        // TEST FOR GIVEN COMPONENT NAME
-//        String givenComponentName = "AttributesTest";
-//
-//        testValidNamesOfAttributesInComponent(components, givenComponentName);
-    }
+        //PREREQUISITES
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        WebSession webSession = new PsiWebSessionProvider().getWebSession(project);
+        Map<String, ComponentType> components = webSession.getComponentTypes();
 
-    @Test
-    public void testValidNamesOfAttributesInPages() {
-    //TODO
+        // TEST FOR GIVEN COMPONENT NAME
+        String givenComponentName = "AttributesTest";
+
+
+        Assert.assertTrue(testValidNamesOfAttributesInComponent(components, givenComponentName));
     }
 }
