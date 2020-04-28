@@ -7,13 +7,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnnotationDto {
+    @Getter
+    private String name;
+    @Getter
+    private List<Parameter> parameters;
+    public AnnotationDto() {
+    }
 
     public static class Parameter {
         @Getter
         private String name;
         @Getter
         private List<Object> values;
-
         public Parameter() {
         }
 
@@ -21,14 +26,6 @@ public class AnnotationDto {
             this.name = name;
             this.values = values;
         }
-    }
-
-    @Getter
-    private String name;
-    @Getter
-    private List<Parameter> parameters;
-
-    public AnnotationDto() {
     }
 
     public AnnotationDto(AnnotationInstance attributeInstance) {
