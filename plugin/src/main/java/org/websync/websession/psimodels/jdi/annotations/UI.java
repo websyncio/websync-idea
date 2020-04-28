@@ -1,7 +1,5 @@
 package org.websync.websession.psimodels.jdi.annotations;
 
-import org.websync.websession.psimodels.PsiComponentInstance;
-
 import java.util.List;
 
 public class UI {
