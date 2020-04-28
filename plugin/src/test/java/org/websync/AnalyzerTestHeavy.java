@@ -5,8 +5,6 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jdom.JDOMException;
 import org.junit.Assert;
 
@@ -17,6 +15,7 @@ import java.nio.file.Paths;
 
 public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
+    //TODO: exclude hadcoded local path
     private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
     Path path = Paths.get(srcPath);
     File file = new File(srcPath);
