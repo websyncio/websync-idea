@@ -12,7 +12,7 @@ import org.websync.jdi.JdiAttribute;
 import org.websync.logger.LoggerUtils;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
-import org.websync.websocket.BrowserConnection;
+import org.websync.websocket.ReplyObject;
 
 import java.util.LinkedHashMap;
 
@@ -24,7 +24,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected ReplyObject execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
         String moduleName = ((Message) inputMessage).moduleName;
         int lastDot = data.id.lastIndexOf('.');
@@ -35,10 +35,10 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
             LoggerUtils.print(message);
-            return new BrowserConnection.ErrorReply(101, message);
+            return new ReplyObject(101, message);
         }
         updateComponentInstanceWithSingleAttribute(moduleName, className, oldFieldName, data.initializationAttribute);
-        return new BrowserConnection.OkayReply("Attribute was changed.");
+        return new ReplyObject("Attribute was changed.");
     }
 
     public void updateComponentInstance(String moduleName, String className, String oldFieldName, String newFieldName) throws WebSyncException {
@@ -55,7 +55,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     private static PsiField findPsiClassInModule(Module module, String className, String fieldName) throws WebSyncException {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
-        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));;
+        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
         if (componentPsiClass == null) {
             throw new WebSyncException("Component not found: " + className);
         }

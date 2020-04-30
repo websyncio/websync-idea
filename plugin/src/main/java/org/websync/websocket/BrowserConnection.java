@@ -38,13 +38,14 @@ public class BrowserConnection extends WebSocketServer {
         LoggerUtils.print("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         Object replyObject;
         WebSyncCommand command = WebSyncCommand.createByText(message);
-        if(command == null) {
+        if (command == null) {
             String msg = message.replace('"', '\'');
             broadcast("{\"status\":254,\"error\":\"Unknown message: " + msg + "\"");
             return;
         }
         try {
-            Object result = command.execute(message);
+            ReplyObject result ;
+            result = command.execute(message);
             replyObject = new OkayReply(result);
         } catch (WebSyncException e) {
             e.printStackTrace();
@@ -85,18 +86,20 @@ public class BrowserConnection extends WebSocketServer {
         public String error;
 
         public ErrorReply(int status, String error) {
-            if(status == 0) throw new IllegalArgumentException("must not be 0");
+            if (status == 0) throw new IllegalArgumentException("must not be 0");
             this.status = status;
             this.error = error;
         }
     }
 
     public static class OkayReply {
+        public String type;
         public int status = 0;
         public Object data;
 
-        public OkayReply(Object data) {
-            this.data = data;
+        public OkayReply(ReplyObject data) {
+            this.type = data.getType();
+            this.data = data.getResponse();
         }
     }
 }
