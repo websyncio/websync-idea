@@ -18,7 +18,6 @@ import org.websync.websession.psimodels.psi.AnnotationInstance;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class CommandTestAttributes {
@@ -28,7 +27,7 @@ public class CommandTestAttributes {
         });
     }
 
-    static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
+    private static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 
