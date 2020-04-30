@@ -17,7 +17,6 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
     //TODO: exclude hadcoded local path
     private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
-    private Path path = Paths.get(srcPath);
     private File file = new File(srcPath);
 
     public void test0() {
