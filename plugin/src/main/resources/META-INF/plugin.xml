@@ -15,6 +15,12 @@
         <editorFactoryDocumentListener implementation="org.websync.updater.WebsyncDocumentListener"/>
     </extensions>
 
+    <actions>
+
+        <action id="com.epam.sha.intellij.locatorupdater.ButtonAction" class="com.epam.sha.intellij.locatorupdater.ButtonAction" text="Transfer Page Object" description="Transfer Page Object to Page-Editor">
+            <add-to-group group-id="NavBarToolBar" anchor="first"/>
+        </action>
+    </actions>
 
     <applicationListeners>
         <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
