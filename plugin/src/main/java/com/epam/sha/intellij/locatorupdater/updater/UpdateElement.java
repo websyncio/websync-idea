@@ -24,7 +24,6 @@ import java.util.Arrays;
  */
 public class UpdateElement extends AnAction {
 
-    private static final Logger log = Logger.getInstance(UpdateElement.class);
     private static final String PAGE_AWARE_BY_ANNOTATION = "com.epam.sha.selenium.PageAwareFindBy";
 
     @Override

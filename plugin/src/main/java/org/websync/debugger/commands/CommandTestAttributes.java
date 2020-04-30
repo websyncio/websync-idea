@@ -29,7 +29,7 @@ public class CommandTestAttributes {
         });
     }
 
-    static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
+    private static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 
