@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.websync.debugger.DebugFileWatcher;
 import org.websync.debugger.FileParser;
 import org.websync.logger.LoggerUtils;
-import org.websync.websession.PsiWebSessionProvider;
-import org.websync.websession.WebSessionProvider;
+import org.websync.websession.PsiJdiModulesProvider;
+import org.websync.websession.JdiModulesProvider;
 import org.websync.websocket.BrowserConnection;
 
 import java.io.File;
@@ -20,7 +20,7 @@ public class WebSyncService {
     @Getter
     private BrowserConnection browserConnection;
     @Getter
-    private WebSessionProvider provider;
+    private JdiModulesProvider provider;
     private DebugFileWatcher debugFileWatcher;
 
     public WebSyncService() {
@@ -29,7 +29,7 @@ public class WebSyncService {
 
     public void init() {
         // .init provider
-        this.provider = new PsiWebSessionProvider();
+        this.provider = new PsiJdiModulesProvider();
 
         // .init browser connection
         this.browserConnection = createBrowserConnection();

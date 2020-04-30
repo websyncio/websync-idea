@@ -6,15 +6,15 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
 import org.java_websocket.WebSocket;
 import org.jetbrains.annotations.NotNull;
-import org.websync.logger.LoggerUtils;
 import org.websync.WebSyncService;
 import org.websync.jdi.JdiElement;
-import org.websync.websession.PsiWebSessionProvider;
+import org.websync.logger.LoggerUtils;
 import org.websync.websocket.BrowserConnection;
 
 import java.util.Arrays;
@@ -29,15 +29,11 @@ public class WebsyncDocumentListener implements DocumentListener {
         if(file == null) {
             return;
         }
-
-        WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
-        PsiWebSessionProvider provider = (PsiWebSessionProvider) webSyncService.getProvider();
-        Project project = provider.getProjects().get(0);
-
-        if(file.getPath()!=null) {
-            LoggerUtils.print(String.format("documentChanged: '%s'", file.getPath()));
+        LoggerUtils.print(String.format("documentChanged: '%s'", file.getPath()));
+        Project project = ProjectUtil.guessProjectForFile(file);
+        if(project == null) {
+            return;
         }
-
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         LoggerUtils.print(String.format("psiFile of this file: '%s'", psiFile));
 

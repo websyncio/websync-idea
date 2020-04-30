@@ -1,6 +1,8 @@
 package org.websync.debugger.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.hamcrest.MatcherAssert;
@@ -8,9 +10,9 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.websync.debugger.testengine.TestEngineUtils;
-import org.websync.websession.PsiWebSessionProvider;
+import org.websync.websession.PsiJdiModulesProvider;
 import org.websync.websession.models.ComponentType;
-import org.websync.websession.models.WebSession;
+import org.websync.websession.models.JdiModule;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
@@ -18,7 +20,6 @@ import org.websync.websession.psimodels.psi.AnnotationInstance;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class CommandTestAttributes {
@@ -28,7 +29,7 @@ public class CommandTestAttributes {
         });
     }
 
-    static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
+    private static boolean testValidNamesOfAttributesInComponent(Map<String, ComponentType> components, String componentsName) {
         // GIVEN
         String givenComponentName = componentsName;
 
@@ -61,14 +62,19 @@ public class CommandTestAttributes {
     @Test
     public void testValidNamesOfAttributesInComponent() {
         //PREREQUISITES
-        Project project = ProjectManager.getInstance().getOpenProjects()[0];
-        WebSession webSession = new PsiWebSessionProvider().getWebSession(project);
-        Map<String, ComponentType> components = webSession.getComponentTypes();
+        JdiModule jdiModule = new PsiJdiModulesProvider().getJdiModule(getFullNameForModuleInProject());
+        Map<String, ComponentType> components = jdiModule.getComponentTypes();
 
         // TEST FOR GIVEN COMPONENT NAME
         String givenComponentName = "AttributesTest";
 
 
         Assert.assertTrue(testValidNamesOfAttributesInComponent(components, givenComponentName));
+    }
+
+    private static String getFullNameForModuleInProject() {
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        Module module = ModuleManager.getInstance(project).getModules()[0];
+        return project.getName() + "/" + module.getName();
     }
 }
