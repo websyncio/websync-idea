@@ -1,6 +1,8 @@
 package org.websync.debugger;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
@@ -11,9 +13,9 @@ import org.websync.debugger.commands.CommandTestSerializerUtils;
 import org.websync.logger.LoggerUtils;
 import org.websync.debugger.commands.CommandInitProjectUtils;
 import org.websync.debugger.commands.CommandTestAttributes;
-import org.websync.websession.PsiWebSessionProvider;
+import org.websync.websession.PsiJdiModulesProvider;
 import org.websync.websession.models.ComponentType;
-import org.websync.websession.models.WebSession;
+import org.websync.websession.models.JdiModule;
 import org.websync.websession.psimodels.PsiComponentInstance;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
@@ -78,7 +80,7 @@ public class FileParser {
     private void testWebSessionProvider() {
         ApplicationManager.getApplication().runReadAction(() -> {
             Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiWebSessionProvider webProvider = new PsiWebSessionProvider();
+            PsiJdiModulesProvider webProvider = new PsiJdiModulesProvider();
         });
     }
 
@@ -112,8 +114,8 @@ public class FileParser {
 
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = new PsiWebSessionProvider().getWebSession(project);
+            String fullName = getFullNameForModuleInProject();
+            JdiModule session = new PsiJdiModulesProvider().getJdiModule(fullName);
             Map<String, ComponentType> components = session.getComponentTypes();
 
             LoggerUtils.print(String.format("Components: %s", components.size()));
@@ -127,8 +129,8 @@ public class FileParser {
 
     private void testFieldsOfPsiClasses() {
         ApplicationManager.getApplication().runReadAction(() -> {
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            WebSession session = new PsiWebSessionProvider().getWebSession(project);
+            String fullName = getFullNameForModuleInProject();
+            JdiModule session = new PsiJdiModulesProvider().getJdiModule(fullName);
             Map<String, ComponentType> components = session.getComponentTypes();
 
             String elementId = components.keySet().stream().filter(k -> k.contains("AttributesTest")).findFirst().get();
@@ -142,5 +144,11 @@ public class FileParser {
                 LoggerUtils.print(instanceAnnotation.toString());
             });
         });
+    }
+
+    private static String getFullNameForModuleInProject() {
+        Project project = ProjectManager.getInstance().getOpenProjects()[0];
+        Module module = ModuleManager.getInstance(project).getModules()[0];
+        return project.getName() + "/" + module.getName();
     }
 }
