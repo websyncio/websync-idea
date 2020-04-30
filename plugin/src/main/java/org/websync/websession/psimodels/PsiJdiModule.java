@@ -1,17 +1,19 @@
 package org.websync.websession.psimodels;
 
-import org.websync.websession.models.WebSession;
+import org.websync.websession.models.JdiModule;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class PsiWebSession extends WebSession {
-    public PsiWebSession() {
+public class PsiJdiModule extends JdiModule {
+    public PsiJdiModule() {
         super();
     }
 
-    public PsiWebSession(Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
-                         Collection<PsiPageType> pages) {
+    public PsiJdiModule(String name, Collection<PsiWebsite> websites, Collection<PsiComponentType> components,
+                        Collection<PsiPageType> pages) {
+
+        this.name = name;
 
         this.websites = websites.stream()
                 .collect(Collectors.toMap(PsiWebsite::getId, website -> website));

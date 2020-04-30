@@ -3,7 +3,7 @@ package org.websync.react.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WebSessionDto {
+public class JdiModuleDto {
     public String module;
     public List<WebsiteDto> websites = new ArrayList<>();
     public List<PageTypeDto> pages = new ArrayList<>();
