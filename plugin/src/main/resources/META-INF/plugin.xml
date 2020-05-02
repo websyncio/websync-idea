@@ -12,7 +12,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.websync.WebSyncService" preload="true"/>
-        <editorFactoryDocumentListener implementation="org.websync.updater.WebsyncDocumentListener"/>
     </extensions>
 
     <actions>

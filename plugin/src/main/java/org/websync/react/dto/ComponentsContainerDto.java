@@ -14,7 +14,7 @@ public class ComponentsContainerDto extends BaseDto {
     public ComponentsContainerDto(ComponentContainer container) {
         super(container.getId());
         componentsInstances = container.getComponentInstances()
-                .stream().map(i -> new ComponentInstanceDto(i))
+                .stream().map(ComponentInstanceDto::new)
                 .collect(Collectors.toList());
     }
 }

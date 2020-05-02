@@ -9,6 +9,7 @@ import org.java_websocket.server.WebSocketServer;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.logger.LoggerUtils;
+import org.websync.react.dto.ComponentsContainerDto;
 import org.websync.websocket.commands.WebSyncCommand;
 
 import java.net.InetSocketAddress;
@@ -38,7 +39,7 @@ public class BrowserConnection extends WebSocketServer {
         LoggerUtils.print("received message from " + conn.getRemoteSocketAddress() + ": " + message);
         Object replyObject;
         WebSyncCommand command = WebSyncCommand.createByText(message);
-        if(command == null) {
+        if (command == null) {
             String msg = message.replace('"', '\'');
             broadcast("{\"status\":254,\"error\":\"Unknown message: " + msg + "\"");
             return;
@@ -59,7 +60,7 @@ public class BrowserConnection extends WebSocketServer {
     }
 
     @Nullable
-    public String serialize(Object o) throws JsonProcessingException {
+    String serialize(Object o) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         return mapper.writeValueAsString(o);
@@ -80,18 +81,42 @@ public class BrowserConnection extends WebSocketServer {
         LoggerUtils.print("server started successfully");
     }
 
-    public static class ErrorReply {
+    public void sendUpdateComponent(ComponentsContainerDto container) throws WebSyncException {
+        class Message {
+            String command = "update-component";
+            Object data;
+        }
+        if (getConnections().isEmpty()) {
+            return;
+        }
+
+        Message message = new Message();
+        message.data = container;
+        String request;
+        try {
+            request = serialize(message);
+        } catch (JsonProcessingException e) {
+            throw new WebSyncException("Cannot send update for " + container.id, e);
+        }
+        broadcast(request);
+    }
+
+    // internal serialization stuff, don't make it public
+    static class ErrorReply {
         public int status;
         public String error;
 
         public ErrorReply(int status, String error) {
-            if(status == 0) throw new IllegalArgumentException("must not be 0");
+            if (status == 0) {
+                throw new IllegalArgumentException("must not be 0");
+            }
             this.status = status;
             this.error = error;
         }
     }
 
-    public static class OkayReply {
+    // internal serialization stuff, don't make it public
+    static class OkayReply {
         public int status = 0;
         public Object data;
 
