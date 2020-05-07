@@ -69,16 +69,14 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         if (psiClass == null) {
             return;
         }
-        boolean isPage = isPage(psiClass);
-        boolean isComponent = isComponent(psiClass);
 
-        if (isPage) {
+        if (isPage(psiClass)) {
             PsiPageType pageType = new PsiPageType(psiClass);
             pageType.fill();
             sendUpdateFor(new PageTypeDto(pageType));
             return;
         }
-        if (isComponent) {
+        if (isComponent(psiClass)) {
             PsiComponentType component = new PsiComponentType(psiClass);
             component.fill();
             sendUpdateFor(new ComponentTypeDto(component));
