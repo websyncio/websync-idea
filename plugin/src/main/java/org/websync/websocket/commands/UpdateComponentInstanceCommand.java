@@ -55,7 +55,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     private static PsiField findPsiClassInModule(Module module, String className, String fieldName) throws WebSyncException {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
-        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));;
+        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
         if (componentPsiClass == null) {
             throw new WebSyncException("Component not found: " + className);
         }

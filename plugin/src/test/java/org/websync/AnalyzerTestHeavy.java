@@ -2,8 +2,6 @@ package org.websync;
 
 import com.intellij.ide.projectWizard.ImportFromSourcesTestCase;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.jdom.JDOMException;
 import org.junit.Assert;
@@ -39,8 +37,5 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
         //JUnit tests should include at least one assertion.
         */
         Assert.assertTrue(true);
-
-        //TODO
-        FileDocumentManagerImpl impl = (FileDocumentManagerImpl) FileDocumentManager.getInstance();
     }
 }
