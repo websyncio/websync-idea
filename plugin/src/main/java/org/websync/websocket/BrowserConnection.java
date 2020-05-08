@@ -81,9 +81,9 @@ public class BrowserConnection extends WebSocketServer {
         LoggerUtils.print("server started successfully");
     }
 
-    public void sendUpdateComponent(ComponentsContainerDto container) throws WebSyncException {
+    public void sendUpdate(String type, ComponentsContainerDto container) throws WebSyncException {
         class Message {
-            String command = "update-component";
+            String command = "update-" + type;
             Object data;
         }
         if (getConnections().isEmpty()) {

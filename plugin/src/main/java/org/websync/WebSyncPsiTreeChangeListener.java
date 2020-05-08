@@ -73,19 +73,19 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         if (isPage(psiClass)) {
             PsiPageType pageType = new PsiPageType(psiClass);
             pageType.fill();
-            sendUpdateFor(new PageTypeDto(pageType));
+            sendUpdateFor("page", new PageTypeDto(pageType));
             return;
         }
         if (isComponent(psiClass)) {
             PsiComponentType component = new PsiComponentType(psiClass);
             component.fill();
-            sendUpdateFor(new ComponentTypeDto(component));
+            sendUpdateFor("component", new ComponentTypeDto(component));
         }
     }
 
-    private void sendUpdateFor(ComponentsContainerDto container) {
+    private void sendUpdateFor(String type, ComponentsContainerDto container) {
         try {
-            webSyncService.getBrowserConnection().sendUpdateComponent(container);
+            webSyncService.getBrowserConnection().sendUpdate(type, container);
         } catch (WebSyncException e) {
             e.printStackTrace();
         }
