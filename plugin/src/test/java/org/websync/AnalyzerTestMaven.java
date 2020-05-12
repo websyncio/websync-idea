@@ -9,7 +9,6 @@ import org.junit.Assert;
 import java.io.File;
 
 public class AnalyzerTestMaven extends MavenTestCase {
-    private String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
 
     @Override
     protected void setUp() throws Exception {

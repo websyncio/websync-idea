@@ -35,7 +35,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
             LoggerUtils.print(message);
-            return new ReplyObject(101, message);
+            throw new WebSyncException(message);
         }
         updateComponentInstanceWithSingleAttribute(moduleName, className, oldFieldName, data.initializationAttribute);
         return new ReplyObject("Attribute was changed.");
