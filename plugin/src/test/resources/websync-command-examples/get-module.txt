@@ -1,0 +1,1 @@
+{"command":"get-module", "data":"jdi-x.x.x/jdi-x.x.x.main"}
