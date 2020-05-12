@@ -3,7 +3,6 @@ package org.websync.jdi;
 import com.epam.jdi.light.elements.common.Label;
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.*;
-import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 
 public class AttributesInitialization extends WebPage {
 
