@@ -108,9 +108,9 @@ public class FileParser {
             Map<String, ComponentType> components = session.getComponentTypes();
 
             LoggerUtils.print(String.format("Components: %s", components.size()));
-            components.forEach((componentName, componentContainer) -> {
-                String baseComponentId = componentContainer.getBaseComponentTypeId() == null ? "" : componentContainer.getBaseComponentTypeId();
-                LoggerUtils.print(String.format("%s - %s", componentName, baseComponentId));
+            components.forEach((Name, component) -> {
+                String baseComponentId = component.getBaseComponentTypeId() == null ? "" : component.getBaseComponentTypeId();
+                LoggerUtils.print(String.format("%s - %s", Name, baseComponentId));
             });
         });
     }
