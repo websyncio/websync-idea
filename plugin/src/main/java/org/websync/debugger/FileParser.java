@@ -100,7 +100,6 @@ public class FileParser {
             classes.forEach(c -> LoggerUtils.print("*" + c.getQualifiedName()));
         });
     }
-
     private void testPrintComponents() {
         ApplicationManager.getApplication().runReadAction(() -> {
             String fullName = getFullNameForModuleInProject();
@@ -108,9 +107,9 @@ public class FileParser {
             Map<String, ComponentType> components = session.getComponentTypes();
 
             LoggerUtils.print(String.format("Components: %s", components.size()));
-            components.forEach((Name, component) -> {
+            components.forEach((name , component) -> {
                 String baseComponentId = component.getBaseComponentTypeId() == null ? "" : component.getBaseComponentTypeId();
-                LoggerUtils.print(String.format("%s - %s", Name, baseComponentId));
+                LoggerUtils.print(String.format("%s - %s", name, baseComponentId));
             });
         });
     }
