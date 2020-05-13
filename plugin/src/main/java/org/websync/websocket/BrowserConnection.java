@@ -60,7 +60,7 @@ public class BrowserConnection extends WebSocketServer {
     }
 
     @Nullable
-    String serialize(Object o) throws JsonProcessingException {
+    private String serialize(Object o) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         return mapper.writeValueAsString(o);
@@ -83,7 +83,7 @@ public class BrowserConnection extends WebSocketServer {
 
     public void sendUpdate(String type, ComponentsContainerDto container) throws WebSyncException {
         class Message {
-            String command = "update-" + type;
+            private String command = "update-" + type;
             Object data;
         }
         if (getConnections().isEmpty()) {
