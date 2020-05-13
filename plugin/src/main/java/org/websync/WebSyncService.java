@@ -1,6 +1,8 @@
 package org.websync;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiTreeChangeListener;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.websync.debugger.DebugFileWatcher;
@@ -22,24 +24,22 @@ public class WebSyncService {
     @Getter
     private JdiModulesProvider provider;
     private DebugFileWatcher debugFileWatcher;
+    final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
 
     public WebSyncService() {
-        init();
-    }
-
-    public void init() {
         // .init provider
-        this.provider = new PsiJdiModulesProvider();
+        provider = new PsiJdiModulesProvider();
 
         // .init browser connection
-        this.browserConnection = createBrowserConnection();
+        browserConnection = createBrowserConnection();
 
         // .init debug file watcher
-        this.debugFileWatcher = createDebugFileWatcher();
+        debugFileWatcher = createDebugFileWatcher();
 
         // .start
-        this.browserConnection.start();
-        this.debugFileWatcher.start();
+        browserConnection.start();
+        debugFileWatcher.start();
+        psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
     }
 
     private BrowserConnection createBrowserConnection() {
@@ -84,10 +84,12 @@ public class WebSyncService {
     }
 
     public void addProject(Project project) {
-        this.provider.addProject(project);
+        provider.addProject(project);
+        PsiManager.getInstance(project).addPsiTreeChangeListener(psiTreeChangeListener);
     }
 
     public void removeProject(Project project) {
-        this.provider.removeProject(project);
+        provider.removeProject(project);
+        PsiManager.getInstance(project).removePsiTreeChangeListener(psiTreeChangeListener);
     }
 }

@@ -46,9 +46,6 @@ public class FileParser {
             case "print classes":
                 printClasses();
                 break;
-            case "test session":
-                testWebSessionProvider();
-                break;
             case "test serializer":
 //                testSerializer();
                 CommandTestSerializerUtils.run();
@@ -74,14 +71,6 @@ public class FileParser {
         long endTime = System.nanoTime();
         LoggerUtils.print(String.format("COMMAND '%s' is performed. Time = %.3f s.", command,
                 (double) (endTime - startTime) / 1000000000));
-    }
-
-
-    private void testWebSessionProvider() {
-        ApplicationManager.getApplication().runReadAction(() -> {
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            PsiJdiModulesProvider webProvider = new PsiJdiModulesProvider();
-        });
     }
 
     private void printClasses() {

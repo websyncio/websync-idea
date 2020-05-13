@@ -2,8 +2,6 @@ package org.websync;
 
 import com.intellij.ide.projectWizard.ImportFromSourcesTestCase;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.impl.FileDocumentManagerImpl;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.jdom.JDOMException;
 import org.junit.Assert;
@@ -16,6 +14,7 @@ import java.nio.file.Paths;
 public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
     //TODO: exclude hadcoded local path
+    private String srcPath = "path to maven Project";
     private Path path = Paths.get(srcPath);
     private File file = new File(srcPath);
 
@@ -39,8 +38,5 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
         //JUnit tests should include at least one assertion.
         */
         Assert.assertTrue(true);
-
-        //TODO
-        FileDocumentManagerImpl impl = (FileDocumentManagerImpl) FileDocumentManager.getInstance();
     }
 }
