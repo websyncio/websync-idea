@@ -163,6 +163,8 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
     }
 
     @Test
+    //TODO: write an usage of variable psiFiles
+    //5/12/20020 11:22pm currently variable psiFiles is unused
     public void test1() {
         long startTime = System.nanoTime();
         PsiFile[] psiFiles = myFixture.configureByFiles(
@@ -178,7 +180,9 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
         LoggerUtils.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
 
         // example
-        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
+        // 5/12/2020 11:06 pm Alex T update
+        // made the line below as commented to keep this example in code at least as comment not as unused variable
+        //PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
 
         // example
         PsiShortNamesCache.getInstance(getProject()).getAllClassNames();
@@ -198,7 +202,6 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
 
     public void test2() {
         long startTime = System.nanoTime();
-        VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
 
         long endTime = System.nanoTime();
         LoggerUtils.print(String.format("%.3f", (double)(endTime - startTime) / 1000000000));
