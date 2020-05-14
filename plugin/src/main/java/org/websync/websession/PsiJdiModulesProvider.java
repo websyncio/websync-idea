@@ -30,9 +30,6 @@ import static org.websync.jdi.JdiElement.JDI_WEB_PAGE;
 public class PsiJdiModulesProvider implements JdiModulesProvider {
     final List<String> moduleNames = new ArrayList<>();
 
-    public PsiJdiModulesProvider() {
-    }
-
     @Override
     public List<String> getJdiModuleNames() {
         return new ArrayList<>(moduleNames);
