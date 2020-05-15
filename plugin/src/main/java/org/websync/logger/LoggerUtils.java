@@ -7,7 +7,7 @@ public class LoggerUtils {
 
     private final static Calendar calendar = Calendar.getInstance();
 
-    final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     //SimpleDateFormat 395 usages found // Alex T (5/11/2020)
 
     public static void print(String message) {
