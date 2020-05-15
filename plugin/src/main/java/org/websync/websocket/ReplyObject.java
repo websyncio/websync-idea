@@ -2,7 +2,7 @@ package org.websync.websocket;
 
 
 public class ReplyObject {
-    int status;
+    private int status;
     String type;
     Object response;
 
