@@ -12,7 +12,7 @@ public class InitializedSetOfClasses {
     protected InheritedPageObject protectedPageObject;
 
     @Url("another-inherited-page.html")
-    InheritedPageObject2 packagePrivatePageObject;
+    private InheritedPageObject2 packagePrivatePageObject;
 
     @Url("page-with-complex-elements.html")
     private ComplexElementsInitialization privatePageObject;
