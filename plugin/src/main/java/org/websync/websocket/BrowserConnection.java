@@ -85,7 +85,7 @@ public class BrowserConnection extends WebSocketServer {
     public void sendUpdate(String type, ComponentsContainerDto container) throws WebSyncException {
         class Message {
             private String command = "update-" + type;
-            Object data;
+            private Object data;
         }
         if (getConnections().isEmpty()) {
             return;
