@@ -22,5 +22,4 @@ public class PageObjectWithDifferentModificators extends WebPage {
     @Css(".testCss")
     private FileInput privateFileInput;
     private @FindBy(xpath = "//test")
-    static NumberSelector staticNumberSelector;
 }
