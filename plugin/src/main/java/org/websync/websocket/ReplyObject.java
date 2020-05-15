@@ -3,8 +3,8 @@ package org.websync.websocket;
 
 public class ReplyObject {
     private int status;
-    String type;
-    Object response;
+    private String type;
+    private Object response;
 
     public ReplyObject() {
     }
