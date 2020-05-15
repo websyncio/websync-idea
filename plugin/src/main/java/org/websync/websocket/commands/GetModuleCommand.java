@@ -8,6 +8,7 @@ import org.websync.react.dto.ComponentTypeDto;
 import org.websync.react.dto.PageTypeDto;
 import org.websync.react.dto.JdiModuleDto;
 import org.websync.websession.models.JdiModule;
+import org.websync.websocket.ReplyObject;
 
 import java.util.stream.Collectors;
 
@@ -18,13 +19,14 @@ public class GetModuleCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected ReplyObject execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         String moduleName = ((GetModuleCommand.Message) inputMessage).data;
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
             result[0] = createDto(getWebSyncService().getProvider().getJdiModule(moduleName));
         });
-        return result[0];
+        ReplyObject replyObject = new ReplyObject("module", result[0]);
+        return replyObject;
     }
 
     @NotNull
