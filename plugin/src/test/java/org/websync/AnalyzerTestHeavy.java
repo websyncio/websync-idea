@@ -15,7 +15,6 @@ public class AnalyzerTestHeavy extends ImportFromSourcesTestCase {
 
     //TODO: exclude hadcoded local path
     private String srcPath = "path to maven Project";
-    private Path path = Paths.get(srcPath);
     private File file = new File(srcPath);
 
     public void test0() {

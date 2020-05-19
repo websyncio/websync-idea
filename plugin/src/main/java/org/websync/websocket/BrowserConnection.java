@@ -45,7 +45,8 @@ public class BrowserConnection extends WebSocketServer {
             return;
         }
         try {
-            Object result = command.execute(message);
+            ReplyObject result ;
+            result = command.execute(message);
             replyObject = new OkayReply(result);
         } catch (WebSyncException e) {
             e.printStackTrace();
@@ -84,7 +85,7 @@ public class BrowserConnection extends WebSocketServer {
     public void sendUpdate(String type, ComponentsContainerDto container) throws WebSyncException {
         class Message {
             private String command = "update-" + type;
-            Object data;
+            private Object data;
         }
         if (getConnections().isEmpty()) {
             return;
@@ -117,11 +118,13 @@ public class BrowserConnection extends WebSocketServer {
 
     // internal serialization stuff, don't make it public
     static class OkayReply {
+        public String type;
         public int status = 0;
         public Object data;
 
-        public OkayReply(Object data) {
-            this.data = data;
+        public OkayReply(ReplyObject data) {
+            this.type = data.getType();
+            this.data = data.getResponse();
         }
     }
 }

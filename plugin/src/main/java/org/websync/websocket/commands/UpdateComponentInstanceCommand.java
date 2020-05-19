@@ -12,6 +12,7 @@ import org.websync.jdi.JdiAttribute;
 import org.websync.logger.LoggerUtils;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
+import org.websync.websocket.ReplyObject;
 
 import java.util.LinkedHashMap;
 
@@ -23,7 +24,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected ReplyObject execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
         String moduleName = ((Message) inputMessage).moduleName;
         int lastDot = data.id.lastIndexOf('.');
@@ -37,7 +38,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             throw new WebSyncException(message);
         }
         updateComponentInstanceWithSingleAttribute(moduleName, className, oldFieldName, data.initializationAttribute);
-        return "Attribute was changed.";
+        return new ReplyObject("Attribute was changed.");
     }
 
     public void updateComponentInstance(String moduleName, String className, String oldFieldName, String newFieldName) throws WebSyncException {
