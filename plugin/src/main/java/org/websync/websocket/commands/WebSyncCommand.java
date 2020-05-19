@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
-import org.websync.websocket.ReplyObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +31,7 @@ public abstract class WebSyncCommand {
      * @return an error message, null means no error.
      */
     @Nullable
-    public ReplyObject execute(@NotNull String inputMessageString) throws WebSyncException {
+    public Object execute(@NotNull String inputMessageString) throws WebSyncException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         final Message message;
@@ -101,7 +100,7 @@ public abstract class WebSyncCommand {
     }
 
     @Nullable
-    protected abstract ReplyObject execute(@NotNull Message inputMessage) throws WebSyncException;
+    protected abstract Object execute(@NotNull Message inputMessage) throws WebSyncException;
 
     static class Message {
         public String command;
