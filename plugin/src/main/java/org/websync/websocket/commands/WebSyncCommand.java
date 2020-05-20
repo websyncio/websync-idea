@@ -14,14 +14,16 @@ import java.util.regex.Pattern;
 
 /**
  * JSON commands are processed by the WebSyncCommand class in this way:
- * {"command":"get-modules", ...} is mapped to GetModulesCommand
- * {"command":"update-component-instance", ...} is mapped to UpdateComponentInstanceCommand
+ * {"type":"get-modules", ...} is mapped to GetModulesCommand
+ * {"type":"update-component-instance", ...} is mapped to UpdateComponentInstanceCommand
  * etc
  */
 public abstract class WebSyncCommand {
 
     @Getter
     private WebSyncService webSyncService;
+    @Getter
+    private String responseType;
 
     /**
      * Takes the input JSON message received from the WebSync browser plugin.
@@ -58,7 +60,7 @@ public abstract class WebSyncCommand {
      */
     @Nullable
     public static WebSyncCommand createByText(@NotNull String text) {
-        String id = extractId(text);
+        final String id = extractId(text);
         if (id == null) {
             return null;
         }
@@ -76,6 +78,7 @@ public abstract class WebSyncCommand {
         try {
             WebSyncCommand command = (WebSyncCommand) Class.forName(className).getConstructor().newInstance();
             command.webSyncService = ApplicationManager.getApplication().getService(WebSyncService.class);
+            command.responseType = id + "-response";
             return command;
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +87,7 @@ public abstract class WebSyncCommand {
     }
 
     public static String extractId(String text) {
-        Pattern p = Pattern.compile("\"command\"\\s*:\\s*\"([a-z](-?[a-z])*)\"");
+        Pattern p = Pattern.compile("\"type\"\\s*:\\s*\"([a-z](-?[a-z])*)\"");
         Matcher m = p.matcher(text);
         return m.find() ? m.group(1) : null;
     }
@@ -103,11 +106,11 @@ public abstract class WebSyncCommand {
     protected abstract Object execute(@NotNull Message inputMessage) throws WebSyncException;
 
     static class Message {
-        public String command;
+        public String type;
     }
 
     public static void main(String[] args) {
-        String res = "{\"command\"  :  \"d-f-f-ddfds\", \"data\":{\"id\":\"org.websync.jdi.AttributesInitialization.initializedWithXpath\",\"componentTypeId\":\"com.epam.jdi.light.elements.common.Label\",\"name\":\"initializedWithXpath\",\"initializationAttribute\":{\"name\":\"XPath\",\"parameters\":[{\"name\":null,\"values\":[\"//testXpath\"]}]}}}";
+        String res = "{\"type\"  :  \"d-f-f-ddfds\", \"data\":{\"id\":\"org.websync.jdi.AttributesInitialization.initializedWithXpath\",\"componentTypeId\":\"com.epam.jdi.light.elements.common.Label\",\"name\":\"initializedWithXpath\",\"initializationAttribute\":{\"name\":\"XPath\",\"parameters\":[{\"name\":null,\"values\":[\"//testXpath\"]}]}}}";
 
         try {
             System.out.println(":::'" + extractId(res) + "'");
