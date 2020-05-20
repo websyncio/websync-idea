@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 
 public class GetModuleCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
-        public String data;
+        public String moduleName;
     }
 
     @Nullable
     @Override
     protected Object execute(@NotNull WebSyncCommand.Message inputMessage) {
-        String moduleName = ((GetModuleCommand.Message) inputMessage).data;
+        String moduleName = ((GetModuleCommand.Message) inputMessage).moduleName;
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
             result[0] = createDto(getWebSyncService().getProvider().getJdiModule(moduleName));
