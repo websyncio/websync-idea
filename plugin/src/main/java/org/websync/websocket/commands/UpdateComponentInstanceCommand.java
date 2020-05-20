@@ -12,9 +12,6 @@ import org.websync.jdi.JdiAttribute;
 import org.websync.logger.LoggerUtils;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
-import org.websync.websocket.ReplyObject;
-
-import java.util.LinkedHashMap;
 
 public class UpdateComponentInstanceCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
@@ -24,7 +21,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected ReplyObject execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
         String moduleName = ((Message) inputMessage).moduleName;
         int lastDot = data.id.lastIndexOf('.');
@@ -37,8 +34,8 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             LoggerUtils.print(message);
             throw new WebSyncException(message);
         }
-        updateComponentInstanceWithSingleAttribute(moduleName, className, oldFieldName, data.initializationAttribute);
-        return new ReplyObject("Attribute was changed.");
+        updateComponentInstanceWithSingleAttribute(moduleName, className, newFieldName, data.initializationAttribute);
+        return "Attribute was changed.";
     }
 
     public void updateComponentInstance(String moduleName, String className, String oldFieldName, String newFieldName) throws WebSyncException {
@@ -78,10 +75,10 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
                 return;
             }
 
-            LinkedHashMap params = ((LinkedHashMap) annotationDto.getParameters().get(0).getValues().get(0));
+            Object param = annotationDto.getParameters().get(0).getValues().get(0);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": update single annotation of field '" + fieldName +
-                            "' with name '" + attributeShortName + "' and value '" + params.get("value") + "'",
+                            "' with name '" + attributeShortName + "' and value '" + param + "'",
                     "WebSyncAction",
                     () -> {
                         PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
@@ -90,7 +87,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
                         annotationDto.getParameters().forEach(p -> {
                             PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(
-                                    "@" + attributeShortName + "(\"" + params.get("value") + "\")",
+                                    "@" + attributeShortName + "(\"" + param + "\")",
                                     null);
 
                             psiAnnotation.replace(newAnnotation);

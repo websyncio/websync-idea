@@ -2,7 +2,6 @@ package org.websync;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiTreeChangeListener;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.websync.debugger.DebugFileWatcher;
@@ -10,7 +9,7 @@ import org.websync.debugger.FileParser;
 import org.websync.logger.LoggerUtils;
 import org.websync.websession.PsiJdiModulesProvider;
 import org.websync.websession.JdiModulesProvider;
-import org.websync.websocket.BrowserConnection;
+import org.websync.websocket.BrowserConnectionManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,7 @@ import java.nio.file.Paths;
 
 public class WebSyncService {
     @Getter
-    private BrowserConnection browserConnection;
+    private BrowserConnectionManager browserConnectionManager;
     @Getter
     private JdiModulesProvider provider;
     private DebugFileWatcher debugFileWatcher;
@@ -31,19 +30,14 @@ public class WebSyncService {
         provider = new PsiJdiModulesProvider();
 
         // .init browser connection
-        browserConnection = createBrowserConnection();
+        browserConnectionManager = new BrowserConnectionManager(getPortFromConfig());
 
         // .init debug file watcher
         debugFileWatcher = createDebugFileWatcher();
 
         // .start
-        browserConnection.start();
         debugFileWatcher.start();
         psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
-    }
-
-    private BrowserConnection createBrowserConnection() {
-        return new BrowserConnection(getPortFromConfig());
     }
 
     public static int getPortFromConfig() {
@@ -79,7 +73,7 @@ public class WebSyncService {
     }
 
     public void dispose() throws IOException, InterruptedException {
-        browserConnection.stop();
+        browserConnectionManager.stop();
         debugFileWatcher.stop();
     }
 
