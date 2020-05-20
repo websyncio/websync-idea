@@ -71,47 +71,44 @@ public class BrowserConnectionManager {
         WebSyncCommand command = WebSyncCommand.createByText(message);
         if (command == null) {
             String error = "Unknown message: " + message.replace('"', '`');
-            sendErrorReply(254, error);
+            sendErrorReply(254, "internal-error", error);
             return;
         }
         try {
-            Object okayReply = new Object() {
+            send(new Message(command.getResponseType()) {
                 public int status = 0;
                 public Object data = command.execute(message);
-            };
-            send(okayReply);
+            });
         } catch (WebSyncException e) {
             e.printStackTrace();
-            sendErrorReply(100, e.getMessage());
+            sendErrorReply(100, command.getResponseType(), e.getMessage());
         }
     }
 
-    private void sendErrorReply(int code, String messageText) {
+    private void sendErrorReply(int code, String responseType, String messageText) {
         if (code == 0) {
             throw new IllegalArgumentException("must not be 0");
         }
-        send(new Object() {
+        send(new Message(responseType) {
             public int status = code;
             public String error = messageText;
         });
     }
 
 
-    public void sendUpdate(String type, ComponentsContainerDto container) {
-        send(new Object() {
-            public String command = "update-" + type;
+    public void sendUpdate(String commandType, ComponentsContainerDto container) {
+        send(new Message("update-" + commandType) {
             public Object data = container;
         });
     }
 
-    public void sendShowInPageEditor(String type, String qualifiedName) {
-        send(new Object() {
-            public String command = "show-" + type;
-            public String id = qualifiedName;
+    public void sendShowInPageEditor(String commandType, String qualifiedName) {
+        send(new Message("show-" + commandType) {
+            public String className = qualifiedName;
         });
     }
 
-    void send(Object messageObject) {
+    void send(Message messageObject) {
         ObjectMapper serializer = new ObjectMapper();
         serializer.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         try {
@@ -119,13 +116,22 @@ public class BrowserConnectionManager {
             server.broadcast(messageJson);
         } catch (JsonProcessingException e) {
             LoggerUtils.print(e.getMessage());
-            server.broadcast("{\"status\":255,\"error\":\"CANNOT serialize reply\"");
+            server.broadcast("{\"status\":255,\"type\":\"internal-error\",\"error\":\"CANNOT serialize reply\"");
             throw new RuntimeException("Cannot serialize " + messageObject, e);
         }
     }
 
     public void stop() throws IOException, InterruptedException {
         server.stop();
+    }
+
+    // serialization stuff, must not be used outside
+    static class Message {
+        Message(String type) {
+            this.type = type;
+        }
+
+        public String type;
     }
 
 }
