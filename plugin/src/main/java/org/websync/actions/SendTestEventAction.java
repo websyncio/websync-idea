@@ -1,16 +1,19 @@
-package org.websync;
+package org.websync.actions;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.jetbrains.annotations.NotNull;
+import org.websync.WebSyncService;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class SendTestEventAction extends AnAction {
+public class SendTestEventAction extends DumbAwareAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         final FileChooserDescriptor desc = new FileChooserDescriptor(true, false, false, false, false, false);

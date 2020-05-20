@@ -3,12 +3,10 @@ package org.websync.websocket.commands;
 import com.intellij.openapi.application.ApplicationManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.websync.WebSyncException;
 import org.websync.react.dto.ComponentTypeDto;
-import org.websync.react.dto.PageTypeDto;
 import org.websync.react.dto.JdiModuleDto;
+import org.websync.react.dto.PageTypeDto;
 import org.websync.websession.models.JdiModule;
-import org.websync.websocket.ReplyObject;
 
 import java.util.stream.Collectors;
 
@@ -19,14 +17,13 @@ public class GetModuleCommand extends WebSyncCommand {
 
     @Nullable
     @Override
-    protected ReplyObject execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
+    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) {
         String moduleName = ((GetModuleCommand.Message) inputMessage).data;
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
             result[0] = createDto(getWebSyncService().getProvider().getJdiModule(moduleName));
         });
-        ReplyObject replyObject = new ReplyObject("module", result[0]);
-        return replyObject;
+        return result[0];
     }
 
     @NotNull
