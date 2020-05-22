@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>org.websync</id>
     <name>WebSync</name>
-    <version>0.0.0</version>
+    <version>0.0.1</version>
     <vendor email="wsbaser@gmail.com" url="https://github.com/websyncio/websync-idea">Volkov Aleksey</vendor>
 
     <description>

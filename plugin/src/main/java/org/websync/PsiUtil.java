@@ -5,11 +5,13 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.util.InheritanceUtil;
+import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Nullable;
 import org.websync.jdi.JdiElement;
 
 import java.util.Arrays;
 
+@UtilityClass
 public class PsiUtil {
     @Nullable
     public static PsiClass findPsiClass(@Nullable PsiFile psiFile) {
