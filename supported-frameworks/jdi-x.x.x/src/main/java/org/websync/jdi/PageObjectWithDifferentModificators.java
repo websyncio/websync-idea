@@ -21,5 +21,6 @@ public class PageObjectWithDifferentModificators extends WebPage {
     TextArea packagePrivateTextArea;
     @Css(".testCss")
     private FileInput privateFileInput;
-    private @FindBy(xpath = "//test")
+    @FindBy(xpath = "//test")
+    private NumberSelector staticNumberSelector;
 }
