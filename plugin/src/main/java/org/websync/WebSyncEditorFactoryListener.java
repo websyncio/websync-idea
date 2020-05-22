@@ -22,15 +22,11 @@ public class WebSyncEditorFactoryListener implements EditorFactoryListener {
     public void editorCreated(@NotNull EditorFactoryEvent event) {
         Editor editor = event.getEditor();
         if(editor instanceof EditorEx) {
-            ((EditorEx) editor).addFocusListener(new FocusGainedListener());
+            ((EditorEx) editor).addFocusListener(focusGainedListener);
         }
     }
 
-    @Override
-    public void editorReleased(@NotNull EditorFactoryEvent event) {
-    }
-
-    private static class FocusGainedListener implements FocusChangeListener {
+    private final FocusChangeListener focusGainedListener = new FocusChangeListener() {
         @Override
         public void focusGained(@NotNull Editor editor) {
             // ignored
@@ -56,5 +52,5 @@ public class WebSyncEditorFactoryListener implements EditorFactoryListener {
                 webSyncService.getBrowserConnectionManager().sendShowInPageEditor(type, psiClass.getQualifiedName());
             }
         }
-    }
+    };
 }
