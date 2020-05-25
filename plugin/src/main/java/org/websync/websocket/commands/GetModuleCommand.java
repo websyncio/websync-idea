@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.websync.react.dto.ComponentTypeDto;
 import org.websync.react.dto.JdiModuleDto;
 import org.websync.react.dto.PageTypeDto;
+import org.websync.react.dto.WebsiteDto;
 import org.websync.websession.models.JdiModule;
 
 import java.util.stream.Collectors;
@@ -34,6 +35,8 @@ public class GetModuleCommand extends WebSyncCommand {
                 .map(PageTypeDto::new).collect(Collectors.toList());
         dto.components = module.getComponentTypes().values().stream()
                 .map(ComponentTypeDto::new).collect(Collectors.toList());
+        dto.websites = module.getWebsites().values().stream()
+                .map(WebsiteDto::new).collect(Collectors.toList());
         return dto;
     }
 
