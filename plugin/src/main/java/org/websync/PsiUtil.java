@@ -11,6 +11,8 @@ import org.websync.jdi.JdiElement;
 
 import java.util.Arrays;
 
+import static org.websync.jdi.JdiAttribute.JDI_JSITE;
+
 @UtilityClass
 public class PsiUtil {
     @Nullable
@@ -23,14 +25,21 @@ public class PsiUtil {
                 .findFirst().orElse(null);
     }
 
+    public static boolean isWebsite(@Nullable PsiClass psiClass) {
+        return psiClass != null && psiClass.getAnnotation(JDI_JSITE.className) != null;
+    }
+
     public static boolean isComponent(@Nullable PsiClass psiClass) {
-        return psiClass != null && Arrays.stream(psiClass.getSuperTypes())
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_UI_BASE_ELEMENT.className));
+        return isInheritor(psiClass, JdiElement.JDI_UI_BASE_ELEMENT);
     }
 
     public static boolean isPage(@Nullable PsiClass psiClass) {
+        return isInheritor(psiClass, JdiElement.JDI_WEB_PAGE);
+    }
+
+    private static boolean isInheritor(@Nullable PsiClass psiClass, JdiElement jdiElement) {
         return psiClass != null && Arrays.stream(psiClass.getSuperTypes())
-                .anyMatch(s -> InheritanceUtil.isInheritor(s, JdiElement.JDI_WEB_PAGE.className));
+                .anyMatch(s -> InheritanceUtil.isInheritor(s, jdiElement.className));
     }
 
 }
