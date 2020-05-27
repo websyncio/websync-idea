@@ -19,8 +19,9 @@ public class TransferPageObjectAction extends DumbAwareAction {
             return;
         }
         boolean isComponent = isComponent(psiClass);
-        if (isComponent || isPage(psiClass)) {
-            String type = isComponent ? "component" : "page";
+        boolean isWebsite = isWebsite(psiClass);
+        if (isComponent || isWebsite || isPage(psiClass)) {
+            String type = isComponent ? "component" : isWebsite ? "site" : "page";
             WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
             webSyncService.getBrowserConnectionManager().sendShowInPageEditor(type, psiClass.getQualifiedName());
         }
@@ -30,7 +31,7 @@ public class TransferPageObjectAction extends DumbAwareAction {
     public void update(@NotNull AnActionEvent e) {
         PsiClass psiClass = findPsiClass(e.getData(CommonDataKeys.PSI_FILE));
         boolean isNotDumb = e.getProject() != null && !DumbService.getInstance(e.getProject()).isDumb();
-        boolean enabledAndVisible = isNotDumb && (isComponent(psiClass) || isPage(psiClass));
+        boolean enabledAndVisible = isNotDumb && (isWebsite(psiClass) || isComponent(psiClass) || isPage(psiClass));
         e.getPresentation().setEnabledAndVisible(enabledAndVisible);
     }
 }
