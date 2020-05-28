@@ -3,15 +3,10 @@ package org.websync;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiManager;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.websync.debugger.DebugFileWatcher;
-import org.websync.debugger.FileParser;
-import org.websync.logger.LoggerUtils;
-import org.websync.websession.PsiJdiModulesProvider;
 import org.websync.websession.JdiModulesProvider;
+import org.websync.websession.PsiJdiModulesProvider;
 import org.websync.websocket.BrowserConnectionManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,36 +17,19 @@ public class WebSyncService {
     private BrowserConnectionManager browserConnectionManager;
     @Getter
     private JdiModulesProvider provider;
-    private DebugFileWatcher debugFileWatcher;
     final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
 
     public WebSyncService() {
-        // .init provider
         provider = new PsiJdiModulesProvider();
 
-        // .init browser connection
         browserConnectionManager = new BrowserConnectionManager(getPortFromConfig());
 
-        // .init debug file watcher
-        debugFileWatcher = createDebugFileWatcher();
-
-        // .start
-        debugFileWatcher.start();
         psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
     }
 
     public static int getPortFromConfig() {
         // TODO: get port from settings
         return 1804;
-    }
-
-    @NotNull
-    private DebugFileWatcher createDebugFileWatcher() {
-        Path projectDir = getProjectDir();
-        Path debugFilePath = createDebugFile(projectDir);
-        LoggerUtils.print(String.format("Project directory is '%s'.", projectDir));
-        LoggerUtils.print(String.format("Debug file path is '%s'.", debugFilePath));
-        return new DebugFileWatcher(new File(debugFilePath.toString()), new FileParser());
     }
 
     private Path createDebugFile(Path projectDir) {
@@ -74,7 +52,6 @@ public class WebSyncService {
 
     public void dispose() throws IOException, InterruptedException {
         browserConnectionManager.stop();
-        debugFileWatcher.stop();
     }
 
     public void addProject(Project project) {
