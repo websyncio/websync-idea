@@ -31,11 +31,11 @@ public class GetModuleCommand extends WebSyncCommand {
     private JdiModuleDto createDto(JdiModule module) {
         JdiModuleDto dto = new JdiModuleDto();
         dto.module = module.name;
-        dto.pages = module.getPageTypes().values().stream()
+        dto.pageTypes = module.getPageTypes().values().stream()
                 .map(PageTypeDto::new).collect(Collectors.toList());
-        dto.components = module.getComponentTypes().values().stream()
+        dto.componentTypes = module.getComponentTypes().values().stream()
                 .map(ComponentTypeDto::new).collect(Collectors.toList());
-        dto.websites = module.getWebsites().values().stream()
+        dto.webSites = module.getWebsites().values().stream()
                 .map(WebsiteDto::new).collect(Collectors.toList());
         return dto;
     }

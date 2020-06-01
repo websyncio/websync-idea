@@ -8,7 +8,7 @@ public abstract class JdiModule {
     @Getter
     public Map<String, PageType> pageTypes;
     @Getter
-    public Map<String, Website> websites;
+    public Map<String, WebSite> websites;
     @Getter
     public Map<String, ComponentType> componentTypes;
     @Getter

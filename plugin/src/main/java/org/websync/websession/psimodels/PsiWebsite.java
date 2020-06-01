@@ -1,9 +1,9 @@
 package org.websync.websession.psimodels;
 
 import com.intellij.psi.PsiClass;
-import org.websync.websession.models.Website;
+import org.websync.websession.models.WebSite;
 
-public class PsiWebsite extends PsiPageContainer<Website> implements Website {
+public class PsiWebsite extends PsiPageContainer<WebSite> implements WebSite {
     public PsiWebsite(PsiClass psiClass) {
         super(psiClass);
     }

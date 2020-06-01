@@ -5,7 +5,7 @@ import java.util.List;
 
 public class JdiModuleDto {
     public String module;
-    public List<WebsiteDto> websites = new ArrayList<>();
-    public List<PageTypeDto> pages = new ArrayList<>();
-    public List<ComponentTypeDto> components = new ArrayList<>();
+    public List<WebsiteDto> webSites = new ArrayList<>();
+    public List<PageTypeDto> pageTypes = new ArrayList<>();
+    public List<ComponentTypeDto> componentTypes = new ArrayList<>();
 }
