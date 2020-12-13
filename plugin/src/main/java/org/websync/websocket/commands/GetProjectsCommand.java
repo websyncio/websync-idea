@@ -4,7 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GetModulesCommand extends WebSyncCommand {
+public class GetProjectsCommand extends WebSyncCommand {
     @Nullable
     @Override
     protected Object execute(@NotNull Message inputMessage) {

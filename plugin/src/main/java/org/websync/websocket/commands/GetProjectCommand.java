@@ -11,7 +11,7 @@ import org.websync.websession.models.JdiModule;
 
 import java.util.stream.Collectors;
 
-public class GetModuleCommand extends WebSyncCommand {
+public class GetProjectCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
         public String moduleName;
     }
@@ -19,7 +19,7 @@ public class GetModuleCommand extends WebSyncCommand {
     @Nullable
     @Override
     protected Object execute(@NotNull WebSyncCommand.Message inputMessage) {
-        String moduleName = ((GetModuleCommand.Message) inputMessage).moduleName;
+        String moduleName = ((GetProjectCommand.Message) inputMessage).moduleName;
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
             result[0] = createDto(getWebSyncService().getProvider().getJdiModule(moduleName));
@@ -30,7 +30,7 @@ public class GetModuleCommand extends WebSyncCommand {
     @NotNull
     private JdiModuleDto createDto(JdiModule module) {
         JdiModuleDto dto = new JdiModuleDto();
-        dto.module = module.name;
+        dto.project = module.name;
         dto.pageTypes = module.getPageTypes().values().stream()
                 .map(PageTypeDto::new).collect(Collectors.toList());
         dto.componentTypes = module.getComponentTypes().values().stream()

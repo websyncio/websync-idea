@@ -1,4 +1,4 @@
-package org.websync.jdi;
+package org.websync.jdi.components;
 
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.FindBy;
