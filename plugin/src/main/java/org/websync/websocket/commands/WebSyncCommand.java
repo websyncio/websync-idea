@@ -105,7 +105,7 @@ public abstract class WebSyncCommand {
     @Nullable
     protected abstract Object execute(@NotNull Message inputMessage) throws WebSyncException;
 
-    static class Message {
+    public static class Message {
         public String type;
     }
 

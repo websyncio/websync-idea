@@ -8,7 +8,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.websync.WebSyncException;
 import org.websync.logger.LoggerUtils;
-import org.websync.react.dto.ComponentsContainerDto;
+import org.websync.react.dto.BaseDto;
 import org.websync.websocket.commands.WebSyncCommand;
 
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class BrowserConnectionManager {
     }
 
 
-    public void sendUpdate(String commandType, ComponentsContainerDto container) {
+    public void sendUpdate(String commandType, BaseDto container) {
         send(new Message("update-" + commandType) {
             public Object data = container;
         });

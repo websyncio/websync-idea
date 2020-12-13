@@ -15,7 +15,7 @@ import org.websync.react.dto.ComponentInstanceDto;
 
 public class UpdateComponentInstanceCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
-        public String moduleName;
+        public String projectName;
         public ComponentInstanceDto data;
     }
 
@@ -23,7 +23,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
     @Override
     protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
-        String moduleName = ((Message) inputMessage).moduleName;
+        String moduleName = ((Message) inputMessage).projectName;
         int lastDot = data.id.lastIndexOf('.');
         String className = data.id.substring(0, lastDot);
         String oldFieldName = data.id.substring(lastDot + 1);
@@ -42,7 +42,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiClassInModule(module, className, oldFieldName);
+            PsiField psiField = findPsiField(module, className, oldFieldName);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": rename '" + oldFieldName + "' to '" + newFieldName + "'",
                     "WebSyncAction",
@@ -50,7 +50,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         });
     }
 
-    private static PsiField findPsiClassInModule(Module module, String className, String fieldName) throws WebSyncException {
+    private static PsiField findPsiField(Module module, String className, String fieldName) throws WebSyncException {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
         PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
         if (componentPsiClass == null) {
@@ -68,7 +68,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiClassInModule(module, className, fieldName);
+            PsiField psiField = findPsiField(module, className, fieldName);
             String attributeShortName = annotationDto.getName();
             String attributeQualifiedName = JdiAttribute.getQualifiedNameByShortName(attributeShortName);
             if (attributeQualifiedName == null) {

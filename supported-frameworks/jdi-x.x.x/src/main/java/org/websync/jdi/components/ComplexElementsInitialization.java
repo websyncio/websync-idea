@@ -1,4 +1,4 @@
-package org.websync.jdi;
+package org.websync.jdi.components;
 
 
 import com.epam.jdi.light.elements.complex.Menu;
@@ -14,7 +14,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable;
 public class ComplexElementsInitialization extends WebPage {
 
     @JDropdown("test")
-    public Dropdown initializedDropdown;
+    public Dropdown initializedDropdownnewvalue;
     @JDropdown(root = "test", value = "test1", list = "test2", expand = ".expand", autoclose = true)
     public DropdownExpand initializedDropdownExpand;
     @JTable(root = "#test", rowHeader = "test")

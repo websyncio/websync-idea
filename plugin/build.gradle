@@ -23,11 +23,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     annotationProcessor("org.projectlombok:lombok:1.18.6")
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
-    compile "com.epam.jdi:jdi-light:1.1.15"
-    compile "com.epam.jdi:jdi-light-html:1.1.15"
+    compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
+    compileOnly "com.epam.jdi:jdi-light:1.1.15"
+    compileOnly "com.epam.jdi:jdi-light-html:1.1.15"
     compile "org.java-websocket:Java-WebSocket:1.4.0"
-    compile group: 'org.javers', name: 'javers-core', version: '5.8.12'
+    compileOnly group: 'org.javers', name: 'javers-core', version: '5.8.12'
 }
 
 configurations {
@@ -62,9 +62,16 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
+jar {
+    from {
+        // include runtime dependencies into the jar
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 intellij {
     setPlugins("java", "maven")
-    version '2019.3.3'
+    version '2020.2.3'
 }
 
 publishPlugin {

@@ -18,13 +18,16 @@ public class AnnotationDto {
         @Getter
         private String name;
         @Getter
-        private List<Object> values;
+        private List<String> values;
+
         public Parameter() {
         }
 
         public Parameter(String name, List<Object> values) {
             this.name = name;
-            this.values = values;
+            this.values = values.stream()
+                    .map(v-> v.toString())
+                    .collect(Collectors.toList());
         }
     }
 

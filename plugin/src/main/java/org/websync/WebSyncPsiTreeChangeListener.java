@@ -4,11 +4,10 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.websync.react.dto.ComponentTypeDto;
-import org.websync.react.dto.ComponentsContainerDto;
-import org.websync.react.dto.PageTypeDto;
+import org.websync.react.dto.*;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiPageType;
+import org.websync.websession.psimodels.PsiWebsite;
 
 import static org.websync.PsiUtil.*;
 
@@ -66,6 +65,12 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             return;
         }
 
+        if (isWebsite(psiClass)) {
+            PsiWebsite website = new PsiWebsite(psiClass);
+            website.fill();
+            sendUpdateFor("site", new WebsiteDto(website));
+            return;
+        }
         if (isPage(psiClass)) {
             PsiPageType pageType = new PsiPageType(psiClass);
             pageType.fill();
@@ -73,13 +78,13 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             return;
         }
         if (isComponent(psiClass)) {
-            PsiComponentType component = new PsiComponentType(psiClass);
+            PsiComponentType component = new PsiComponentType(psiClass,true);
             component.fill();
             sendUpdateFor("component", new ComponentTypeDto(component));
         }
     }
 
-    private void sendUpdateFor(String type, ComponentsContainerDto container) {
+    private void sendUpdateFor(String type, BaseDto container) {
         webSyncService.getBrowserConnectionManager().sendUpdate(type, container);
     }
 }

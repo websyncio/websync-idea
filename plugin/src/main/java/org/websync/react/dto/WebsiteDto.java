@@ -1,11 +1,25 @@
 package org.websync.react.dto;
 
-import org.websync.websession.models.Website;
+import org.websync.websession.models.WebSite;
 
-public class WebsiteDto {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class WebsiteDto extends BaseDto {
+    public List<PageInstanceDto> pageInstances;
+    public String baseWebSite;
+    public String url;
+
     public WebsiteDto() {
     }
 
-    public WebsiteDto(Website website) {
+    public WebsiteDto(WebSite website) {
+        super(website.getId());
+        baseWebSite = website.getBaseWebsiteId();
+        url = website.getUrl();
+
+        pageInstances = website.getPageInstances()
+                .stream().map(PageInstanceDto::new)
+                .collect(Collectors.toList());
     }
 }
