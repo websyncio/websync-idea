@@ -2,7 +2,8 @@ package org.websync.jdi;
 
 public enum JdiFramework {
     ELEMENTS_MODULE("com.epam.jdi:jdi-light-html"),
-    ELEMENTS_NAMESPACE("com.epam.jdi.light.ui.html.elements");
+    ELEMENTS_NAMESPACE("com.epam.jdi.light.elements"),
+    HTML_ELEMENTS_NAMESPACE("com.epam.jdi.light.ui.html.elements");
 
     public final String value;
 

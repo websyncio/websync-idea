@@ -8,16 +8,13 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.packaging.impl.artifacts.JarArtifactType;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.websync.jdi.JdiElementType;
 import org.websync.jdi.JdiFramework;
 import org.websync.logger.LoggerUtils;
 import org.websync.websession.models.JdiModule;
@@ -50,8 +47,7 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
         final Module module = findByFullName(name);
         Collection<PsiWebsite> websites = getWebsites(module);
         Collection<PsiPageType> pages = getPages(module);
-        Collection<PsiComponentType> components = getCustomComponents(module);
-//        components.addAll(getFrameworkComponents(module));
+        Collection<PsiComponentType> components = getComponents(module);
         return new PsiJdiModule(name, websites, components, pages);
     }
 
@@ -128,48 +124,48 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
         return pages;
     }
 
-    private Collection<PsiComponentType> getFrameworkComponents(Module module) {
-        long startTime = System.nanoTime();
+//    private Collection<PsiComponentType> getFrameworkComponents(Module module) {
+//        long startTime = System.nanoTime();
+//
+//        ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(module.getProject()).getFileIndex();
+//
+//
+//        // get the modules on which it depends
+//        Module[] dependencies = ModuleRootManager.getInstance(module).getDependencies();
+//
+//        // get the libraries on which it depends
+////        ModuleRootManager.getInstance(module).getModifiableModel().getModuleLibraryTable();
+//
+//        Collection<PsiClass> psiClasses = new ArrayList<PsiClass>();
+//        ModuleRootManager.getInstance(module).orderEntries() .forEachModule(m->{
+//            return true;
+//        });
+//        ModuleRootManager.getInstance(module).orderEntries().forEachLibrary(library -> {
+//            if(library.getName().contains(JdiFramework.ELEMENTS_MODULE.value)){
+//
+//                GlobalSearchScope scope = GlobalSearchScope.filesScope(
+//                        module.getProject(),
+//                        Arrays.asList(library.getFiles(OrderRootType.SOURCES)));
+//                psiClasses.addAll(getDerivedPsiClasses(module.getProject(), JDI_UI_BASE_ELEMENT.className, scope));
+//                return false;
+//            }
+//            return true;
+//        });
+//        Collection<PsiComponentType> components = getComponents(psiClasses);
+//
+//        long endTime = System.nanoTime();
+//        LoggerUtils.print(String.format("Getting PSI classes for framework components. Time = %.3f s.",
+//                (double) (endTime - startTime) / 1000000000));
+//        return components;
+//    }
 
-        ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(module.getProject()).getFileIndex();
-
-
-        // get the modules on which it depends
-        Module[] dependencies = ModuleRootManager.getInstance(module).getDependencies();
-
-        // get the libraries on which it depends
-//        ModuleRootManager.getInstance(module).getModifiableModel().getModuleLibraryTable();
-
-        Collection<PsiClass> psiClasses = new ArrayList<PsiClass>();
-        ModuleRootManager.getInstance(module).orderEntries() .forEachModule(m->{
-            return true;
-        });
-        ModuleRootManager.getInstance(module).orderEntries().forEachLibrary(library -> {
-            if(library.getName().contains(JdiFramework.ELEMENTS_MODULE.value)){
-
-                GlobalSearchScope scope = GlobalSearchScope.filesScope(
-                        module.getProject(),
-                        Arrays.asList(library.getFiles(OrderRootType.SOURCES)));
-                psiClasses.addAll(getDerivedPsiClasses(module.getProject(), JDI_UI_BASE_ELEMENT.className, scope));
-                return false;
-            }
-            return true;
-        });
-        Collection<PsiComponentType> components = getComponents(psiClasses,false);
-
-        long endTime = System.nanoTime();
-        LoggerUtils.print(String.format("Getting PSI classes for framework components. Time = %.3f s.",
-                (double) (endTime - startTime) / 1000000000));
-        return components;
-    }
-
-    private Collection<PsiComponentType> getCustomComponents(Module module) {
+    private Collection<PsiComponentType> getComponents(Module module) {
         long startTime = System.nanoTime();
         Collection<PsiClass> psiClasses = getDerivedPsiClasses(
                 module.getProject(),
                 JDI_UI_BASE_ELEMENT.className,
                 GlobalSearchScope.allScope(module.getProject()));
-        Collection<PsiComponentType> components = getComponents(psiClasses, true);
+        Collection<PsiComponentType> components = getComponents(psiClasses);
 
         long endTime = System.nanoTime();
         LoggerUtils.print(String.format("Getting PSI classes for custom components. Time = %.3f s.",
@@ -177,12 +173,15 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
         return components;
     }
 
-    private Collection<PsiComponentType> getComponents(Collection<PsiClass> psiClasses, boolean isCustom) {
+    private Collection<PsiComponentType> getComponents(Collection<PsiClass> psiClasses) {
         return psiClasses.stream().map(c -> {
-            PsiComponentType component = new PsiComponentType(c, isCustom);
+            PsiComponentType component = new PsiComponentType(c);
             component.fill();
             return component;
-        }).collect(Collectors.toList());
+        }).filter(c -> !c.isFrameworkElement ||
+                c.frameworkElementType == JdiElementType.Common ||
+                c.frameworkElementType == JdiElementType.Complex
+        ).collect(Collectors.toList());
     }
 
     private Collection<PsiClass> getDerivedPsiClasses(Module module, String classQualifiedName) {

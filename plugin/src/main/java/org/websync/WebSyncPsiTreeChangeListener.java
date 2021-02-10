@@ -78,7 +78,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             return;
         }
         if (isComponent(psiClass)) {
-            PsiComponentType component = new PsiComponentType(psiClass,true);
+            PsiComponentType component = new PsiComponentType(psiClass);
             component.fill();
             sendUpdateFor("component", new ComponentTypeDto(component));
         }
