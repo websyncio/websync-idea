@@ -1,4 +1,4 @@
-package org.websync.jdi;
+package org.websync.jdi.components;
 
 
 import com.epam.jdi.light.elements.complex.*;
@@ -13,7 +13,7 @@ public class InheritedPageObject extends BasePageObject {
     @XPath("//testXpath")
     public Combobox initializedCombobox;
     @ByText("test")
-    public DataList initializedDataList;
+    public DataList initializedDataList1;
     @Css(".testCss")
     public JList initializedJList;
     @FindBy(xpath = "//test")

@@ -15,7 +15,7 @@ import org.websync.react.dto.ComponentInstanceDto;
 
 public class UpdateComponentInstanceCommand extends WebSyncCommand {
     static class Message extends WebSyncCommand.Message {
-        public String moduleName;
+        public String projectName;
         public ComponentInstanceDto data;
     }
 
@@ -23,7 +23,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
     @Override
     protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
         ComponentInstanceDto data = ((Message) inputMessage).data;
-        String moduleName = ((Message) inputMessage).moduleName;
+        String moduleName = ((Message) inputMessage).projectName;
         int lastDot = data.id.lastIndexOf('.');
         String className = data.id.substring(0, lastDot);
         String oldFieldName = data.id.substring(lastDot + 1);

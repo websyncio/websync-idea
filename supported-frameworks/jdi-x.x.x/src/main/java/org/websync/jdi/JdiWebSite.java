@@ -2,9 +2,10 @@ package org.websync.jdi;
 
 import com.epam.jdi.light.elements.pageobjects.annotations.JSite;
 import com.epam.jdi.light.elements.pageobjects.annotations.Url;
+import org.websync.jdi.components.*;
 
 @JSite("https://test-page.com/test/")
-public class InitializedSetOfClasses {
+public class JdiWebSite {
     @Url("base-test-page.html")
     public BasePageObject publicPageObject;
 
@@ -19,4 +20,7 @@ public class InitializedSetOfClasses {
 
     private @Url("another-inherited-page.html")
     static PageObjectWithDifferentModificators staticPageObject;
+
+    @Url("app/#project{0}")
+    public StackoverflowQuestionPage StackOverflowPage;
 }

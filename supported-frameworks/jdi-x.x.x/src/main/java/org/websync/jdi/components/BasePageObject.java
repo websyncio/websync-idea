@@ -1,4 +1,4 @@
-package org.websync.jdi;
+package org.websync.jdi.components;
 
 
 import com.epam.jdi.light.elements.complex.dropdown.DropdownSelect;
@@ -17,9 +17,9 @@ import com.epam.jdi.light.ui.html.elements.complex.Tabs;
 
 public abstract class BasePageObject extends WebPage {
     @Css(".testCss")
-    public DataListOptions initializedDataListOptions;
+    public DataListOptions initializedDataListOpt;
     @XPath("//testXpath")
-    public MultiSelector initializedMultiSelector;
+    public MultiSelector initialedMultiSelector;
     @ByText("test")
     public RadioButtons initializedRadioButtons;
     @Css(".testCss")

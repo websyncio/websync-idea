@@ -1,4 +1,4 @@
-package org.websync.jdi;
+package org.websync.jdi.components;
 import com.epam.jdi.light.elements.common.Label;
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
@@ -11,7 +11,7 @@ public class StackoverflowQuestionPage extends WebPage {
     @Css("#question .post-text")
     public Label QuestionBody;
 
-    @Css(".owner .user-details INVALID")
+    @Css(".owner .user-details")
     public Label AuthorName;
 
     @Css(".owner .user-info .gravatar-wrapper-32 img")
