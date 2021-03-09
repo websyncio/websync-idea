@@ -27,6 +27,8 @@ public class PsiWebsite extends PsiPageContainer<WebSite> implements WebSite {
 
     @Override
     public boolean updatePageInstance(String oldName, String newName) {
+        // here
+
         return false;
     }
 }
