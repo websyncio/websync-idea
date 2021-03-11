@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.websync.websession.psimodels.psi.AnnotationInstance;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AnnotationDto {
@@ -12,6 +13,14 @@ public class AnnotationDto {
     @Getter
     private List<Parameter> parameters;
     public AnnotationDto() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Parameter> getParameters() {
+        return parameters;
     }
 
     public static class Parameter {
@@ -28,6 +37,10 @@ public class AnnotationDto {
             this.values = values.stream()
                     .map(v-> v.toString())
                     .collect(Collectors.toList());
+        }
+
+        public List<String> getValues() {
+            return values;
         }
     }
 
