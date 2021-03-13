@@ -1,4 +1,4 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages.InitializationAttributes;
 
 
 import com.epam.jdi.light.elements.complex.Menu;
@@ -11,12 +11,12 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.JDropdown;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.JMenu;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.JTable;
 
-public class ComplexElementsInitialization extends WebPage {
-
+public class ComplexInitializationAttributesPage extends WebPage {
     @JDropdown("test")
     public Dropdown initializedDropdownnewvalue;
     @JDropdown(root = "test", value = "test1", list = "test2", expand = ".expand", autoclose = true)
     public DropdownExpand initializedDropdownExpand;
+
     @JTable(root = "#test", rowHeader = "test")
     public DataTable initializedDataTable;
     @JTable(root = "#root", rowHeader = "header", filter = "filter", fromCellToRow = "testString", count = 5, firstColumnIndex = 2, columnsMapping = {1, 2, 3})
@@ -42,5 +42,4 @@ public class ComplexElementsInitialization extends WebPage {
 
     @JMenu(value = "test", group = "group")
     public Menu initializedMenuWithAllParameters;
-
 }

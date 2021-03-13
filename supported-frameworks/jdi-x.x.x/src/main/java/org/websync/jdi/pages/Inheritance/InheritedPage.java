@@ -1,4 +1,4 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages.Inheritance;
 
 
 import com.epam.jdi.light.elements.complex.*;
@@ -7,7 +7,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.ByText;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.Css;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath;
 
-public class InheritedPageObject extends BasePageObject {
+public class InheritedPage extends PageBase {
     @Css(".testCss")
     public Checklist initializedChecklist;
     @XPath("//testXpath")

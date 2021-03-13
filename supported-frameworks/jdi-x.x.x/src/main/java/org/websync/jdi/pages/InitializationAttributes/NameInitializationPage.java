@@ -1,4 +1,4 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages.InitializationAttributes;
 
 
 import com.epam.jdi.light.elements.common.Label;
@@ -7,8 +7,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.Name;
 import com.epam.jdi.light.ui.html.elements.common.Image;
 import com.epam.jdi.light.ui.html.elements.common.Text;
 
-public class NameInitialization extends WebPage {
-
+public class NameInitializationPage extends WebPage {
     @Name("test")
     public Label labelInitializedWithName;
     @Name("test1")

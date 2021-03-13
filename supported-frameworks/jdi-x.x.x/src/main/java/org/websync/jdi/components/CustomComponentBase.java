@@ -6,7 +6,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.FindBy;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.Css;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.XPath;
 
-public class CustomBaseElement extends UIBaseElement {
+public class CustomComponentBase extends UIBaseElement {
     @FindBy(xpath = "//test")
     public UIElement customUIElement;
     @XPath("//test")

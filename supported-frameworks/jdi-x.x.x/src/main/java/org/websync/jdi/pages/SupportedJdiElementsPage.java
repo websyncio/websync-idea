@@ -1,4 +1,4 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages;
 
 
 import com.epam.jdi.light.elements.base.DriverBase;
@@ -25,8 +25,7 @@ import com.epam.jdi.light.ui.html.elements.complex.MultiSelector;
 import com.epam.jdi.light.ui.html.elements.complex.RadioButtons;
 import com.epam.jdi.light.ui.html.elements.complex.Tabs;
 
-public class SupportedJdiElements extends WebPage {
-
+public class SupportedJdiElementsPage extends WebPage {
     @XPath("//testXpath")
     public Alerts initializedAlert;
 

@@ -1,4 +1,4 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages.InitializationAttributes;
 
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.FindBy;
@@ -11,8 +11,7 @@ import com.epam.jdi.light.ui.html.elements.common.*;
 
 @Url("/index.html")
 @Title("Test Page")
-public class PageObjectWithDifferentModificators extends WebPage {
-
+public class FieldsWithDifferentModificatorsPage extends WebPage {
     @Css(".testCss")
     public Link publicLink;
     @XPath("//testXpath")

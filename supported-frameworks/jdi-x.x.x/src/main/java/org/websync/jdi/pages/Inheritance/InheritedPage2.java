@@ -1,11 +1,12 @@
-package org.websync.jdi.components;
+package org.websync.jdi.pages.Inheritance;
 
 import com.epam.jdi.light.elements.pageobjects.annotations.FindBy;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 import com.epam.jdi.light.ui.html.elements.common.*;
+import org.websync.jdi.components.CustomComponentBase;
+import org.websync.jdi.components.CustomElement;
 
-public class InheritedPageObject2 extends InheritedPageObject {
-
+public class InheritedPage2 extends InheritedPage {
     @Css(".testCss")
     public Button initializedButton;
     @XPath("//testXpath")
@@ -21,6 +22,6 @@ public class InheritedPageObject2 extends InheritedPageObject {
     @UI("#custom-element")
     public CustomElement initializedCustomElement;
     @UI("#custom-base-element")
-    public CustomBaseElement initializedCustomBaseElement;
+    public CustomComponentBase initializedCustomBaseElement;
 
 }

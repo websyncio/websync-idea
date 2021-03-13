@@ -1,13 +1,11 @@
 package org.websync.jdi.components;
 
-
 import com.epam.jdi.light.elements.common.Label;
-import com.epam.jdi.light.elements.composite.WebPage;
+import com.epam.jdi.light.elements.composite.Section;
 import com.epam.jdi.light.elements.pageobjects.annotations.*;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 
-public class AttributesInitialization extends WebPage {
-
+public class InitializationAttributesComponent extends Section {
     @Css(".testCss")
     public Label initializedWithCss;
     @XPath("//testXpath")
@@ -29,12 +27,13 @@ public class AttributesInitialization extends WebPage {
     @Title("test")
     public Label initializedWithTitle;
 
-
     @XPath("//testXpath")
     @Css(".testCss")
     public Label overlappedCssAndXpath;
+
     @Css("//testCss")
     public Label wrongCssFormat;
+
     @XPath(".testXpath")
     public Label wrongXpathFormat;
 }

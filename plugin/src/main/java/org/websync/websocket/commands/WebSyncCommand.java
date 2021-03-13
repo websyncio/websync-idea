@@ -3,6 +3,11 @@ package org.websync.websocket.commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.search.GlobalSearchScope;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +29,19 @@ public abstract class WebSyncCommand {
     private WebSyncService webSyncService;
     @Getter
     private String responseType;
+
+    protected static PsiField findPsiField(Module module, String className, String fieldName) throws WebSyncException {
+        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
+        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
+        if (componentPsiClass == null) {
+            throw new WebSyncException("Component not found: " + className);
+        }
+        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
+        if (psiField == null) {
+            throw new WebSyncException("Field " + fieldName + " not found in component: " + className);
+        }
+        return psiField;
+    }
 
     /**
      * Takes the input JSON message received from the WebSync browser plugin.
