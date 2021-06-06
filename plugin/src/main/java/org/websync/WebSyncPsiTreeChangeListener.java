@@ -4,7 +4,12 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.websync.react.dto.*;
+import org.websync.logger.LoggerUtils;
+import org.websync.react.dto.BaseDto;
+import org.websync.react.dto.ComponentTypeDto;
+import org.websync.react.dto.PageTypeDto;
+import org.websync.react.dto.WebsiteDto;
+import org.websync.utils.Debouncer;
 import org.websync.websession.psimodels.PsiComponentType;
 import org.websync.websession.psimodels.PsiPageType;
 import org.websync.websession.psimodels.PsiWebsite;
@@ -12,10 +17,12 @@ import org.websync.websession.psimodels.PsiWebsite;
 import static org.websync.PsiUtil.*;
 
 public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
+    private final Debouncer debouncer;
     private WebSyncService webSyncService;
 
     public WebSyncPsiTreeChangeListener(WebSyncService webSyncService) {
         this.webSyncService = webSyncService;
+        this.debouncer = new Debouncer(200);
     }
 
     @Override
@@ -28,11 +35,11 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         handle(event);
     }
 
-    @Override
-    public void childReplaced(@NotNull PsiTreeChangeEvent event) {
+//    @Override
+//    public void childReplaced(@NotNull PsiTreeChangeEvent event) {
         // looks like a duplication for childrenChanged()
 //        handle(event);
-    }
+//    }
 
     @Override
     public void childMoved(@NotNull PsiTreeChangeEvent event) {
@@ -53,12 +60,12 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         Project project = ((PsiManager) event.getSource()).getProject();
         PsiFile psiFile = event.getFile();
         if (!DumbService.isDumb(project)) {
-            sendUpdateFor(psiFile);
+            debouncer.execute(() -> sendUpdateFor(psiFile));
         }
     }
 
     private void sendUpdateFor(PsiFile psiFile) {
-
+        LoggerUtils.print("Send update for "+psiFile.getName());
         PsiClass psiClass = findPsiClass(psiFile);
 
         if (psiClass == null) {
