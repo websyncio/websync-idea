@@ -36,7 +36,7 @@ public class PsiComponentType extends PsiComponentContainer<ComponentType> imple
     }
 
     @Override
-    public String getBaseComponentTypeId() {
+    public String getBaseTypeId() {
         return baseComponentTypeId;
     }
 

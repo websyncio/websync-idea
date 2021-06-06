@@ -25,36 +25,36 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         String moduleName = ((Message) inputMessage).projectName;
         int lastDot = data.id.lastIndexOf('.');
         String className = data.id.substring(0, lastDot);
-        String oldFieldName = data.id.substring(lastDot + 1);
-        String newFieldName = data.name;
-        updateComponentInstance(moduleName, className, oldFieldName, newFieldName);
+        int fieldIndex = Integer.parseInt(data.id.substring(lastDot + 1));
+        String newFieldName = data.fieldName;
+        updateComponentInstance(moduleName, className, fieldIndex, newFieldName);
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
             LoggerUtils.print(message);
             throw new WebSyncException(message);
         }
-        updateComponentInstanceWithSingleAttribute(moduleName, className, newFieldName, data.initializationAttribute);
+        updateComponentInstanceWithSingleAttribute(moduleName, className, fieldIndex, data.initializationAttribute);
         return "Attribute was changed.";
     }
 
-    public void updateComponentInstance(String moduleName, String className, String oldFieldName, String newFieldName) throws WebSyncException {
+    public void updateComponentInstance(String moduleName, String className, int fieldIndex, String newFieldName) throws WebSyncException {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiField(module, className, oldFieldName);
+            PsiField psiField = findPsiField(module, className, fieldIndex);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
-                    className + ": rename '" + oldFieldName + "' to '" + newFieldName + "'",
+                    className + ": rename field with index'" + fieldIndex + "' to '" + newFieldName + "'",
                     "WebSyncAction",
                     () -> psiField.setName(newFieldName));
         });
     }
 
-    public void updateComponentInstanceWithSingleAttribute(String moduleName, String className, String fieldName,
+    public void updateComponentInstanceWithSingleAttribute(String moduleName, String className, int fieldIndex,
                                                            AnnotationDto annotationDto) throws WebSyncException {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiField(module, className, fieldName);
+            PsiField psiField = findPsiField(module, className, fieldIndex);
             String attributeShortName = annotationDto.getName();
             String attributeQualifiedName = JdiAttribute.getQualifiedNameByShortName(attributeShortName);
             if (attributeQualifiedName == null) {
@@ -63,7 +63,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
 
             Object param = annotationDto.getParameters().get(0).getValues().get(0);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
-                    className + ": update single annotation of field '" + fieldName +
+                    className + ": update single annotation of field with index '" + fieldIndex +
                             "' with name '" + attributeShortName + "' and value '" + param + "'",
                     "WebSyncAction",
                     () -> {

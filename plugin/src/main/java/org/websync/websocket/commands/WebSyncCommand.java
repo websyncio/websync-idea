@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,17 +32,19 @@ public abstract class WebSyncCommand {
     @Getter
     private String responseType;
 
-    protected static PsiField findPsiField(Module module, String className, String fieldName) throws WebSyncException {
+    protected static PsiField findPsiField(Module module, String className, int fieldIndex) throws WebSyncException {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
         PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
         if (componentPsiClass == null) {
             throw new WebSyncException("Component not found: " + className);
         }
-        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
-        if (psiField == null) {
-            throw new WebSyncException("Field " + fieldName + " not found in component: " + className);
+
+        List<PsiField> fieldsList = Arrays.asList(componentPsiClass.getFields());
+//        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
+        if (fieldIndex >= fieldsList.size()) {
+            throw new WebSyncException("Field with index " + fieldIndex + " not found in component: " + className);
         }
-        return psiField;
+        return fieldsList.get(fieldIndex);
     }
 
     /**

@@ -5,7 +5,7 @@ import org.websync.websession.models.PageType;
 
 public class PsiPageType extends PsiComponentContainer<PageType> implements PageType {
     @Override
-    public String getBasePageTypeId() {
+    public String getBaseTypeId() {
         return null;
     }
 

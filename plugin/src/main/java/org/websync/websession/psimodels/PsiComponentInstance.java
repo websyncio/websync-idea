@@ -17,39 +17,10 @@ import static org.websync.jdi.JdiAttribute.JDI_NAME;
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
     private final String parentId;
     private final PsiField psiField;
+    private final int index;
 
     @Override
     public String getName() {
-        String name = retrieveName();
-        return name != null ? name : psiField.getName();
-    }
-
-    public void setFieldName(String name) {
-        psiField.setName(name);
-    }
-
-    @Override
-    public String getComponentTypeId() {
-        return PsiUtil.resolveClassInType(psiField.getType()).getQualifiedName();
-    }
-
-    public PsiComponentInstance(String parentId, PsiField psiField) {
-        this.parentId = parentId;
-        this.psiField = psiField;
-    }
-
-    public void fill() {
-        setId(parentId + "." + psiField.getName());
-    }
-
-    public Locator getLocator() {
-        if (psiField.getAnnotations().length == 0) {
-            return null;
-        }
-        return new Locator(psiField.getAnnotations()[0]);
-    }
-
-    public String retrieveName() {
         String name = null;
         @NotNull PsiAnnotation[] annotations = psiField.getAnnotations();
         if (annotations.length == 0) {
@@ -62,6 +33,38 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
         return name;
     }
+
+    public void setFieldName(String name) {
+        psiField.setName(name);
+    }
+
+    @Override
+    public String getComponentType() {
+        return PsiUtil.resolveClassInType(psiField.getType()).getQualifiedName();
+    }
+
+    @Override
+    public String getFieldName() {
+        return psiField.getName();
+    }
+
+    public PsiComponentInstance(String parentId, PsiField psiField, int index) {
+        this.parentId = parentId;
+        this.psiField = psiField;
+        this.index = index;
+    }
+
+    public void fill() {
+        setId(parentId + "." + index);
+    }
+
+    public Locator getLocator() {
+        if (psiField.getAnnotations().length == 0) {
+            return null;
+        }
+        return new Locator(psiField.getAnnotations()[0]);
+    }
+
 
     @Override
     public AnnotationInstance getAttributeInstance() {

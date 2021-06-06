@@ -9,23 +9,23 @@ import org.websync.jdi.pages.Inheritance.PageBase;
 import org.websync.jdi.pages.InitializationAttributes.ComplexInitializationAttributesPage;
 import org.websync.jdi.pages.InitializationAttributes.FieldsWithDifferentModificatorsPage;
 
-@JSite("https://test-page.com/")
+@JSite("https://stackoverflow.com")
 public class JdiWebSite {
-    @Url("base-test-page1234.html")
+    @Url("/base-test-page.html")
     public PageBase publicPageObject;
 
-    @Url("inherited-page.html")
+    @Url("/inherited-page.html")
     protected InheritedPage protectedPageObject;
 
-    @Url("another-inherited-page.html")
+    @Url("/another-inherited-page.html")
     private InheritedPage2 packagePrivatePageObject;
 
-    @Url("page-with-complex-elements.html")
+    @Url("/page-with-complex-elements.html")
     private ComplexInitializationAttributesPage privatePageObject;
 
-    private @Url("another-inherited-page.html")
+    private @Url("/base-test-page.htm")
     static FieldsWithDifferentModificatorsPage staticPageObject;
 
-    @Url("app/#project{0}")
+    @Url("/questions/66936084/nodejs-pagination-recursive-promise-problem")
     public StackoverflowQuestionPage StackOverflowPage;
 }

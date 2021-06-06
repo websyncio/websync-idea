@@ -8,7 +8,7 @@ public class StackoverflowQuestionPage extends WebPage {
     @Css("#question-header .question-hyperlink")
     public Label QuestionTitle;
 
-    @Css("#question .post-text")
+    @Css("#question .js-post-body")
     public Label QuestionBody;
 
     @Css(".owner .user-details")

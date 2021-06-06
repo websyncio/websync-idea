@@ -12,15 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
-import static org.websync.jdi.JdiAttribute.JDI_BY_TEXT;
-import static org.websync.jdi.JdiAttribute.JDI_CSS;
-import static org.websync.jdi.JdiAttribute.JDI_JDROPDOWN;
-import static org.websync.jdi.JdiAttribute.JDI_JMENU;
-import static org.websync.jdi.JdiAttribute.JDI_JTABLE;
-import static org.websync.jdi.JdiAttribute.JDI_UI;
-import static org.websync.jdi.JdiAttribute.JDI_WITH_TEXT;
-import static org.websync.jdi.JdiAttribute.JDI_XPATH;
+import static org.websync.jdi.JdiAttribute.*;
 
 public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> implements ComponentContainer {
     public static final List<String> INITIALIZATION_ATTRIBUTES = Arrays.asList(JDI_BY_TEXT.className, JDI_CSS.className, JDI_JDROPDOWN.className, JDI_JMENU.className, JDI_JTABLE.className, JDI_UI.className,
@@ -49,9 +43,9 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
 
         this.componentInstances = new ArrayList<>();
         List<PsiField> fieldsList = Arrays.asList(getPsiClass().getFields());
-
-        fieldsList.stream().forEach(f -> {
-            boolean isElement = Arrays.asList(f.getType().getSuperTypes())
+        IntStream.range(0, fieldsList.size()).forEach(i -> {
+            PsiField field = fieldsList.get(i);
+            boolean isElement = Arrays.asList(field.getType().getSuperTypes())
                     .stream()
                     .anyMatch(s -> {
                         PsiClass c = PsiUtil.resolveClassInType(s);
@@ -59,7 +53,7 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
                     });
 
             if (isElement) {
-                PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), f);
+                PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), field, i);
                 if (INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(psiComponentInstance.getAttributeInstance().getCodeReferenceElement())))) {
                     psiComponentInstance.fill();
                     this.componentInstances.add(psiComponentInstance);

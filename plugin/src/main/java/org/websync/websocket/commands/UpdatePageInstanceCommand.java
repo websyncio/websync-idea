@@ -26,16 +26,16 @@ public class UpdatePageInstanceCommand extends WebSyncCommand {
         PageInstanceDto pageInstance = message.pageInstance;
         int lastDot = pageInstance.id.lastIndexOf('.');
         String className = pageInstance.id.substring(0, lastDot);
-        String fieldName = pageInstance.id.substring(lastDot + 1);
+        int fieldIndex = Integer.parseInt(pageInstance.id.substring(lastDot + 1));
         final Module module = getWebSyncService().getProvider().findByFullName(message.projectName);
-        updatePageInstanceUrl(module, className, fieldName, pageInstance.url);
+        updatePageInstanceUrl(module, className, fieldIndex, pageInstance.url);
         return null;
     }
 
-    public void updatePageInstanceUrl(Module module, String className, String fieldName , String url) throws WebSyncException {
+    public void updatePageInstanceUrl(Module module, String className, int fieldIndex, String url) throws WebSyncException {
         JdiAttribute urlAttribute = JdiAttribute.JDI_URL;
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiField(module, className, fieldName);
+            PsiField psiField = findPsiField(module, className, fieldIndex);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     () -> {
                         PsiAnnotation psiAnnotation = psiField.getAnnotation(urlAttribute.className);
