@@ -27,7 +27,8 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         String className = data.id.substring(0, lastDot);
         int fieldIndex = Integer.parseInt(data.id.substring(lastDot + 1));
         String newFieldName = data.fieldName;
-        updateComponentInstance(moduleName, className, fieldIndex, newFieldName);
+        String newFieldTypeName = data.componentType.substring(data.componentType.lastIndexOf('.') + 1);
+        updateComponentInstance(moduleName, className, fieldIndex, newFieldTypeName, newFieldName);
         if (data.initializationAttribute.getParameters().size() > 1) {
             String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
             LoggerUtils.print(message);
@@ -37,15 +38,18 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         return "Attribute was changed.";
     }
 
-    public void updateComponentInstance(String moduleName, String className, int fieldIndex, String newFieldName) throws WebSyncException {
+    public void updateComponentInstance(String moduleName, String className, int fieldIndex, String newFieldType, String newFieldName) throws WebSyncException {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
+            String newFieldValue= newFieldType+" "+newFieldName+";";
+            PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
             PsiField psiField = findPsiField(module, className, fieldIndex);
+            PsiField newField = elementFactory.createFieldFromText(newFieldValue, psiField.getParent());
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": rename field with index'" + fieldIndex + "' to '" + newFieldName + "'",
                     "WebSyncAction",
-                    () -> psiField.setName(newFieldName));
+                    () -> psiField.replace(newField));
         });
     }
 
@@ -69,7 +73,7 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
                     () -> {
                         PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
 
-                        PsiElementFactory elementFactory = JavaPsiFacade.getInstance(module.getProject()).getElementFactory();
+                        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
 
                         annotationDto.getParameters().forEach(p -> {
                             PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(
