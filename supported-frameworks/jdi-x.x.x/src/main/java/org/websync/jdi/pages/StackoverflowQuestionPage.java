@@ -5,9 +5,11 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
 import com.epam.jdi.light.ui.html.elements.common.*;
 
 public class StackoverflowQuestionPage extends WebPage {
-    Label1 QuestionTitle;
+    @Css(".owner .user-details")
+    Label QuestionTitle;
 
-    Label1 QuestionBody;
+    @Css(".owner .user-details")
+    Label QuestionBody;
 
     @Css(".owner .user-details")
     public Label AuthorName;

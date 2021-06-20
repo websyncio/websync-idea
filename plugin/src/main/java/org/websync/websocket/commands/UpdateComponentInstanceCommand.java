@@ -4,6 +4,8 @@ import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiFieldImpl;
+import com.intellij.psi.impl.source.tree.ChildRole;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
@@ -42,14 +44,17 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
 
         WriteAction.runAndWait(() -> {
-            String newFieldValue= newFieldType+" "+newFieldName+";";
-            PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
-            PsiField psiField = findPsiField(module, className, fieldIndex);
-            PsiField newField = elementFactory.createFieldFromText(newFieldValue, psiField.getParent());
+            PsiFieldImpl psiField = (PsiFieldImpl) findPsiField(module, className, fieldIndex);
+            PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiField.getManager().getProject());
+            PsiTypeElement typeElement = (PsiTypeElement) psiField.getNode().findChildByRoleAsPsiElement(ChildRole.TYPE);
+            PsiTypeElement newTypeElement = elementFactory.createTypeElementFromText(newFieldType,null);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": rename field with index'" + fieldIndex + "' to '" + newFieldName + "'",
                     "WebSyncAction",
-                    () -> psiField.replace(newField));
+                    () -> {
+                        typeElement.replace(newTypeElement);
+                        psiField.setName(newFieldName);
+                    });
         });
     }
 
@@ -73,7 +78,8 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
                     () -> {
                         PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
 
-                        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
+                        PsiManager manager = psiAnnotation.getManager();
+                        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(manager.getProject());
 
                         annotationDto.getParameters().forEach(p -> {
                             PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(
