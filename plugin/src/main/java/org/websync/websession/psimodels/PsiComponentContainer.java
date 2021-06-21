@@ -7,6 +7,7 @@ import com.intellij.psi.util.PsiUtil;
 import org.websync.jdi.JdiElement;
 import org.websync.websession.models.ComponentContainer;
 import org.websync.websession.models.ComponentInstance;
+import org.websync.websession.psimodels.psi.AnnotationInstance;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,19 +46,22 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
         List<PsiField> fieldsList = Arrays.asList(getPsiClass().getFields());
         IntStream.range(0, fieldsList.size()).forEach(i -> {
             PsiField field = fieldsList.get(i);
+            boolean isAnnotated = false;
+            PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), field, i);
+            AnnotationInstance annotationInstance = psiComponentInstance.getAttributeInstance();
+            if(annotationInstance!=null) {
+                String attributeClassName = psiComponentInstance.getAttributeInstance().getCodeReferenceElement();
+                isAnnotated = INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(attributeClassName)));
+            }
             boolean isElement = Arrays.asList(field.getType().getSuperTypes())
                     .stream()
                     .anyMatch(s -> {
                         PsiClass c = PsiUtil.resolveClassInType(s);
                         return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.className);
                     });
-
-            if (isElement) {
-                PsiComponentInstance psiComponentInstance = new PsiComponentInstance(getId(), field, i);
-                if (INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(psiComponentInstance.getAttributeInstance().getCodeReferenceElement())))) {
-                    psiComponentInstance.fill();
-                    this.componentInstances.add(psiComponentInstance);
-                }
+            if (isElement || isAnnotated) {
+                psiComponentInstance.fill();
+                this.componentInstances.add(psiComponentInstance);
             }
         });
     }

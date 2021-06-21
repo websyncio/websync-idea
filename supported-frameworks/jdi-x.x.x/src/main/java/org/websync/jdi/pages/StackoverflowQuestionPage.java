@@ -6,10 +6,10 @@ import com.epam.jdi.light.ui.html.elements.common.*;
 
 public class StackoverflowQuestionPage extends WebPage {
     @Css(".owner .user-details")
-    Label QuestionTitle;
+    public Label QuestionTitle;
 
     @Css(".owner .user-details")
-    Label QuestionBody;
+    public Label QuestionBody;
 
     @Css(".owner .user-details")
     public Label AuthorName;

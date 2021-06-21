@@ -40,7 +40,11 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
 
     @Override
     public String getComponentType() {
-        return PsiUtil.resolveClassInType(psiField.getType()).getQualifiedName();
+        if (psiField.getType() == null) {
+            return null;
+        }
+        PsiClass fieldClass = PsiUtil.resolveClassInType(psiField.getType());
+        return fieldClass == null ? psiField.getType().getCanonicalText() : fieldClass.getQualifiedName();
     }
 
     @Override
@@ -73,11 +77,7 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         }
         PsiAnnotation annotation = psiField.getAnnotations()[0];
 
-        return getAttributeInstance(annotation);
-    }
-
-    private AnnotationInstance getAttributeInstance(PsiAnnotation psiAnnotation) {
-        return getAnnotationInstance(psiAnnotation);
+        return getAnnotationInstance(annotation);
     }
 
     private AnnotationInstance getAnnotationInstance(PsiAnnotation psiAnnotation) {
