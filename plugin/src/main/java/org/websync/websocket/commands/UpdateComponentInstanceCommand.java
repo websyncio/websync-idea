@@ -47,13 +47,18 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
             PsiFieldImpl psiField = (PsiFieldImpl) findPsiField(module, className, fieldIndex);
             PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiField.getManager().getProject());
             PsiTypeElement typeElement = (PsiTypeElement) psiField.getNode().findChildByRoleAsPsiElement(ChildRole.TYPE);
-            PsiTypeElement newTypeElement = elementFactory.createTypeElementFromText(newFieldType,null);
+
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": rename field with index'" + fieldIndex + "' to '" + newFieldName + "'",
                     "WebSyncAction",
                     () -> {
-                        typeElement.replace(newTypeElement);
-                        psiField.setName(newFieldName);
+                        if(!typeElement.getText().equals(newFieldType)) {
+                            PsiTypeElement newTypeElement = elementFactory.createTypeElementFromText(newFieldType, null);
+                            typeElement.replace(newTypeElement);
+                        }
+                        if(!psiField.getName().equals(newFieldName)) {
+                            psiField.setName(newFieldName);
+                        }
                     });
         });
     }
