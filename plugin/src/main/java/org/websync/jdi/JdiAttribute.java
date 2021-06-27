@@ -70,7 +70,7 @@ public enum JdiAttribute {
         return className.substring(className.lastIndexOf(".") + 1);
     }
 
-    public static String getQualifiedNameByShortName(String shortName) {
+    public static String getQualifiedNameByName(String shortName) {
         for (JdiAttribute attr : values()) {
             if(attr.getShortName().equals(shortName)) {
                 return attr.className;

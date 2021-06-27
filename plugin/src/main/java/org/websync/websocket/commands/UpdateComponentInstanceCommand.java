@@ -10,39 +10,31 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
 import org.websync.jdi.JdiAttribute;
-import org.websync.logger.LoggerUtils;
 import org.websync.react.dto.AnnotationDto;
 import org.websync.react.dto.ComponentInstanceDto;
 
-public class UpdateComponentInstanceCommand extends WebSyncCommand {
-    static class Message extends WebSyncCommand.Message {
-        public String projectName;
-        public ComponentInstanceDto data;
-    }
+public class UpdateComponentInstanceCommand extends ComponentInstanceCommand {
 
     @Nullable
     @Override
-    protected Object execute(@NotNull WebSyncCommand.Message inputMessage) throws WebSyncException {
-        ComponentInstanceDto data = ((Message) inputMessage).data;
-        String moduleName = ((Message) inputMessage).projectName;
-        int lastDot = data.id.lastIndexOf('.');
-        String className = data.id.substring(0, lastDot);
-        int fieldIndex = Integer.parseInt(data.id.substring(lastDot + 1));
-        String newFieldName = data.fieldName;
-        String newFieldTypeName = data.componentType.substring(data.componentType.lastIndexOf('.') + 1);
-        updateComponentInstance(moduleName, className, fieldIndex, newFieldTypeName, newFieldName);
-        if (data.initializationAttribute.getParameters().size() > 1) {
-            String message = "Changed annotation has more than one parameters. Processing of that case is not implemented.";
-            LoggerUtils.print(message);
-            throw new WebSyncException(message);
+    protected Object execute(@NotNull WebSyncCommand.Message genericMessage) throws WebSyncException {
+        ComponentInstanceCommand.Message message = ((ComponentInstanceCommand.Message)genericMessage);
+        ComponentInstanceDto componentInstance = message.data;
+        String className = message.getContainerClassName();
+        int fieldIndex = message.getFieldIndex();
+        String newFieldName = componentInstance.fieldName;
+        String newFieldTypeName = getNameFromTypeId(componentInstance.componentType);
+        final Module module = getWebSyncService().getProvider().findByFullName(message.projectName);
+
+        updateComponentInstance(module, className, fieldIndex, newFieldTypeName, newFieldName);
+        if (componentInstance.initializationAttribute.getParameters().size() > 1) {
+            throw new WebSyncException("Changed annotation has more than one parameters. Processing of that case is not implemented.");
         }
-        updateComponentInstanceWithSingleAttribute(moduleName, className, fieldIndex, data.initializationAttribute);
+        updateComponentInstanceWithSingleAttribute(module, className, fieldIndex, componentInstance.initializationAttribute);
         return "Attribute was changed.";
     }
 
-    public void updateComponentInstance(String moduleName, String className, int fieldIndex, String newFieldType, String newFieldName) throws WebSyncException {
-        final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
-
+    public void updateComponentInstance(Module module, String className, int fieldIndex, String newFieldType, String newFieldName) throws WebSyncException {
         WriteAction.runAndWait(() -> {
             PsiFieldImpl psiField = (PsiFieldImpl) findPsiField(module, className, fieldIndex);
             PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiField.getManager().getProject());
@@ -63,37 +55,32 @@ public class UpdateComponentInstanceCommand extends WebSyncCommand {
         });
     }
 
-    public void updateComponentInstanceWithSingleAttribute(String moduleName, String className, int fieldIndex,
-                                                           AnnotationDto annotationDto) throws WebSyncException {
-        final Module module = getWebSyncService().getProvider().findByFullName(moduleName);
-
+    public void updateComponentInstanceWithSingleAttribute(
+            Module module,
+            String className,
+            int fieldIndex,
+            AnnotationDto annotationDto) throws WebSyncException {
         WriteAction.runAndWait(() -> {
             PsiField psiField = findPsiField(module, className, fieldIndex);
             String attributeShortName = annotationDto.getName();
-            String attributeQualifiedName = JdiAttribute.getQualifiedNameByShortName(attributeShortName);
+            String attributeQualifiedName = JdiAttribute.getQualifiedNameByName(attributeShortName);
             if (attributeQualifiedName == null) {
                 return;
             }
 
-            Object param = annotationDto.getParameters().get(0).getValues().get(0);
+            // .we use only first parameters so far and ignore others
+            Object firstParameterValue = annotationDto.getParameters().get(0).getValues().get(0);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
-                    className + ": update single annotation of field with index '" + fieldIndex +
-                            "' with name '" + attributeShortName + "' and value '" + param + "'",
-                    "WebSyncAction",
-                    () -> {
-                        PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
-
-                        PsiManager manager = psiAnnotation.getManager();
-                        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(manager.getProject());
-
-                        annotationDto.getParameters().forEach(p -> {
-                            PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(
-                                    "@" + attributeShortName + "(\"" + param + "\")",
-                                    null);
-
-                            psiAnnotation.replace(newAnnotation);
-                        });
-                    });
+                className + ": update single annotation of field with index '" + fieldIndex +
+                        "' with name '" + attributeShortName + "' and value '" + firstParameterValue + "'",
+                "WebSyncAction",
+                () -> {
+                    PsiAnnotation psiAnnotation = psiField.getAnnotation(attributeQualifiedName);
+                    PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
+                    String annotationText = "@" + attributeShortName + "(\"" + firstParameterValue + "\")";
+                    PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(annotationText, null);
+                    psiAnnotation.replace(newAnnotation);
+                });
         });
     }
 }

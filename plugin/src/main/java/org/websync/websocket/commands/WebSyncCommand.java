@@ -32,21 +32,6 @@ public abstract class WebSyncCommand {
     @Getter
     private String responseType;
 
-    protected static PsiField findPsiField(Module module, String className, int fieldIndex) throws WebSyncException {
-        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
-        PsiClass componentPsiClass = javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
-        if (componentPsiClass == null) {
-            throw new WebSyncException("Component not found: " + className);
-        }
-
-        List<PsiField> fieldsList = Arrays.asList(componentPsiClass.getFields());
-//        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
-        if (fieldIndex >= fieldsList.size()) {
-            throw new WebSyncException("Field with index " + fieldIndex + " not found in component: " + className);
-        }
-        return fieldsList.get(fieldIndex);
-    }
-
     /**
      * Takes the input JSON message received from the WebSync browser plugin.
      * Does required processing and returns an error message, null means no error
@@ -116,6 +101,7 @@ public abstract class WebSyncCommand {
 
 
     private Class<? extends Message> getMessageClass() {
+        // Какой же треш...
         for (Class<?> inner : getClass().getDeclaredClasses()) {
             if (inner.getSimpleName().equals("Message") && inner.getSuperclass().equals(Message.class)) {
                 return (Class<? extends Message>) inner;
@@ -139,5 +125,24 @@ public abstract class WebSyncCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected static PsiField findPsiField(Module module, String containerClassName, int fieldIndex) throws WebSyncException {
+        PsiClass containerPsiClass = findClass(module, containerClassName);
+        if (containerPsiClass == null) {
+            throw new WebSyncException("Field container class was not found: " + containerClassName);
+        }
+
+        List<PsiField> fieldsList = Arrays.asList(containerPsiClass.getFields());
+//        PsiField psiField = componentPsiClass.findFieldByName(fieldName, false);
+        if (fieldIndex >= fieldsList.size()) {
+            throw new WebSyncException("Field with index " + fieldIndex + " not found in component: " + containerClassName);
+        }
+        return fieldsList.get(fieldIndex);
+    }
+
+    protected static PsiClass findClass(Module module, String className) {
+        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
+        return javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
     }
 }
