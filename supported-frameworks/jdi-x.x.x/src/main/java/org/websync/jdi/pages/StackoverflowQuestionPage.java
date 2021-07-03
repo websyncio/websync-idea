@@ -16,4 +16,5 @@ public class StackoverflowQuestionPage extends WebPage {
 
     @Css(".owner .user-info .gravatar-wrapper-32 img")
     public Image AuthorAvatar;
+    @UI("#search")public WebInput SearchInput;
 }

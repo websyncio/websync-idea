@@ -14,7 +14,17 @@ import static org.websync.frameworks.jdi.JdiAttribute.JDI_NAME;
 public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> implements ComponentInstance {
     private final String parentId;
     private final PsiField psiField;
-    private final int index;
+    private final int fieldIndex;
+
+    @Override
+    public String getParentId() {
+        return parentId;
+    }
+
+    @Override
+    public int getFieldIndex() {
+        return fieldIndex;
+    }
 
     @Override
     public String getName() {
@@ -49,14 +59,14 @@ public class PsiComponentInstance extends PsiModelWithId<PsiComponentInstance> i
         return psiField.getName();
     }
 
-    public PsiComponentInstance(String parentId, PsiField psiField, int index) {
+    public PsiComponentInstance(String parentId, PsiField psiField, int fieldIndex) {
         this.parentId = parentId;
         this.psiField = psiField;
-        this.index = index;
+        this.fieldIndex = fieldIndex;
     }
 
     public void fill() {
-        setId(parentId + "." + index);
+        setId(parentId + "." + fieldIndex);
     }
 
 //    public Locator getLocator() {

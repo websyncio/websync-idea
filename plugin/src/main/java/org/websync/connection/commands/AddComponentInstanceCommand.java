@@ -28,7 +28,7 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
         final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
         ComponentInstanceDto componentInstance = commandData.componentInstance;
-        String containerClassName = componentInstance.getContainerClassName();
+        String containerClassName = componentInstance.parentId;
         String typeName = getNameFromId(componentInstance.componentType);
 
         WriteAction.runAndWait(() -> {
@@ -57,8 +57,8 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
                         PsiAnnotation newAnnotation = elementFactory.createAnnotationFromText(annotationText, newField);
 
                         // .add annotation to field
-                        PsiTypeElement typeElement = (PsiTypeElement) newField.getNode().findChildByRoleAsPsiElement(ChildRole.TYPE);
-                        newField.addBefore(newAnnotation, typeElement);
+                        PsiModifierList modifierListElement = (PsiModifierList) newField.getNode().findChildByRoleAsPsiElement(ChildRole.MODIFIER_LIST);
+                        newField.addBefore(newAnnotation, modifierListElement);
 
                         // .add field after the last field in the class
                         lastField.getParent().addAfter(newField, lastField);

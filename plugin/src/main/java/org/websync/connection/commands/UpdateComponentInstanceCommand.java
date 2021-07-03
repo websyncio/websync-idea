@@ -26,17 +26,17 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
     @Override
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
         ComponentInstanceDto componentInstance = commandData.componentInstance;
-        String className = componentInstance.getContainerClassName();
-        int fieldIndex = componentInstance.getFieldIndex();
+        String parentId = componentInstance.parentId;
+        int fieldIndex = componentInstance.fieldIndex;
         String newFieldName = componentInstance.fieldName;
         String newFieldTypeName = getNameFromId(componentInstance.componentType);
         final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
 
-        updateComponentInstance(module, className, fieldIndex, newFieldTypeName, newFieldName);
+        updateComponentInstance(module, parentId, fieldIndex, newFieldTypeName, newFieldName);
         if (componentInstance.initializationAttribute.getParameters().size() > 1) {
             throw new WebSyncException("Changed annotation has more than one parameters. Processing of that case is not implemented.");
         }
-        updateComponentInstanceWithSingleAttribute(module, className, fieldIndex, componentInstance.initializationAttribute);
+        updateComponentInstanceWithSingleAttribute(module, parentId, fieldIndex, componentInstance.initializationAttribute);
         return "Attribute was changed.";
     }
 

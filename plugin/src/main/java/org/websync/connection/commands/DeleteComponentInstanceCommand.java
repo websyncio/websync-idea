@@ -21,8 +21,8 @@ public class DeleteComponentInstanceCommand extends CommandWithDataBase<Componen
     @Override
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
         final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
-        String className = commandData.componentInstance.getContainerClassName();
-        int fieldIndex = commandData.componentInstance.getFieldIndex();
+        String className = commandData.componentInstance.parentId;
+        int fieldIndex = commandData.componentInstance.fieldIndex;
         WriteAction.runAndWait(() -> {
             PsiField psiField = findPsiField(module, className, fieldIndex);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
