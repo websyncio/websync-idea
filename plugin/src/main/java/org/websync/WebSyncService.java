@@ -3,9 +3,10 @@ package org.websync;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiManager;
 import lombok.Getter;
-import org.websync.websession.JdiModulesProvider;
-import org.websync.websession.PsiJdiModulesProvider;
-import org.websync.websocket.BrowserConnectionManager;
+import org.websync.connection.BrowserConnection;
+import org.websync.connection.CommandsHandler;
+import org.websync.psi.JdiModulesProvider;
+import org.websync.psi.PsiJdiModulesProvider;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,16 +15,15 @@ import java.nio.file.Paths;
 
 public class WebSyncService {
     @Getter
-    private BrowserConnectionManager browserConnectionManager;
+    private BrowserConnection browserConnection;
     @Getter
     private JdiModulesProvider provider;
     final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
 
     public WebSyncService() {
         provider = new PsiJdiModulesProvider();
-
-        browserConnectionManager = new BrowserConnectionManager(getPortFromConfig());
-
+        CommandsHandler commandsHandler = new CommandsHandler(this);
+        browserConnection = new BrowserConnection(getPortFromConfig(), commandsHandler);
         psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
     }
 
@@ -51,7 +51,7 @@ public class WebSyncService {
     }
 
     public void dispose() throws IOException, InterruptedException {
-        browserConnectionManager.stop();
+        browserConnection.stop();
     }
 
     public void addProject(Project project) {

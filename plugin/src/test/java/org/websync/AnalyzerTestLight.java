@@ -9,8 +9,8 @@ import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.websync.logger.LoggerUtils;
-import org.websync.websession.PsiJdiModulesProvider;
+import org.websync.utils.LoggerUtils;
+import org.websync.psi.PsiJdiModulesProvider;
 
 import java.util.Arrays;
 import java.util.List;

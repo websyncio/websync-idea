@@ -12,10 +12,11 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+import org.websync.connection.messages.idea.ShowPageObjectMessage;
 
 import java.awt.event.FocusEvent;
 
-import static org.websync.PsiUtil.*;
+import static org.websync.utils.PsiUtil.*;
 
 public class WebSyncEditorFactoryListener implements EditorFactoryListener {
     @Override
@@ -47,9 +48,10 @@ public class WebSyncEditorFactoryListener implements EditorFactoryListener {
         private void sendShowInPageEditor(PsiClass psiClass) {
             boolean isComponent = isComponent(psiClass);
             if (isComponent || isPage(psiClass)) {
-                String type = isComponent ? "component" : "page";
+                String pageObjetType = isComponent ? "component" : "page";
                 WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
-                webSyncService.getBrowserConnectionManager().sendShowInPageEditor(type, psiClass.getQualifiedName());
+                ShowPageObjectMessage requestMessage = new ShowPageObjectMessage(pageObjetType, psiClass.getQualifiedName());
+                webSyncService.getBrowserConnection().send(requestMessage);
             }
         }
     };

@@ -9,7 +9,7 @@ import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 import org.websync.WebSyncService;
 
-import static org.websync.PsiUtil.*;
+import static org.websync.utils.PsiUtil.*;
 
 public class TransferPageObjectAction extends DumbAwareAction {
     @Override
@@ -23,7 +23,7 @@ public class TransferPageObjectAction extends DumbAwareAction {
         if (isComponent || isWebsite || isPage(psiClass)) {
             String type = isComponent ? "component" : isWebsite ? "site" : "page";
             WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
-            webSyncService.getBrowserConnectionManager().sendShowInPageEditor(type, psiClass.getQualifiedName());
+//            webSyncService.getBrowserConnection().sendShowInPageEditor(type, psiClass.getQualifiedName());
         }
     }
 
