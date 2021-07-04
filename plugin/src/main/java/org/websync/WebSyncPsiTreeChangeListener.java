@@ -51,14 +51,19 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         handle(event);
     }
 
-    @Override
-    public void propertyChanged(@NotNull PsiTreeChangeEvent event) {
-        handle(event);
-    }
+    // PsiFile is null for this event
+//    @Override
+//    public void propertyChanged(@NotNull PsiTreeChangeEvent event) {
+//        handle(event);
+//    }
 
     private void handle(@NotNull PsiTreeChangeEvent event) {
         Project project = ((PsiManager) event.getSource()).getProject();
         PsiFile psiFile = event.getFile();
+        if(psiFile==null) {
+            LoggerUtils.print("PsiFile is null for event: "+ event.toString());
+            return;
+        }
         if (!DumbService.isDumb(project)) {
             debouncer.execute(() -> sendUpdateFor(psiFile));
         }

@@ -89,6 +89,9 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
         long startTime = System.nanoTime();
 
         PsiClass jdiSiteAnnotation = findPsiClass(module.getProject(), JDI_JSITE.className);
+        if(jdiSiteAnnotation==null){
+            throw new RuntimeException("Unable to find class: "+ JDI_JSITE.className);
+        }
 
         SearchScope scope = GlobalSearchScope.moduleScope(module);
         Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(jdiSiteAnnotation, scope).findAll()

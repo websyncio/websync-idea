@@ -1,4 +1,5 @@
 package org.websync.jdi.pages;
+
 import com.epam.jdi.light.elements.common.Label;
 import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.*;
@@ -16,5 +17,10 @@ public class StackoverflowQuestionPage extends WebPage {
 
     @Css(".owner .user-info .gravatar-wrapper-32 img")
     public Image AuthorAvatar;
-    @UI("#search")public WebInput SearchInput;
+
+    @UI("#search")
+    public WebInput SearchInput;
+
+    @UI("#search")
+    public WebInput SearchInput;
 }
