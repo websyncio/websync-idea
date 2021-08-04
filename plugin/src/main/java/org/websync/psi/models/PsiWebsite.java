@@ -10,18 +10,19 @@ public class PsiWebsite extends PsiPageContainer<WebSite> implements WebSite {
 
     @Override
     public String getBaseWebsiteId() {
-        return getUrl();
+        return null;
     }
 
     @Override
     public String getUrl() {
+        // filter JSite annotations
         return getPsiClass().getAnnotations()[0].getParameterList().getAttributes()[0].getLiteralValue();
     }
 
     @Override
     public void fill() {
-        getBaseWebsiteId();
-        getUrl();
+//        getBaseWebsiteId();
+//        getUrl();
         super.fill();
     }
 

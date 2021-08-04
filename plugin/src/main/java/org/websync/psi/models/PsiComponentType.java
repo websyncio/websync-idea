@@ -22,9 +22,13 @@ public class PsiComponentType extends PsiComponentContainer<ComponentType> imple
     @Override
     public void fill() {
         super.fill();
-        baseComponentTypeId = getId().equals(JDI_UI_BASE_ELEMENT.className) ?
-                null :
-                getPsiClass().getSuperClass().getQualifiedName();
+        PsiClass superClass = getPsiClass().getSuperClass();
+        if(superClass!=null) {
+            String superClassName = superClass.getQualifiedName();
+            if (!superClassName.equals(JDI_UI_BASE_ELEMENT.className)) {
+                baseComponentTypeId = superClassName;
+            }
+        }
         this.isFrameworkElement = getId().startsWith(JdiFramework.ELEMENTS_NAMESPACE.value)
                 || getId().startsWith(JdiFramework.HTML_ELEMENTS_NAMESPACE.value);
         if (this.isFrameworkElement) {
