@@ -36,6 +36,9 @@ public enum JdiElement {
     JDI_IMAGE(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.Image"),
     JDI_LINK(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.Link"),
     JDI_FILE_INPUT(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.FileInput"),
+    JDI_LABEL(JdiElementType.Common,"com.epam.jdi.light.elements.common.Label"),
+    JDI_ICON(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.Icon"),
+    JDI_UI_ELEMENT(JdiElementType.Common,"com.epam.jdi.light.elements.common.UIElement"),
 
     JDI_MENU(JdiElementType.Complex,"com.epam.jdi.light.elements.complex.Menu"),
     JDI_RADIO_BUTTONS(JdiElementType.Complex,"com.epam.jdi.light.ui.html.elements.complex.RadioButtons"),
@@ -51,11 +54,9 @@ public enum JdiElement {
 
     JDI_UI_BASE_ELEMENT(JdiElementType.Base, "com.epam.jdi.light.elements.base.UIBaseElement");
 
-//    JDI_UI_ELEMENT("com.epam.jdi.light.elements.common.UIElement");
 //    JDI_COLOR_PICKER("com.epam.jdi.light.ui.html.elements.common.Colorpicker"),
 //    JDI_DATE_TIME_SELECTOR("com.epam.jdi.light.ui.html.elements.common.DateTimeSelector"),
-//    JDI_ICON("com.epam.jdi.light.ui.html.elements.common.Icon"),
-//    JDI_LABEL("com.epam.jdi.light.elements.common.Label"),
+
 //    JDI_NUMBER_SELECTOR("com.epam.jdi.light.ui.html.elements.common.NumberSelector"),
 //    JDI_PROGRESS_BAR("com.epam.jdi.light.ui.html.elements.common.ProgressBar"),
 //    JDI_RANGE("com.epam.jdi.light.ui.html.elements.common.Range"),
