@@ -73,7 +73,7 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
     @Override
     public void addProject(Project project) {
         for (Module module : ModuleManager.getInstance(project).getModules()) {
-            if (module.getName().endsWith(".main")) {
+            if (module.getName().endsWith("main")) {
                 // TODO workaround since IDEA returns 3 modules for a single module folder: module itself, .main and .test
                 moduleNames.add(project.getName() + "/" + module.getName());
             }

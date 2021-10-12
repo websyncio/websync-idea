@@ -71,7 +71,7 @@ jar {
 
 intellij {
     setPlugins("java", "maven")
-    version '2020.2.3'
+    version '2019.3.3'
 }
 
 publishPlugin {
