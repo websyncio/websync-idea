@@ -16,11 +16,4 @@ public class StackoverflowQuestionPage extends StackoverflowQuestionPageBase {
 
     @Css(".owner .user-info .gravatar-wrapper-32 img")
     public Image AuthorAvatar;
-
-    @UI("#search")
-    public TextField SearchInput;
-
-    @UI("[type='submit']")
-    public TextField SendButton;
-
 }

@@ -42,7 +42,7 @@ public class CommandsHandler {
                 return null;
             case "update-website":
                 return new UpdateWebsiteCommand(webSyncService);
-            case "add-page-type":
+            case "create-page-type":
                 return null;
             case "delete-page-type":
                 return null;
@@ -54,8 +54,8 @@ public class CommandsHandler {
                 return null;
             case "update-page-instance":
                 return null;
-            case "add-component-type":
-                return null;
+            case "create-component-type":
+                return new CreateComponentTypeCommand(webSyncService);
             case "delete-component-type":
                 return null;
             case "add-component-instance":

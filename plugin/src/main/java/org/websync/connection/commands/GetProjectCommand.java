@@ -8,18 +8,18 @@ import org.websync.connection.dto.ComponentTypeDto;
 import org.websync.connection.dto.JdiModuleDto;
 import org.websync.connection.dto.PageTypeDto;
 import org.websync.connection.dto.WebsiteDto;
-import org.websync.connection.messages.browser.GetProjectMessage;
+import org.websync.connection.messages.browser.ProjectMessage;
 import org.websync.models.JdiModule;
 
 import java.util.stream.Collectors;
 
-public class GetProjectCommand extends CommandWithDataBase<GetProjectMessage> {
+public class GetProjectCommand extends CommandWithDataBase<ProjectMessage> {
     public GetProjectCommand(WebSyncService webSyncService) {
         super(webSyncService);
     }
 
     @Override
-    public Object execute(GetProjectMessage commandData) throws WebSyncException {
+    public Object execute(ProjectMessage commandData) throws WebSyncException {
         // hack to assign variable from read action
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -30,7 +30,7 @@ public class GetProjectCommand extends CommandWithDataBase<GetProjectMessage> {
 
     @Override
     public Object execute(String commandDataString) throws WebSyncException {
-        return execute(parseCommandData(commandDataString, GetProjectMessage.class));
+        return execute(parseCommandData(commandDataString, ProjectMessage.class));
     }
 
     @NotNull
