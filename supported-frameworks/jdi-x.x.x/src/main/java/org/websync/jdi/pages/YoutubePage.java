@@ -14,7 +14,7 @@ public class YoutubePage extends WebPage {
     public TextField QuestionTitle;
 
     @UI("#menu yt-formatted-string[1]")
-    public Cus LikesCount;
+    public Text LikesCount;
 
     @UI("#menu yt-formatted-string[2]")
     public Text DislikesCount;

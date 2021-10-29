@@ -27,21 +27,29 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
 
     @Override
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         ComponentInstanceDto componentInstance = commandData.componentInstance;
         String containerClassName = componentInstance.parentId;
-        String typeName = getNameFromId(componentInstance.componentType);
+        String typeName = getNameFromId(componentInstance.componentTypeId);
 
         WriteAction.runAndWait(() -> {
             PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(module.getProject());
             PsiClass containerClass = findClass(module, containerClassName);
             PsiField[] fields = containerClass.getFields();
-            PsiField lastField = fields[fields.length - 1];
 
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     containerClassName + ": add field " + componentInstance.fieldName + "'",
                     "WebSyncAction",
                     () -> {
+                        PsiElement anchorElement;
+                        boolean insertNewLineBeforeField = false;
+                        if(fields.length>0) {
+                            anchorElement = fields[fields.length - 1];
+                            insertNewLineBeforeField = true;
+                        }else {
+                            anchorElement = containerClass.getLBrace();
+                        }
+
                         String newFieldText = "public " + typeName + " " + componentInstance.fieldName + ";";
                         PsiFieldImpl newField = (PsiFieldImpl) elementFactory.createFieldFromText(newFieldText, null);
 
@@ -67,9 +75,11 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
 //                        createNewLine(lastField);
 
                         // .add field after the last field in the class
-                        PsiElement parent = lastField.getParent();
-                        parent.addAfter(newField, lastField);
-                        parent.addAfter(createNewLine(module.getProject()), lastField);
+                        PsiElement parent = anchorElement.getParent();
+                        parent.addAfter(newField, anchorElement);
+                        if(insertNewLineBeforeField) {
+                            parent.addAfter(createNewLine(module.getProject()), anchorElement);
+                        }
                         JavaCodeStyleManager.getInstance(module.getProject()).shortenClassReferences(newField);
 
 //                        CodeStyleManager.getInstance(module.getProject()).reformat(containerClass);

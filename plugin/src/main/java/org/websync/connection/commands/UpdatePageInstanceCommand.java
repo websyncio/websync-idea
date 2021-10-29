@@ -30,7 +30,7 @@ public class UpdatePageInstanceCommand<T> extends CommandWithDataBase<PageInstan
         int lastDot = pageInstance.id.lastIndexOf('.');
         String className = pageInstance.id.substring(0, lastDot);
         int fieldIndex = Integer.parseInt(pageInstance.id.substring(lastDot + 1));
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         updatePageInstanceUrl(module, className, fieldIndex, pageInstance.url);
         return null;
     }

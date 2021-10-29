@@ -16,6 +16,8 @@ import org.websync.connection.messages.browser.CreateTypeMessage;
 import org.websync.frameworks.jdi.JdiElement;
 import org.websync.utils.TypeNameUtils;
 
+import java.util.Arrays;
+
 public class CreateComponentTypeCommand extends CommandWithDataBase<CreateTypeMessage>{
     public CreateComponentTypeCommand(WebSyncService webSyncService) {
         super(webSyncService);
@@ -28,20 +30,26 @@ public class CreateComponentTypeCommand extends CommandWithDataBase<CreateTypeMe
 
     @Override
     public Object execute(CreateTypeMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         String packageName = TypeNameUtils.getNamespaceFromFullName(commandData.parentType);
         String fileContent = getComponentTypeFileContent(commandData.typeName, packageName, commandData.baseType);
+        String fileName = commandData.typeName + ".java";
         WriteAction.runAndWait(() -> {
             PsiClass parentPsiClass = findClass(module, commandData.parentType);
             if (parentPsiClass == null) {
                 throw new WebSyncException("Parent type was not found: " + commandData.parentType);
             }
             PsiDirectory parentPsiDirectory = parentPsiClass.getContainingFile().getContainingDirectory();
+            PsiFile[] files = parentPsiDirectory.getFiles();
+            boolean duplicatesExist = Arrays.stream(files).anyMatch(f -> f.getName().equals(fileName));
+            if(duplicatesExist) {
+                throw new WebSyncException("File '" + fileName + "' already exists in '" + packageName + "'");
+            }
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     "Create component type "+commandData.type,
                     "WebSyncAction",
                     () -> {
-                        PsiFile typePsiFile = createTypePsiFile(module.getProject(), commandData.typeName, fileContent);
+                        PsiFile typePsiFile = createJavaPsiFile(module.getProject(), fileName, fileContent);
                         parentPsiDirectory.add(typePsiFile);
                     });
         });
@@ -49,19 +57,19 @@ public class CreateComponentTypeCommand extends CommandWithDataBase<CreateTypeMe
     }
 
     private String getComponentTypeFileContent(String typeName, String packageName, String baseType) {
-        baseType = StringUtil.isEmpty(baseType) ? JdiElement.JDI_UI_ELEMENT.className : baseType;
+        baseType = StringUtil.isEmpty(baseType) ? JdiElement.JDI_UI_BASE_ELEMENT.className+"<UIAssert>" : baseType;
         return StringUtil.join(
                 "package " + packageName + ";\n",
+                "import com.epam.jdi.light.asserts.generic.UIAssert;\n"+
+                "import com.epam.jdi.light.elements.base.UIBaseElement;\n"+
                 "import com.epam.jdi.light.elements.pageobjects.annotations.locators.UI;\n",
-                "import com.epam.jdi.light.elements.common.UIElement;\n\n",
                 "public class " + typeName + " extends " + baseType + " {\n",
                 "}"
         );
     }
 
-    private PsiFile createTypePsiFile(Project project, String typeName, String fileContent) {
+    private PsiFile createJavaPsiFile(Project project, String fileName, String fileContent) {
         PsiFileFactory fileFactory = PsiFileFactory.getInstance(project);
-        String fileName = typeName + ".java";
         return fileFactory.createFileFromText(fileName, JavaLanguage.INSTANCE, fileContent);
     }
 }

@@ -8,7 +8,7 @@ import org.websync.jdi.components.CustomElement;
 
 public class InheritedPage2 extends InheritedPage {
     @Css(".testCss")
-    public Button initializedButton;
+    public Text initializedButton;
     @XPath("//testXpath")
     public Checkbox initializedCheckbox;
     @ByText("test")
@@ -17,8 +17,8 @@ public class InheritedPage2 extends InheritedPage {
     public Link initializedLink;
     @WithText("test")
     public TextField initializedTextField;
-    @FindBy(id = "test")
-    public Icon initializedIcon;
+    @FindBy("test")
+    public Image initializedIcon;
     @UI("#custom-element")
     public CustomElement initializedCustomElement;
     @UI("#custom-base-element")

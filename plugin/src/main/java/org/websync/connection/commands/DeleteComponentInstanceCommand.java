@@ -20,7 +20,7 @@ public class DeleteComponentInstanceCommand extends CommandWithDataBase<Componen
 
     @Override
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         String className = commandData.componentInstance.parentId;
         int fieldIndex = commandData.componentInstance.fieldIndex;
         WriteAction.runAndWait(() -> {

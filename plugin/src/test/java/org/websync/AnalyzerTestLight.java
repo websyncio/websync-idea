@@ -10,7 +10,7 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.websync.utils.LoggerUtils;
-import org.websync.psi.PsiJdiModulesProvider;
+import org.websync.psi.PsiJdiProjectsProvider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -149,7 +149,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
-        new PsiJdiModulesProvider().getJdiModuleNames();
+        new PsiJdiProjectsProvider().getJdiModuleNames();
 
         //TODO:include reasonable assertion
         /*

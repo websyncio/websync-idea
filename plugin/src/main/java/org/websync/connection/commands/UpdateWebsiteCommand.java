@@ -29,7 +29,7 @@ public class UpdateWebsiteCommand extends CommandWithDataBase<WebSiteMessage> {
     public Object execute(WebSiteMessage commandData) throws WebSyncException {
         WebsiteDto webSite = commandData.webSite;
         String className = webSite.id;
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         updateWebsiteUrl(module, className, webSite.url);
         return null;
     }

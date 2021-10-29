@@ -29,8 +29,8 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
         String parentId = componentInstance.parentId;
         int fieldIndex = componentInstance.fieldIndex;
         String newFieldName = componentInstance.fieldName;
-        String newFieldTypeName = getNameFromId(componentInstance.componentType);
-        final Module module = webSyncService.getProvider().findByFullName(commandData.projectName);
+        String newFieldTypeName = getNameFromId(componentInstance.componentTypeId);
+        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
 
         updateComponentInstance(module, parentId, fieldIndex, newFieldTypeName, newFieldName);
         if (componentInstance.initializationAttribute.getParameters().size() > 1) {

@@ -7,82 +7,75 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.frameworks.jdi.JdiElementType;
-import org.websync.utils.LoggerUtils;
-import org.websync.models.JdiModule;
+import org.websync.models.JdiProject;
+import org.websync.utils.ModuleNameUtils;
 import org.websync.psi.models.PsiComponentType;
-import org.websync.psi.models.PsiJdiModule;
+import org.websync.psi.models.PsiJdiProject;
 import org.websync.psi.models.PsiPageType;
 import org.websync.psi.models.PsiWebsite;
+import org.websync.utils.LoggerUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.websync.frameworks.jdi.JdiAttribute.JDI_JSITE;
 import static org.websync.frameworks.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.frameworks.jdi.JdiElement.JDI_WEB_PAGE;
 
-public class PsiJdiModulesProvider implements JdiModulesProvider {
-    private final List<String> moduleNames = new ArrayList<>();
+public class PsiJdiProjectsProvider implements JdiProjectsProvider {
+    private final List<String> projectNames = new ArrayList<>();
 
     @Override
     public List<String> getJdiModuleNames() {
-        return new ArrayList<>(moduleNames);
+        return new ArrayList<>(projectNames);
     }
 
-    @Override
-    public JdiModule getJdiModule(String name) {
-        return createJdiModule(name);
+    public JdiProject getJdiProject(String projectName) {
+        return getJdiProject(projectName, findProject(projectName));
     }
 
-    private JdiModule createJdiModule(String name) {
-        final Module module = findByFullName(name);
+    public JdiProject getJdiProject(String projectName, Module module) {
         Collection<PsiWebsite> websites = getWebsites(module);
         Collection<PsiPageType> pages = getPages(module);
         Collection<PsiComponentType> components = getComponents(module);
-        return new PsiJdiModule(name, websites, components, pages);
+        return new PsiJdiProject(projectName, websites, components, pages);
     }
 
     @Override
-    public Module findByFullName(String fullName) {
-        if (!moduleNames.contains(fullName)) {
-            throw new IllegalArgumentException("Unmanaged project and module: " + fullName);
-        }
-        int slash = fullName.indexOf('/');
-        if (slash <= 0) {
-            throw new IllegalArgumentException("Bad module full name: " + fullName);
-        }
-        String projectName = fullName.substring(0, slash);
+    public Module findProject(String projectName) {
+        String moduleName = ModuleNameUtils.getMainModuleName(projectName);
         for (Project project : ProjectManager.getInstance().getOpenProjects()) {
-            if (!project.getName().equals(projectName)) {
-                continue;
-            }
-            String moduleName = fullName.substring(slash + 1);
-            Module module = ModuleManager.getInstance(project).findModuleByName(moduleName);
-            if (module != null) {
+            if (project.getName().equals(projectName)) {
+                Module module = ModuleManager.getInstance(project).findModuleByName(moduleName);
+                if (module == null) {
+                    throw new IllegalArgumentException("Module not found in the project. Module: " + moduleName + ", Project: " + projectName);
+                }
                 return module;
             }
-            throw new IllegalArgumentException("Module not found: " + moduleName);
         }
         throw new IllegalArgumentException("Project not found: " + projectName);
     }
 
     @Override
     public void addProject(Project project) {
-        for (Module module : ModuleManager.getInstance(project).getModules()) {
-            if (module.getName().endsWith("main")) {
-                // TODO workaround since IDEA returns 3 modules for a single module folder: module itself, .main and .test
-                moduleNames.add(project.getName() + "/" + module.getName());
-            }
-        }
+        projectNames.add(project.getName());
+//        for (Module module : ModuleManager.getInstance(project).getModules()) {
+//            if (module.getName().endsWith("main")) {
+//                // TODO workaround since IDEA returns 3 modules for a single module folder: module itself, .main and .test
+//                projectNames.add(project.getName() + "/" + module.getName());
+//            }
+//        }
     }
 
     @Override
     public void removeProject(Project project) {
-        moduleNames.removeIf(moduleName -> moduleName.startsWith(project.getName() + "/"));
+        projectNames.removeIf(moduleName -> moduleName.startsWith(project.getName() + "/"));
     }
 
     private Collection<PsiWebsite> getWebsites(Module module) {
@@ -92,9 +85,7 @@ public class PsiJdiModulesProvider implements JdiModulesProvider {
         if(jdiSiteAnnotation==null){
             throw new RuntimeException("Unable to find class: "+ JDI_JSITE.className);
         }
-
-        SearchScope scope = GlobalSearchScope.moduleScope(module);
-        Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(jdiSiteAnnotation, scope).findAll()
+        Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(jdiSiteAnnotation, module.getModuleScope()).findAll()
                 .stream().map(c -> {
                     PsiWebsite website = new PsiWebsite(c);
                     website.fill();

@@ -12,7 +12,7 @@ public class GetProjectsCommand extends CommandBase {
     public Object execute(String data) {
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
-            result[0] = webSyncService.getProvider().getJdiModuleNames();
+            result[0] = webSyncService.getModulesProvider().getJdiModuleNames();
         });
         return result[0];
     }

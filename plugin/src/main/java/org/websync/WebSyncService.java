@@ -5,8 +5,8 @@ import com.intellij.psi.PsiManager;
 import lombok.Getter;
 import org.websync.connection.BrowserConnection;
 import org.websync.connection.CommandsHandler;
-import org.websync.psi.JdiModulesProvider;
-import org.websync.psi.PsiJdiModulesProvider;
+import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.PsiJdiProjectsProvider;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,11 +17,11 @@ public class WebSyncService {
     @Getter
     private BrowserConnection browserConnection;
     @Getter
-    private JdiModulesProvider provider;
+    private JdiProjectsProvider modulesProvider;
     final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
 
     public WebSyncService() {
-        provider = new PsiJdiModulesProvider();
+        modulesProvider = new PsiJdiProjectsProvider();
         CommandsHandler commandsHandler = new CommandsHandler(this);
         browserConnection = new BrowserConnection(getPortFromConfig(), commandsHandler);
         psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
@@ -55,12 +55,12 @@ public class WebSyncService {
     }
 
     public void addProject(Project project) {
-        provider.addProject(project);
+        modulesProvider.addProject(project);
         PsiManager.getInstance(project).addPsiTreeChangeListener(psiTreeChangeListener);
     }
 
     public void removeProject(Project project) {
-        provider.removeProject(project);
+        modulesProvider.removeProject(project);
         PsiManager.getInstance(project).removePsiTreeChangeListener(psiTreeChangeListener);
     }
 }

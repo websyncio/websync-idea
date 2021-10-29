@@ -1,18 +1,26 @@
 package org.websync;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.websync.connection.dto.*;
+import org.websync.connection.dto.ComponentTypeDto;
+import org.websync.connection.dto.PageTypeDto;
+import org.websync.connection.dto.WebsiteDto;
 import org.websync.connection.messages.idea.UpdateComponentTypeMessage;
 import org.websync.connection.messages.idea.UpdatePageTypeMessage;
+import org.websync.connection.messages.idea.UpdateProjectMessage;
 import org.websync.connection.messages.idea.UpdateWebSiteMessage;
+import org.websync.models.JdiProject;
 import org.websync.psi.models.PsiComponentType;
 import org.websync.psi.models.PsiPageType;
 import org.websync.psi.models.PsiWebsite;
 import org.websync.utils.Debouncer;
 import org.websync.utils.LoggerUtils;
+import org.websync.utils.ModuleNameUtils;
 
 import static org.websync.utils.PsiUtil.*;
 
@@ -27,12 +35,26 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 
     @Override
     public void childAdded(@NotNull PsiTreeChangeEvent event) {
-        handle(event);
+        LoggerUtils.print(event.toString());
+        PsiElement child = event.getChild();
+        if (child == null || child instanceof PsiFile) {
+            // . we should ignore file adding event because
+            // at this stage we can not get new version of project data
+            // since file still does not exist
+            return;
+        }
+        handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
     }
 
     @Override
     public void childRemoved(@NotNull PsiTreeChangeEvent event) {
-        handle(event);
+        LoggerUtils.print(event.toString());
+        PsiElement child = event.getChild();
+        if (child == null || !(child instanceof PsiFile)) {
+            // . we are interested only in file structure changes
+            return;
+        }
+        handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
     }
 
 //    @Override
@@ -43,12 +65,42 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 
     @Override
     public void childMoved(@NotNull PsiTreeChangeEvent event) {
-        handle(event);
+        LoggerUtils.print(event.toString());
+        PsiElement child = event.getChild();
+        if (child == null || !(child instanceof PsiFile)) {
+            // . we are interested only in file structure changes
+            return;
+        }
+        handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
+    }
+
+    private void handleStructureChange(Project project, PsiFile file) {
+        // .use parent directory to define module
+        // because if file is removed then it does not belong to module anymore
+        // and directory still does belong
+        Module module = ModuleUtil.findModuleForFile(file.getParent().getVirtualFile(), project);
+        if (ModuleNameUtils.isMainModule(module.getName())) {
+            // Change occured in main module
+            if (!DumbService.isDumb(project)) {
+                debouncer.execute(() -> {
+                    ApplicationManager.getApplication().runReadAction(() -> {
+                        JdiProject jdiProject = webSyncService.getModulesProvider().getJdiProject(project.getName());
+                        sendProjectUpdate(jdiProject);
+                    });
+                });
+            }
+        }
+    }
+
+    private void sendProjectUpdate(JdiProject jdiProject) {
+        UpdateProjectMessage requestMessage = new UpdateProjectMessage(jdiProject.getDto());
+        webSyncService.getBrowserConnection().send(requestMessage);
     }
 
     @Override
     public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
-        handle(event);
+        LoggerUtils.print(event.toString());
+        handleContentChange(((PsiManager) event.getSource()).getProject(), event.getFile());
     }
 
     // PsiFile is null for this event
@@ -57,11 +109,9 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 //        handle(event);
 //    }
 
-    private void handle(@NotNull PsiTreeChangeEvent event) {
-        Project project = ((PsiManager) event.getSource()).getProject();
-        PsiFile psiFile = event.getFile();
-        if(psiFile==null) {
-            LoggerUtils.print("PsiFile is null for event: "+ event.toString());
+    private void handleContentChange(Project project, @NotNull PsiFile psiFile) {
+        if (psiFile == null) {
+            LoggerUtils.print("PsiFile is null for event");
             return;
         }
         if (!DumbService.isDumb(project)) {
