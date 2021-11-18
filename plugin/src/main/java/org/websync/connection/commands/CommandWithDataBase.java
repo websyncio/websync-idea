@@ -3,12 +3,11 @@ package org.websync.connection.commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.intellij.openapi.module.Module;
-import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.search.GlobalSearchScope;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
+import org.websync.utils.PsiUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +33,7 @@ public abstract class CommandWithDataBase<T> extends CommandBase{
     }
 
     protected static PsiField findPsiField(Module module, String containerClassName, int fieldIndex) throws WebSyncException {
-        PsiClass containerPsiClass = findClass(module, containerClassName);
+        PsiClass containerPsiClass = PsiUtil.findClass(module, containerClassName);
         if (containerPsiClass == null) {
             throw new WebSyncException("Field container class was not found: " + containerClassName);
         }
@@ -45,11 +44,6 @@ public abstract class CommandWithDataBase<T> extends CommandBase{
             throw new WebSyncException("Field with index " + fieldIndex + " not found in component: " + containerClassName);
         }
         return fieldsList.get(fieldIndex);
-    }
-
-    protected static PsiClass findClass(Module module, String className) {
-        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(module.getProject());
-        return javaPsiFacade.findClass(className, GlobalSearchScope.moduleScope(module));
     }
 
     protected String getNameFromId(String componentType) {

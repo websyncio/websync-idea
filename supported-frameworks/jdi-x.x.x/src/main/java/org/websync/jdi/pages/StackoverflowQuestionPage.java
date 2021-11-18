@@ -22,15 +22,6 @@ public class StackoverflowQuestionPage extends StackoverflowQuestionPageBase {
     @Css(".owner .user-info .gravatar-wrapper-32 img")
     public WebImage AuthorAvatar;
 
-    @UI("button['Cancel']")
-    public WebElement CancelButton;
-
-    @UI("#top_filters")
-    public Menu MainFilters;
-
-    @UI("#projects_list")
-    public ProjectsList Projects;
-
     @UI("#filters_list")
     public FiltersList FiltersList;
 
@@ -50,9 +41,6 @@ public class StackoverflowQuestionPage extends StackoverflowQuestionPageBase {
         UIElement element = $("");
     }
 
-    @UI(".selector")
-    public UIElement bbb;
-
-    @UI("#search")
-    public TextField SearchInput;
+    @UI(".markdown_content")
+    public WebElement TaskContent;
 }

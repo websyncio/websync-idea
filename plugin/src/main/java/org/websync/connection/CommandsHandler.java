@@ -36,14 +36,14 @@ public class CommandsHandler {
                 return new GetProjectsCommand(webSyncService);
             case "get-project":
                 return new GetProjectCommand(webSyncService);
-            case "add-website":
-                return null;
+            case "create-website":
+                return new CreateWebsiteCommand(webSyncService);
             case "delete-website":
                 return null;
             case "update-website":
                 return new UpdateWebsiteCommand(webSyncService);
             case "create-page-type":
-                return null;
+                return new CreatePageTypeCommand(webSyncService);
             case "delete-page-type":
                 return null;
             case "update-page-type":
