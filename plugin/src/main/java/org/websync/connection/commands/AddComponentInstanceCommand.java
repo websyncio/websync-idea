@@ -6,7 +6,7 @@ import org.websync.WebSyncService;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
-import org.websync.utils.PsiUtil;
+import org.websync.utils.PsiUtils;
 
 public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
     public AddComponentInstanceCommand(WebSyncService webSyncService) {
@@ -33,7 +33,7 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
         }
         // .we use only first parameters so far and ignore others
         Object attributeValue = componentInstance.initializationAttribute.getParameters().get(0).getValues().get(0);
-        PsiUtil.addFieldToClass(module, typeName, componentInstance.fieldName, attributeName, attributeValue, containerClassName);
+        PsiUtils.addFieldToClass(module, typeName, componentInstance.fieldName, attributeName, attributeValue, containerClassName);
         return null;
     }
 }

@@ -14,6 +14,7 @@ import com.intellij.psi.impl.source.tree.ChildRole;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.InheritanceUtil;
+import com.intellij.psi.util.PsiUtil;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Nullable;
 import org.websync.WebSyncException;
@@ -25,7 +26,7 @@ import java.util.Collection;
 import static org.websync.frameworks.jdi.JdiAttribute.JDI_JSITE;
 
 @UtilityClass
-public class PsiUtil {
+public class PsiUtils {
     @Nullable
     public static PsiClass findPsiClass(@Nullable PsiFile psiFile) {
         if(!(psiFile  instanceof PsiJavaFile)) {
@@ -40,8 +41,16 @@ public class PsiUtil {
         return psiClass != null && psiClass.getAnnotation(JDI_JSITE.className) != null;
     }
 
+    public static boolean isComponent(@Nullable PsiType psiType) {
+        return isComponent(PsiUtil.resolveClassInType(psiType));
+    }
+
     public static boolean isComponent(@Nullable PsiClass psiClass) {
         return isInheritor(psiClass, JdiElement.JDI_UI_BASE_ELEMENT);
+    }
+
+    public static boolean isPage(@Nullable PsiType psiType) {
+        return isPage(PsiUtil.resolveClassInType(psiType));
     }
 
     public static boolean isPage(@Nullable PsiClass psiClass) {
@@ -74,7 +83,7 @@ public class PsiUtil {
                     "Create java file " + fileName,
                     "WebSyncAction",
                     () -> {
-                        PsiFile typePsiFile = PsiUtil.createJavaPsiFile(module.getProject(), fileName, fileContent);
+                        PsiFile typePsiFile = PsiUtils.createJavaPsiFile(module.getProject(), fileName, fileContent);
                         parentPsiDirectory.add(typePsiFile);
                     });
         });
@@ -122,7 +131,7 @@ public class PsiUtil {
                 containerClassName + ": add field " + fieldName + "'",
                 "WebSyncAction",
                 () -> {
-                    PsiClass containerClass = PsiUtil.findClass(module, containerClassName);
+                    PsiClass containerClass = PsiUtils.findClass(module, containerClassName);
 
                     PsiElement anchorElement;
                     PsiField[] fields = containerClass.getFields();

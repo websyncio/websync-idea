@@ -7,7 +7,7 @@ import org.websync.WebSyncException;
 import org.websync.WebSyncService;
 import org.websync.connection.messages.browser.CreateComponentTypeMessage;
 import org.websync.frameworks.jdi.JdiElement;
-import org.websync.utils.PsiUtil;
+import org.websync.utils.PsiUtils;
 import org.websync.utils.TypeNameUtils;
 
 public class CreateComponentTypeCommand extends CommandWithDataBase<CreateComponentTypeMessage>{
@@ -26,8 +26,8 @@ public class CreateComponentTypeCommand extends CommandWithDataBase<CreateCompon
         String packageName = TypeNameUtils.getNamespaceFromFullName(commandData.parentType);
         String fileContent = getComponentTypeFileContent(packageName, commandData.name, commandData.baseType);
         String fileName = commandData.name + ".java";
-        PsiDirectory parentPsiDirectory = PsiUtil.getClassDirectory(module, commandData.parentType);
-        PsiUtil.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
+        PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.parentType);
+        PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
         return null;
     }
 

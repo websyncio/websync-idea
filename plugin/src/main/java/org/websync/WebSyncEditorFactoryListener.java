@@ -16,7 +16,7 @@ import org.websync.connection.messages.idea.ShowPageObjectMessage;
 
 import java.awt.event.FocusEvent;
 
-import static org.websync.utils.PsiUtil.*;
+import static org.websync.utils.PsiUtils.*;
 
 public class WebSyncEditorFactoryListener implements EditorFactoryListener {
     @Override

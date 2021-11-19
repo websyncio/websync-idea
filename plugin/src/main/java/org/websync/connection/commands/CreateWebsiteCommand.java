@@ -6,7 +6,7 @@ import com.intellij.psi.PsiDirectory;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
 import org.websync.connection.messages.browser.CreateWebsiteMessage;
-import org.websync.utils.PsiUtil;
+import org.websync.utils.PsiUtils;
 
 public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessage> {
     public CreateWebsiteCommand(WebSyncService webSyncService) {
@@ -21,10 +21,10 @@ public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessa
     @Override
     public Object execute(CreateWebsiteMessage commandData) throws WebSyncException {
         final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
-        PsiDirectory rootDirectory = PsiUtil.getRootDirectory(module);
+        PsiDirectory rootDirectory = PsiUtils.getRootDirectory(module);
         String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseUrl);
         String fileName = commandData.name + ".java";
-        PsiUtil.createJavaFileIn(module, fileName, fileContent, rootDirectory);
+        PsiUtils.createJavaFileIn(module, fileName, fileContent, rootDirectory);
         return null;
     }
 

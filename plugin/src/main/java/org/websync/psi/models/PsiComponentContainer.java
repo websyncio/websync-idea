@@ -2,11 +2,9 @@ package org.websync.psi.models;
 
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.util.InheritanceUtil;
-import com.intellij.psi.util.PsiUtil;
-import org.websync.frameworks.jdi.JdiElement;
 import org.websync.models.ComponentContainer;
 import org.websync.models.ComponentInstance;
+import org.websync.utils.PsiUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,12 +50,14 @@ public abstract class PsiComponentContainer<T> extends PsiNamedTypeWrapper<T> im
                 String attributeClassName = psiComponentInstance.getAttributeInstance().getCodeReferenceElement();
                 isAnnotated = INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(attributeClassName)));
             }
-            boolean isElement = Arrays.asList(field.getType().getSuperTypes())
-                    .stream()
-                    .anyMatch(s -> {
-                        PsiClass c = PsiUtil.resolveClassInType(s);
-                        return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.className);
-                    });
+            boolean isElement = PsiUtils.isComponent(field.getType());
+//                    Arrays.asList(field.getType().getSuperTypes())
+//                    .stream()
+//                    .anyMatch(s -> {
+//                        PsiClass c = PsiUtil.resolveClassInType(s);
+//                        return InheritanceUtil.isInheritor(c, JdiElement.JDI_UI_BASE_ELEMENT.className);
+//                    });
+
             if (isElement || isAnnotated) {
                 psiComponentInstance.fill();
                 this.componentInstances.add(psiComponentInstance);

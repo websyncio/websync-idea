@@ -3,20 +3,16 @@ package org.websync.psi.models;
 
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.util.InheritanceUtil;
-import com.intellij.psi.util.PsiUtil;
-import org.websync.frameworks.jdi.JdiElement;
 import org.websync.models.PageContainer;
 import org.websync.models.PageInstance;
+import org.websync.utils.PsiUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.websync.frameworks.jdi.JdiAttribute.JDI_JSITE;
-import static org.websync.frameworks.jdi.JdiAttribute.JDI_TITLE;
-import static org.websync.frameworks.jdi.JdiAttribute.JDI_URL;
+import static org.websync.frameworks.jdi.JdiAttribute.*;
 
 public class PsiPageContainer<T> extends PsiNamedTypeWrapper<T> implements PageContainer {
     public static final List<String> INITIALIZATION_ATTRIBUTES = Arrays.asList(JDI_URL.className, JDI_TITLE.className, JDI_JSITE.className);
@@ -46,19 +42,11 @@ public class PsiPageContainer<T> extends PsiNamedTypeWrapper<T> implements PageC
         List<PsiField> fieldsList = Arrays.asList(getPsiClass().getFields());
 
         fieldsList.stream().forEach(f -> {
-            boolean isElement = Arrays.asList(f.getType().getSuperTypes())
-                    .stream()
-                    .anyMatch(s -> {
-                        PsiClass c = PsiUtil.resolveClassInType(s);
-                        return InheritanceUtil.isInheritor(c, JdiElement.JDI_WEB_PAGE.className);
-                    });
-
-            if (isElement) {
+            boolean isPage = PsiUtils.isPage(f.getType());
+            if (isPage) {
                 PsiPageInstance psiPageInstance = new PsiPageInstance(getId(), f);
-                if (INITIALIZATION_ATTRIBUTES.stream().anyMatch(p -> (p.contains(psiPageInstance.getAttributeInstance().getCodeReferenceElement())))) {
-                    psiPageInstance.fill();
-                    this.pageInstances.add(psiPageInstance);
-                }
+                psiPageInstance.fill();
+                this.pageInstances.add(psiPageInstance);
             }
         });
     }

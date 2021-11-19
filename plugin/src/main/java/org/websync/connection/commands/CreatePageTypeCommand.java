@@ -8,7 +8,7 @@ import org.websync.WebSyncService;
 import org.websync.connection.messages.browser.CreatePageTypeMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.frameworks.jdi.JdiElement;
-import org.websync.utils.PsiUtil;
+import org.websync.utils.PsiUtils;
 import org.websync.utils.StringUtils;
 import org.websync.utils.TypeNameUtils;
 
@@ -28,13 +28,13 @@ public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMes
         final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
         String packageName = TypeNameUtils.getNamespaceFromFullName(commandData.website);
         String fileContent = getComponentTypeFileContent(packageName, commandData.name, commandData.baseType);
-        PsiDirectory parentPsiDirectory = PsiUtil.getClassDirectory(module, commandData.website);
+        PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.website);
         String fileName = commandData.name + ".java";
         // Create page object class
-        PsiUtil.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
+        PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
         // Add page object instance to website
 
-        PsiUtil.addFieldToClass(module,
+        PsiUtils.addFieldToClass(module,
                 commandData.name,
                 StringUtils.toCamelCase(commandData.name),
                 JdiAttribute.JDI_URL.className,

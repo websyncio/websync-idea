@@ -7,7 +7,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import org.websync.WebSyncException;
 import org.websync.WebSyncService;
-import org.websync.utils.PsiUtil;
+import org.websync.utils.PsiUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public abstract class CommandWithDataBase<T> extends CommandBase{
     }
 
     protected static PsiField findPsiField(Module module, String containerClassName, int fieldIndex) throws WebSyncException {
-        PsiClass containerPsiClass = PsiUtil.findClass(module, containerClassName);
+        PsiClass containerPsiClass = PsiUtils.findClass(module, containerClassName);
         if (containerPsiClass == null) {
             throw new WebSyncException("Field container class was not found: " + containerClassName);
         }

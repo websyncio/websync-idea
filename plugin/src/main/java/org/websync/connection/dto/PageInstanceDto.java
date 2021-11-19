@@ -2,6 +2,7 @@ package org.websync.connection.dto;
 
 
 import org.websync.models.PageInstance;
+import org.websync.psi.models.AnnotationInstance;
 
 import java.util.List;
 
@@ -20,13 +21,14 @@ public class PageInstanceDto extends BaseDto {
         name = pageInstance.getName();
         url = "";
 
-        initializationAttribute = new AnnotationDto(pageInstance.getAttributeInstance());
-
-//        AnnotationDto initializationAttribute = new AnnotationDto(pageInstance.getAttributeInstance());
-//        AnnotationDto initializationAttribute = new AnnotationDto(pageInstance.getAttributeInstance());
-        if(initializationAttribute.getName().equals("Url")){
-            List<AnnotationDto.Parameter> params = initializationAttribute.getParameters();
-            url = initializationAttribute.getParameters().get(0).getValues().get(0);
+        // this code should be in PSI model
+        AnnotationInstance annotationInstance = pageInstance.getAttributeInstance();
+        if (annotationInstance != null) {
+            initializationAttribute = new AnnotationDto(pageInstance.getAttributeInstance());
+            if (initializationAttribute.getName().equals("Url")) {
+                List<AnnotationDto.Parameter> params = initializationAttribute.getParameters();
+                url = initializationAttribute.getParameters().get(0).getValues().get(0);
+            }
         }
     }
 }

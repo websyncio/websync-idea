@@ -22,7 +22,7 @@ import org.websync.utils.Debouncer;
 import org.websync.utils.LoggerUtils;
 import org.websync.utils.ModuleNameUtils;
 
-import static org.websync.utils.PsiUtil.*;
+import static org.websync.utils.PsiUtils.*;
 
 public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
     private final Debouncer debouncer;
@@ -43,6 +43,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             // since file still does not exist
             return;
         }
+        System.out.println("child added: " + child.getContainingFile().getName());
         handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
     }
 
@@ -54,6 +55,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             // . we are interested only in file structure changes
             return;
         }
+        System.out.println("child removed: " + child.getContainingFile().getName());
         handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
     }
 
@@ -71,6 +73,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
             // . we are interested only in file structure changes
             return;
         }
+        System.out.println("child moved: " + child.getContainingFile().getName());
         handleStructureChange(((PsiManager) event.getSource()).getProject(), child.getContainingFile());
     }
 

@@ -9,7 +9,7 @@ import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 import org.websync.WebSyncService;
 
-import static org.websync.utils.PsiUtil.*;
+import static org.websync.utils.PsiUtils.*;
 
 public class TransferPageObjectAction extends DumbAwareAction {
     @Override
