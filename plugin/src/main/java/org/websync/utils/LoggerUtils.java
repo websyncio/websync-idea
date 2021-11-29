@@ -1,5 +1,8 @@
 package org.websync.utils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -12,6 +15,23 @@ public class LoggerUtils {
 
     public static void print(String message) {
         calendar.setTimeInMillis(System.currentTimeMillis());
-        System.out.println(String.format("%s - %s", sdf.format(calendar.getTime()), message));
+        message = String.format("%s - %s", sdf.format(calendar.getTime()), message);
+        System.out.println(message);
+    }
+
+    private static void writeToLogFile(String message, String fileName) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+        writer.append(message);
+        writer.close();
+    }
+
+    public static void logeTreeChangeEvent(String message) {
+        message = String.format("%s - %s\n", sdf.format(calendar.getTime()), message);
+        System.out.println(message);
+//        try {
+//            writeToLogFile(message, "c:\\data\\logs\\websync.txt");
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 }

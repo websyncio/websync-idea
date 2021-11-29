@@ -35,7 +35,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 
     @Override
     public void childAdded(@NotNull PsiTreeChangeEvent event) {
-        LoggerUtils.print(event.toString());
+        LoggerUtils.logeTreeChangeEvent(event.toString());
         PsiElement child = event.getChild();
         if (child == null || child instanceof PsiFile) {
             // . we should ignore file adding event because
@@ -49,7 +49,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 
     @Override
     public void childRemoved(@NotNull PsiTreeChangeEvent event) {
-        LoggerUtils.print(event.toString());
+        LoggerUtils.logeTreeChangeEvent(event.toString());
         PsiElement child = event.getChild();
         if (child == null || !(child instanceof PsiFile)) {
             // . we are interested only in file structure changes
@@ -67,7 +67,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
 
     @Override
     public void childMoved(@NotNull PsiTreeChangeEvent event) {
-        LoggerUtils.print(event.toString());
+        LoggerUtils.logeTreeChangeEvent(event.toString());
         PsiElement child = event.getChild();
         if (child == null || !(child instanceof PsiFile)) {
             // . we are interested only in file structure changes
@@ -96,13 +96,14 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
     }
 
     private void sendProjectUpdate(JdiProject jdiProject) {
+        LoggerUtils.logeTreeChangeEvent("Send project update");
         UpdateProjectMessage requestMessage = new UpdateProjectMessage(jdiProject.getDto());
         webSyncService.getBrowserConnection().send(requestMessage);
     }
 
     @Override
     public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
-        LoggerUtils.print(event.toString());
+        LoggerUtils.logeTreeChangeEvent(event.toString());
         handleContentChange(((PsiManager) event.getSource()).getProject(), event.getFile());
     }
 
@@ -123,7 +124,7 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
     }
 
     private void sendUpdateFor(PsiFile psiFile) {
-        LoggerUtils.print("Send update for " + psiFile.getName());
+        LoggerUtils.logeTreeChangeEvent("Send update for " + psiFile.getName());
         PsiClass psiClass = findPsiClass(psiFile);
 
         if (psiClass == null) {

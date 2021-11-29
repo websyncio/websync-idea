@@ -49,6 +49,7 @@ public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMes
                 "package " + packageName + ";\n"+
                         "import com.epam.jdi.light.elements.composite.WebPage;\n",
                         "import com.epam.jdi.light.elements.pageobjects.annotations.Url;\n",
+                        "import com.epam.jdi.light.elements.pageobjects.annotations.locators.UI;\n\n",
                         "public class " + typeName + " extends " + baseType + " {\n",
                         "}"
         );
