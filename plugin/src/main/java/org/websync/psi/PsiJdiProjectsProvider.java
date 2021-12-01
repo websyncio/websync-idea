@@ -11,7 +11,7 @@ import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.frameworks.jdi.JdiElementType;
 import org.websync.models.JdiProject;
-import org.websync.utils.ModuleNameUtils;
+import org.websync.utils.ModuleStructureUtils;
 import org.websync.psi.models.PsiComponentType;
 import org.websync.psi.models.PsiJdiProject;
 import org.websync.psi.models.PsiPageType;
@@ -49,12 +49,15 @@ public class PsiJdiProjectsProvider implements JdiProjectsProvider {
 
     @Override
     public Module findProject(String projectName) {
-        String moduleName = ModuleNameUtils.getMainModuleName(projectName);
+        String mainModuleName = ModuleStructureUtils.getMainModuleName(projectName);
         for (Project project : ProjectManager.getInstance().getOpenProjects()) {
             if (project.getName().equals(projectName)) {
-                Module module = ModuleManager.getInstance(project).findModuleByName(moduleName);
+                Module module = ModuleManager.getInstance(project).findModuleByName(mainModuleName);
                 if (module == null) {
-                    throw new IllegalArgumentException("Module not found in the project. Module: " + moduleName + ", Project: " + projectName);
+                    module = ModuleManager.getInstance(project).findModuleByName(projectName);
+                }
+                if(module==null){
+                    throw new IllegalArgumentException("Module not found in the project. Module: " + mainModuleName + ", Project: " + projectName);
                 }
                 return module;
             }
@@ -75,7 +78,7 @@ public class PsiJdiProjectsProvider implements JdiProjectsProvider {
 
     @Override
     public void removeProject(Project project) {
-        projectNames.removeIf(moduleName -> moduleName.startsWith(project.getName() + "/"));
+        projectNames.remove(project.getName());
     }
 
     private Collection<PsiWebsite> getWebsites(Module module) {

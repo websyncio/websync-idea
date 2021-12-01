@@ -1,8 +1,6 @@
 package org.websync;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -20,7 +18,7 @@ import org.websync.psi.models.PsiPageType;
 import org.websync.psi.models.PsiWebsite;
 import org.websync.utils.Debouncer;
 import org.websync.utils.LoggerUtils;
-import org.websync.utils.ModuleNameUtils;
+import org.websync.utils.ModuleStructureUtils;
 
 import static org.websync.utils.PsiUtils.*;
 
@@ -81,8 +79,8 @@ public class WebSyncPsiTreeChangeListener extends PsiTreeChangeAdapter {
         // .use parent directory to define module
         // because if file is removed then it does not belong to module anymore
         // and directory still does belong
-        Module module = ModuleUtil.findModuleForFile(file.getParent().getVirtualFile(), project);
-        if (ModuleNameUtils.isMainModule(module.getName())) {
+        //Module module = ModuleUtil.findModuleForFile(file.getParent().getVirtualFile(), project);
+        if (ModuleStructureUtils.isFileInMainModule(file)) {
             // Change occured in main module
             if (!DumbService.isDumb(project)) {
                 debouncer.execute(() -> {

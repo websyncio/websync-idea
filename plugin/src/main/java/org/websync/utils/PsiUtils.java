@@ -1,17 +1,14 @@
 package org.websync.utils;
 
-import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.impl.source.PsiFieldImpl;
 import com.intellij.psi.impl.source.tree.ChildRole;
-import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PsiUtil;
@@ -21,7 +18,6 @@ import org.websync.WebSyncException;
 import org.websync.frameworks.jdi.JdiElement;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 import static org.websync.frameworks.jdi.JdiAttribute.JDI_JSITE;
 
@@ -97,24 +93,25 @@ public class PsiUtils {
         return parentPsiClass.getContainingFile().getContainingDirectory();
     }
 
-    public static PsiPackage getRootPackage(Module module) throws WebSyncException {
-        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
-        String rootPackage = null;
-        for (VirtualFile vf : virtualFiles) {
-            PsiFile psifile = PsiManager.getInstance(module.getProject()).findFile(vf);
-
-            if (psifile instanceof PsiJavaFile) {
-                PsiJavaFile psiJavaFile = (PsiJavaFile) psifile;
-                String packageName = psiJavaFile.getPackageName();
-                if (rootPackage==null||packageName.length() < rootPackage.length()) {
-                    rootPackage = packageName;
-                }
-            }
-        }
-        if (rootPackage.isEmpty()) {
-            throw new WebSyncException("Unable to define root package.");
-        }
-        return JavaPsiFacade.getInstance(module.getProject()).findPackage(rootPackage);
+    public static PsiPackage getRootPackage(Module module) {
+        return JavaPsiFacade.getInstance(module.getProject()).findPackage("");
+//        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
+//        String rootPackage = null;
+//        for (VirtualFile vf : virtualFiles) {
+//            PsiFile psifile = PsiManager.getInstance(module.getProject()).findFile(vf);
+//
+//            if (psifile instanceof PsiJavaFile) {
+//                PsiJavaFile psiJavaFile = (PsiJavaFile) psifile;
+//                String packageName = psiJavaFile.getPackageName();
+//                if (rootPackage==null||packageName.length() < rootPackage.length()) {
+//                    rootPackage = packageName;
+//                }
+//            }
+//        }
+//        if (rootPackage.isEmpty()) {
+//            throw new WebSyncException("Unable to define root package.");
+//        }
+//        return JavaPsiFacade.getInstance(module.getProject()).findPackage(rootPackage);
     }
 
     public static PsiDirectory getRootDirectory(Module module) throws WebSyncException {

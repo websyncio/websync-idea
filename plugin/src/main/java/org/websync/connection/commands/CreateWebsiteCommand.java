@@ -28,15 +28,14 @@ public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessa
             throw new WebSyncException("Unable to define root directory.");
         }
         PsiDirectory rootDirectory = directories[0];
-        String fileContent = getComponentTypeFileContent(rootPackage.getQualifiedName(), commandData.name, commandData.baseUrl);
+        String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseUrl);
         String fileName = commandData.name + ".java";
         PsiUtils.createJavaFileIn(module, fileName, fileContent, rootDirectory);
         return null;
     }
 
-    private String getComponentTypeFileContent(String packageName, String typeName, String url) {
+    private String getComponentTypeFileContent(String typeName, String url) {
         return StringUtil.join(
-                "package " + packageName + ";\n" +
                         "import com.epam.jdi.light.elements.pageobjects.annotations.JSite;\n",
                 "import com.epam.jdi.light.elements.pageobjects.annotations.Url;\n\n",
                 "@JSite(\"" + url + "\")\n" +

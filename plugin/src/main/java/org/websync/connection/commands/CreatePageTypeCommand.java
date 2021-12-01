@@ -10,7 +10,6 @@ import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.frameworks.jdi.JdiElement;
 import org.websync.utils.PsiUtils;
 import org.websync.utils.StringUtils;
-import org.websync.utils.TypeNameUtils;
 
 public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMessage>{
     public CreatePageTypeCommand(WebSyncService webSyncService) {
@@ -26,8 +25,7 @@ public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMes
     @Override
     public Object execute(CreatePageTypeMessage commandData) throws WebSyncException {
         final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
-        String packageName = TypeNameUtils.getNamespaceFromFullName(commandData.website);
-        String fileContent = getComponentTypeFileContent(packageName, commandData.name, commandData.baseType);
+        String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseType);
         PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.website);
         String fileName = commandData.name + ".java";
         // Create page object class
@@ -43,10 +41,9 @@ public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMes
         return null;
     }
 
-    private String getComponentTypeFileContent(String packageName, String typeName, String baseType) {
+    private String getComponentTypeFileContent(String typeName, String baseType) {
         baseType = StringUtil.isEmpty(baseType) ? JdiElement.JDI_WEB_PAGE.className : baseType;
         return StringUtil.join(
-                "package " + packageName + ";\n"+
                         "import com.epam.jdi.light.elements.composite.WebPage;\n",
                         "import com.epam.jdi.light.elements.pageobjects.annotations.Url;\n",
                         "import com.epam.jdi.light.elements.pageobjects.annotations.locators.UI;\n\n",

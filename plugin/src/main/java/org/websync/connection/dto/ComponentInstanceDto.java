@@ -1,6 +1,7 @@
 package org.websync.connection.dto;
 
 import org.websync.models.ComponentInstance;
+import org.websync.psi.models.AnnotationInstance;
 
 public class ComponentInstanceDto extends BaseDto {
     public String parentId;
@@ -20,6 +21,9 @@ public class ComponentInstanceDto extends BaseDto {
         componentTypeId = componentInstance.getComponentType();
         fieldName = componentInstance.getFieldName();
         name = componentInstance.getName();
-        initializationAttribute = new AnnotationDto(componentInstance.getAttributeInstance());
+        AnnotationInstance attributeInstance = componentInstance.getAttributeInstance();
+        if (attributeInstance != null) {
+            initializationAttribute = new AnnotationDto(attributeInstance);
+        }
     }
 }
