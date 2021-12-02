@@ -6,15 +6,15 @@ import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
+import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class CommandWithDataBase<T> extends CommandBase{
-    public CommandWithDataBase(WebSyncService webSyncService) {
-        super(webSyncService);
+    public CommandWithDataBase(JdiProjectsProvider projectsProvider) {
+        super(projectsProvider);
     }
 
     public abstract Object execute(T commandData) throws WebSyncException;

@@ -19,8 +19,7 @@ public class BrowserConnection {
     private final WebSocketServer server;
     private CommandsHandler commandsHandler;
 
-    public BrowserConnection(int port, CommandsHandler commandsHandler) {
-        this.commandsHandler = commandsHandler;
+    public BrowserConnection(int port) {
         server = createServer(port);
         server.start();
     }
@@ -76,7 +75,7 @@ public class BrowserConnection {
 
     void handleCommand(String message) {
         if (commandsHandler == null) {
-            throw new NullPointerException("Unable to handle the received message.");
+            return;
         }
         ResponseMessage responseMessage = commandsHandler.handle(message);
         send(responseMessage);
@@ -99,5 +98,9 @@ public class BrowserConnection {
 
     public void stop() throws IOException, InterruptedException {
         server.stop();
+    }
+
+    public void setCommandsHandler(CommandsHandler commandsHandler) {
+        this.commandsHandler=commandsHandler;
     }
 }

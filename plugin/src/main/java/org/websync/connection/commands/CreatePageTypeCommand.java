@@ -4,16 +4,20 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
+import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreatePageTypeMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.frameworks.jdi.JdiElement;
+import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
 import org.websync.utils.StringUtils;
 
 public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMessage>{
-    public CreatePageTypeCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    private ProjectUpdatesQueue projectUpdatesQueue;
+
+    public CreatePageTypeCommand(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
+        super(projectsProvider);
+        this.projectUpdatesQueue = projectUpdatesQueue;
     }
 
 
@@ -24,20 +28,25 @@ public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMes
 
     @Override
     public Object execute(CreatePageTypeMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
-        String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseType);
-        PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.website);
-        String fileName = commandData.name + ".java";
-        // Create page object class
-        PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
-        // Add page object instance to website
+        final Module module = projectsProvider.findProject(commandData.projectName);
+        try {
+            this.projectUpdatesQueue.captureProjectState(module.getProject());
+            String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseType);
+            PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.website);
+            String fileName = commandData.name + ".java";
+            // Create page object class
+            PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
+            // Add page object instance to website
 
-        PsiUtils.addFieldToClass(module,
-                commandData.name,
-                StringUtils.toCamelCase(commandData.name),
-                JdiAttribute.JDI_URL.className,
-                commandData.absoluteUrl,
-                commandData.website);
+            PsiUtils.addFieldToClass(module,
+                    commandData.name,
+                    StringUtils.toCamelCase(commandData.name),
+                    JdiAttribute.JDI_URL.className,
+                    commandData.absoluteUrl,
+                    commandData.website);
+        }finally {
+            this.projectUpdatesQueue.releaseProjectState(module.getProject());
+        }
         return null;
     }
 

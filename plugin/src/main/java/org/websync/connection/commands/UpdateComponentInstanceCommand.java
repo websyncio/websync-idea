@@ -7,15 +7,15 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiFieldImpl;
 import com.intellij.psi.impl.source.tree.ChildRole;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
 import org.websync.connection.dto.AnnotationDto;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
+import org.websync.psi.JdiProjectsProvider;
 
 public class UpdateComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public UpdateComponentInstanceCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    public UpdateComponentInstanceCommand(JdiProjectsProvider projectsProvider) {
+        super(projectsProvider);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
         int fieldIndex = componentInstance.fieldIndex;
         String newFieldName = componentInstance.fieldName;
         String newFieldTypeName = getNameFromId(componentInstance.componentTypeId);
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
+        final Module module = projectsProvider.findProject(commandData.projectName);
 
         updateComponentInstance(module, parentId, fieldIndex, newFieldTypeName, newFieldName);
         if (componentInstance.initializationAttribute.getParameters().size() > 1) {

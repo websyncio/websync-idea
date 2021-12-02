@@ -9,14 +9,14 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
 import org.websync.connection.dto.WebsiteDto;
 import org.websync.connection.messages.browser.WebSiteMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
+import org.websync.psi.JdiProjectsProvider;
 
 public class UpdateWebsiteCommand extends CommandWithDataBase<WebSiteMessage> {
-    public UpdateWebsiteCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    public UpdateWebsiteCommand(JdiProjectsProvider projectsProvider) {
+        super(projectsProvider);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class UpdateWebsiteCommand extends CommandWithDataBase<WebSiteMessage> {
     public Object execute(WebSiteMessage commandData) throws WebSyncException {
         WebsiteDto webSite = commandData.webSite;
         String className = webSite.id;
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
+        final Module module = projectsProvider.findProject(commandData.projectName);
         updateWebsiteUrl(module, className, webSite.url);
         return null;
     }

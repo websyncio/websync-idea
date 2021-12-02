@@ -4,14 +4,18 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
+import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateComponentTypeMessage;
 import org.websync.frameworks.jdi.JdiElement;
+import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 public class CreateComponentTypeCommand extends CommandWithDataBase<CreateComponentTypeMessage>{
-    public CreateComponentTypeCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    private ProjectUpdatesQueue projectUpdatesQueue;
+
+    public CreateComponentTypeCommand(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
+        super(projectsProvider);
+        this.projectUpdatesQueue = projectUpdatesQueue;
     }
 
     @Override
@@ -21,11 +25,16 @@ public class CreateComponentTypeCommand extends CommandWithDataBase<CreateCompon
 
     @Override
     public Object execute(CreateComponentTypeMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
-        String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseType);
-        String fileName = commandData.name + ".java";
-        PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.parentType);
-        PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
+        final Module module = projectsProvider.findProject(commandData.projectName);
+        try {
+            this.projectUpdatesQueue.captureProjectState(module.getProject());
+            String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseType);
+            String fileName = commandData.name + ".java";
+            PsiDirectory parentPsiDirectory = PsiUtils.getClassDirectory(module, commandData.parentType);
+            PsiUtils.createJavaFileIn(module, fileName, fileContent, parentPsiDirectory);
+        } finally {
+            this.projectUpdatesQueue.releaseProjectState(module.getProject());
+        }
         return null;
     }
 

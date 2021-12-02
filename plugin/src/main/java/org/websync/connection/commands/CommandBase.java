@@ -1,10 +1,11 @@
 package org.websync.connection.commands;
 
-import org.websync.WebSyncService;
+import org.websync.psi.JdiProjectsProvider;
 
 public abstract class CommandBase implements Command  {
-    protected WebSyncService webSyncService;
-    public CommandBase(WebSyncService webSyncService){
-        this.webSyncService = webSyncService;
+    protected JdiProjectsProvider projectsProvider;
+
+    public CommandBase(JdiProjectsProvider projectsProvider){
+        this.projectsProvider = projectsProvider;
     }
 }

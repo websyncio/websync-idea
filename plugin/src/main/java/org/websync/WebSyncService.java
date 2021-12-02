@@ -5,6 +5,7 @@ import com.intellij.psi.PsiManager;
 import lombok.Getter;
 import org.websync.connection.BrowserConnection;
 import org.websync.connection.CommandsHandler;
+import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.psi.JdiProjectsProvider;
 import org.websync.psi.PsiJdiProjectsProvider;
 
@@ -17,14 +18,17 @@ public class WebSyncService {
     @Getter
     private BrowserConnection browserConnection;
     @Getter
-    private JdiProjectsProvider modulesProvider;
+    private JdiProjectsProvider projectsProvider;
     final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
+    private ProjectUpdatesQueue projectUpdatesQueue;
 
     public WebSyncService() {
-        modulesProvider = new PsiJdiProjectsProvider();
-        CommandsHandler commandsHandler = new CommandsHandler(this);
-        browserConnection = new BrowserConnection(getPortFromConfig(), commandsHandler);
-        psiTreeChangeListener = new WebSyncPsiTreeChangeListener(this);
+        projectsProvider = new PsiJdiProjectsProvider();
+        browserConnection = new BrowserConnection(getPortFromConfig());
+        projectUpdatesQueue = new ProjectUpdatesQueue(browserConnection, projectsProvider);
+        CommandsHandler commandsHandler = new CommandsHandler(projectsProvider, projectUpdatesQueue);
+        browserConnection.setCommandsHandler(commandsHandler);
+        psiTreeChangeListener = new WebSyncPsiTreeChangeListener(projectUpdatesQueue);
     }
 
     public static int getPortFromConfig() {
@@ -55,12 +59,12 @@ public class WebSyncService {
     }
 
     public void addProject(Project project) {
-        modulesProvider.addProject(project);
+        projectsProvider.addProject(project);
         PsiManager.getInstance(project).addPsiTreeChangeListener(psiTreeChangeListener);
     }
 
     public void removeProject(Project project) {
-        modulesProvider.removeProject(project);
+        projectsProvider.removeProject(project);
         PsiManager.getInstance(project).removePsiTreeChangeListener(psiTreeChangeListener);
     }
 }

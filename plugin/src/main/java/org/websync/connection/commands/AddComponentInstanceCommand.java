@@ -2,15 +2,15 @@ package org.websync.connection.commands;
 
 import com.intellij.openapi.module.Module;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
+import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public AddComponentInstanceCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    public AddComponentInstanceCommand(JdiProjectsProvider projectsProvider) {
+        super(projectsProvider);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
 
     @Override
     public Object execute(ComponentInstanceMessage commandData) throws WebSyncException {
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
+        final Module module = projectsProvider.findProject(commandData.projectName);
         ComponentInstanceDto componentInstance = commandData.componentInstance;
         String containerClassName = componentInstance.parentId;
         String typeName = getNameFromId(componentInstance.componentTypeId);

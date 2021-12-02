@@ -3,16 +3,18 @@ package org.websync.connection;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
 import org.websync.connection.commands.*;
 import org.websync.connection.messages.Message;
 import org.websync.connection.messages.ResponseMessage;
+import org.websync.psi.JdiProjectsProvider;
 
 public class CommandsHandler {
-    protected WebSyncService webSyncService;
+    private JdiProjectsProvider projectsProvider;
+    private ProjectUpdatesQueue projectUpdatesQueue;
 
-    public CommandsHandler(WebSyncService webSyncService){
-        this.webSyncService = webSyncService;
+    public CommandsHandler(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue){
+        this.projectsProvider = projectsProvider;
+        this.projectUpdatesQueue = projectUpdatesQueue;
     }
 
     public ResponseMessage handle(String messageString) {
@@ -33,17 +35,19 @@ public class CommandsHandler {
     private Command getCommand(String messageType) {
         switch (messageType) {
             case "get-projects-list":
-                return new GetProjectsCommand(webSyncService);
+                return new GetProjectsCommand(projectsProvider);
             case "get-project":
-                return new GetProjectCommand(webSyncService);
-            case "create-website":
-                return new CreateWebsiteCommand(webSyncService);
+                return new GetProjectCommand(projectsProvider);
             case "delete-website":
                 return null;
             case "update-website":
-                return new UpdateWebsiteCommand(webSyncService);
+                return new UpdateWebsiteCommand(projectsProvider);
+            case "create-website":
+                return new CreateWebsiteCommand(projectsProvider, projectUpdatesQueue);
             case "create-page-type":
-                return new CreatePageTypeCommand(webSyncService);
+                return new CreatePageTypeCommand(projectsProvider, projectUpdatesQueue);
+            case "create-component-type":
+                return new CreateComponentTypeCommand(projectsProvider, projectUpdatesQueue);
             case "delete-page-type":
                 return null;
             case "update-page-type":
@@ -54,16 +58,14 @@ public class CommandsHandler {
                 return null;
             case "update-page-instance":
                 return null;
-            case "create-component-type":
-                return new CreateComponentTypeCommand(webSyncService);
             case "delete-component-type":
                 return null;
             case "add-component-instance":
-                return new AddComponentInstanceCommand(webSyncService);
+                return new AddComponentInstanceCommand(projectsProvider);
             case "delete-component-instance":
-                return new DeleteComponentInstanceCommand(webSyncService);
+                return new DeleteComponentInstanceCommand(projectsProvider);
             case "update-component-instance":
-                return new UpdateComponentInstanceCommand(webSyncService);
+                return new UpdateComponentInstanceCommand(projectsProvider);
             default:
                 throw new IllegalArgumentException(messageType);
         }

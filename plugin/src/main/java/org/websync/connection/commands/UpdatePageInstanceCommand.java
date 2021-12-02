@@ -8,14 +8,14 @@ import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiField;
 import org.websync.WebSyncException;
-import org.websync.WebSyncService;
 import org.websync.connection.dto.PageInstanceDto;
 import org.websync.connection.messages.browser.PageInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
+import org.websync.psi.JdiProjectsProvider;
 
 public class UpdatePageInstanceCommand<T> extends CommandWithDataBase<PageInstanceMessage> {
-    public UpdatePageInstanceCommand(WebSyncService webSyncService) {
-        super(webSyncService);
+    public UpdatePageInstanceCommand(JdiProjectsProvider projectsProvider) {
+        super(projectsProvider);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UpdatePageInstanceCommand<T> extends CommandWithDataBase<PageInstan
         int lastDot = pageInstance.id.lastIndexOf('.');
         String className = pageInstance.id.substring(0, lastDot);
         int fieldIndex = Integer.parseInt(pageInstance.id.substring(lastDot + 1));
-        final Module module = webSyncService.getModulesProvider().findProject(commandData.projectName);
+        final Module module = projectsProvider.findProject(commandData.projectName);
         updatePageInstanceUrl(module, className, fieldIndex, pageInstance.url);
         return null;
     }

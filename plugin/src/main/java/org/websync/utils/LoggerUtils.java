@@ -28,10 +28,10 @@ public class LoggerUtils {
     public static void logeTreeChangeEvent(String message) {
         message = String.format("%s - %s\n", sdf.format(calendar.getTime()), message);
         System.out.println(message);
-//        try {
-//            writeToLogFile(message, "c:\\data\\logs\\websync.txt");
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            writeToLogFile(message, "c:\\data\\logs\\websync.txt");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
