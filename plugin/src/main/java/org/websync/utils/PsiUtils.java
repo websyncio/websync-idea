@@ -157,12 +157,27 @@ public class PsiUtils {
                     if (insertNewLineBeforeField) {
                         parent.addAfter(createNewLine(module.getProject()), anchorElement);
                     }
-                    JavaCodeStyleManager.getInstance(module.getProject()).shortenClassReferences(newField);
+
+                    JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(module.getProject());
+                    styleManager.shortenClassReferences(containerClass.getContainingFile());
+                    //JavaCodeStyleManager.getInstance(module.getProject()).shortenClassReferences(newField);
 //                        CodeStyleManager.getInstance(module.getProject()).reformat(containerClass);
                 });
     }
 
     protected PsiElement createNewLine(Project project) {
         return PsiParserFacade.SERVICE.getInstance(project).createWhiteSpaceFromText("\n\n");
+    }
+
+    public static void addImportStatement(Module module, String componentTypeId, String containerClassName) {
+        WriteCommandAction.runWriteCommandAction(module.getProject(),
+                containerClassName + ": add import statement",
+                "WebSyncAction",
+                () -> {
+                    PsiClass containerClass = PsiUtils.findClass(module, containerClassName);
+                    PsiClass importedClass = PsiUtils.findClass(module, componentTypeId);
+                    PsiJavaFile file = (PsiJavaFile) containerClass.getContainingFile();
+                    file.importClass(importedClass);
+                });
     }
 }

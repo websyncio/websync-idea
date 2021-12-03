@@ -23,7 +23,7 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
         final Module module = projectsProvider.findProject(commandData.projectName);
         ComponentInstanceDto componentInstance = commandData.componentInstance;
         String containerClassName = componentInstance.parentId;
-        String typeName = getNameFromId(componentInstance.componentTypeId);
+        String typeName = componentInstance.componentTypeId;
 
         // .create annotation
         String attributeName = componentInstance.initializationAttribute.getName();
@@ -34,6 +34,7 @@ public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentIn
         // .we use only first parameters so far and ignore others
         Object attributeValue = componentInstance.initializationAttribute.getParameters().get(0).getValues().get(0);
         PsiUtils.addFieldToClass(module, typeName, componentInstance.fieldName, attributeName, attributeValue, containerClassName);
+        //PsiUtils.addImportStatement(module, componentInstance.componentTypeId, containerClassName);
         return null;
     }
 }
