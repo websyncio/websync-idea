@@ -39,9 +39,9 @@ public class CreateComponentTypeCommand extends CommandWithDataBase<CreateCompon
     }
 
     private String getComponentTypeFileContent(String typeName, String baseType) {
-        baseType = StringUtil.isEmpty(baseType) ? JdiElement.JDI_UI_BASE_ELEMENT.className+"<UIAssert>" : baseType;
+        baseType = StringUtil.isEmpty(baseType) ? JdiElement.JDI_UI_BASE_ELEMENT.className+"<TextAssert>" : baseType;
         return StringUtil.join(
-                "import com.epam.jdi.light.asserts.generic.UIAssert;\n"+
+                "import com.epam.jdi.light.asserts.generic.TextAssert;\n"+
                 "import com.epam.jdi.light.elements.base.UIBaseElement;\n"+
                 "import com.epam.jdi.light.elements.pageobjects.annotations.locators.UI;\n",
                 "public class " + typeName + " extends " + baseType + " {\n",
