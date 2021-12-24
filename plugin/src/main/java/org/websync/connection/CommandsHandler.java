@@ -23,10 +23,10 @@ public class CommandsHandler {
         ResponseMessage responseMessage;
         try {
             Object result = command.execute(messageString);
-            responseMessage = new ResponseMessage(message.type, true);
+            responseMessage = new ResponseMessage(message.asyncId, message.type, true);
             responseMessage.data = result;
         } catch (WebSyncException e) {
-            responseMessage = new ResponseMessage(message.type, false);
+            responseMessage = new ResponseMessage(message.asyncId, message.type, false);
             responseMessage.error = e.getMessage();
         }
         return responseMessage;
@@ -34,6 +34,8 @@ public class CommandsHandler {
 
     private Command getCommand(String messageType) {
         switch (messageType) {
+            case "open-file":
+                return new OpenFileForClassCommand(projectsProvider);
             case "get-projects-list":
                 return new GetProjectsCommand(projectsProvider);
             case "get-project":

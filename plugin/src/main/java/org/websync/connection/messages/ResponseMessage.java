@@ -7,8 +7,9 @@ public class ResponseMessage extends Message {
 
     private static final String responseMessagePostfix = "-response";
 
-    public ResponseMessage(String requestMessageType, boolean isSuccessful) {
+    public ResponseMessage(String asyncId, String requestMessageType, boolean isSuccessful) {
         super(requestMessageType + responseMessagePostfix);
+        this.asyncId = asyncId;
         this.isSuccessful = isSuccessful;
     }
 }

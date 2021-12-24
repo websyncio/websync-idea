@@ -1,8 +1,8 @@
 <idea-plugin>
     <id>org.websync</id>
     <name>WebSync</name>
-    <version>0.0.1</version>
-    <vendor email="wsbaser@gmail.com" url="https://github.com/websyncio/websync-idea">Volkov Aleksey</vendor>
+    <version>0.0.7</version>
+    <vendor email="wsbaser@gmail.com" url="https://github.com/websyncio/websync-idea">Volkov Aleksei</vendor>
 
     <description>
         IntelliJ IDEA plugin for updating selenium locators via remote call.
@@ -19,15 +19,15 @@
     <applicationListeners>
         <listener class="org.websync.ProjectOpenCloseListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
-    <idea-version since-build="193"/>
-    <actions>
-        <action id="org.websync.actions.TransferPageObjectAction" class="org.websync.actions.TransferPageObjectAction" text="Transfer Page Object" description="Transfer Page Object to Page-Editor">
-            <add-to-group group-id="NavBarToolBar" anchor="first"/>
-        </action>
-        <action id="org.websync.actions.SendTestEventAction" class="org.websync.actions.SendTestEventAction" text="Send Test Event"
-                description="Send test event to websync-idea plugin">
-            <add-to-group group-id="HelpMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt W"/>
-        </action>
-    </actions>
+    <idea-version since-build="212"/>
+<!--    <actions>-->
+<!--        <action id="org.websync.actions.TransferPageObjectAction" class="org.websync.actions.TransferPageObjectAction" text="Transfer Page Object" description="Transfer Page Object to Page-Editor">-->
+<!--            <add-to-group group-id="NavBarToolBar" anchor="first"/>-->
+<!--        </action>-->
+<!--        <action id="org.websync.actions.SendTestEventAction" class="org.websync.actions.SendTestEventAction" text="Send Test Event"-->
+<!--                description="Send test event to websync-idea plugin">-->
+<!--            <add-to-group group-id="HelpMenu" anchor="last"/>-->
+<!--            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt W"/>-->
+<!--        </action>-->
+<!--    </actions>-->
 </idea-plugin>

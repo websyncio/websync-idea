@@ -1,5 +1,7 @@
 package org.websync.connection.commands;
 
+import com.intellij.openapi.application.ReadAction;
+import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
@@ -9,6 +11,10 @@ import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateWebsiteMessage;
 import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessage> {
     private ProjectUpdatesQueue projectUpdatesQueue;
@@ -27,17 +33,20 @@ public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessa
     public Object execute(CreateWebsiteMessage commandData) throws WebSyncException {
         final Module module = projectsProvider.findProject(commandData.projectName);
         try {
-            this.projectUpdatesQueue.captureProjectState(module.getProject());
-            PsiPackage rootPackage = PsiUtils.getRootPackage(module);
-            PsiDirectory[] directories = rootPackage.getDirectories();
-            if (directories.length == 0) {
-                throw new WebSyncException("Unable to define root directory.");
-            }
-            PsiDirectory rootDirectory = directories[0];
-            String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseUrl);
-            String fileName = commandData.name + ".java";
-            PsiUtils.createJavaFileIn(module, fileName, fileContent, rootDirectory);
-        }finally {
+            WriteAction.runAndWait(() -> {
+                this.projectUpdatesQueue.captureProjectState(module.getProject());
+                PsiPackage rootPackage = PsiUtils.getRootPackage(module);
+                List<PsiDirectory> directories = Arrays.stream(rootPackage.getDirectories())
+                        .filter(d -> d.toString().endsWith("\\src\\main\\java")).collect(Collectors.toList());
+                if (directories.size() != 1) {
+                    throw new WebSyncException("Unable to define root directory.");
+                }
+                PsiDirectory rootDirectory = directories.get(0);
+                String fileContent = getComponentTypeFileContent(commandData.name, commandData.baseUrl);
+                String fileName = commandData.name + ".java";
+                PsiUtils.createJavaFileIn(module, fileName, fileContent, rootDirectory);
+            });
+        } finally {
             this.projectUpdatesQueue.releaseProjectState(module.getProject());
         }
         return null;

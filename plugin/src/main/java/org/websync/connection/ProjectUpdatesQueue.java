@@ -23,6 +23,7 @@ import org.websync.utils.ModuleStructureUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.websync.utils.PsiUtils.*;
 
@@ -35,7 +36,7 @@ public class ProjectUpdatesQueue {
     public ProjectUpdatesQueue(BrowserConnection browserConnection, JdiProjectsProvider projectsProvider) {
         this.browserConnection = browserConnection;
         this.projectsProvider = projectsProvider;
-        this.debouncer = new Debouncer(200);
+        this.debouncer = new Debouncer();
         capturedProjects = new ArrayList<>();
     }
 
@@ -58,12 +59,12 @@ public class ProjectUpdatesQueue {
         }
         // Change occurred in main module
         if (!DumbService.isDumb(project)) {
-            debouncer.execute(() -> {
+            debouncer.debounce(project, () -> {
                 ApplicationManager.getApplication().runReadAction(() -> {
                     JdiProject jdiProject = projectsProvider.getJdiProject(project.getName());
                     sendProjectUpdate(jdiProject);
                 });
-            });
+            }, 300, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -74,15 +75,17 @@ public class ProjectUpdatesQueue {
     }
 
     public void addContentUpdate(PsiFile psiFile) {
-        if(isProjectStateCaptured(psiFile.getProject())){
-            return;
-        }
         if (psiFile == null) {
             LoggerUtils.print("PsiFile is null for event");
             return;
         }
+        if(isProjectStateCaptured(psiFile.getProject())){
+            return;
+        }
         if (!DumbService.isDumb(psiFile.getProject())) {
-            debouncer.execute(() -> sendUpdateFor(psiFile));
+            debouncer.debounce(psiFile,
+                    () -> sendUpdateFor(psiFile),
+                    300,TimeUnit.MILLISECONDS);
         }
     }
 

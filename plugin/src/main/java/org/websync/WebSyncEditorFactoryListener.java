@@ -1,5 +1,6 @@
 package org.websync;
 
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
@@ -46,13 +47,15 @@ public class WebSyncEditorFactoryListener implements EditorFactoryListener {
         }
 
         private void sendShowInPageEditor(PsiClass psiClass) {
-            boolean isComponent = isComponent(psiClass);
-            if (isComponent || isPage(psiClass)) {
-                String pageObjetType = isComponent ? "component" : "page";
-                WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
-                ShowPageObjectMessage requestMessage = new ShowPageObjectMessage(pageObjetType, psiClass.getQualifiedName());
-                webSyncService.getBrowserConnection().send(requestMessage);
-            }
+            ReadAction.nonBlocking(()->{
+                boolean isComponent = isComponent(psiClass);
+                if (isComponent || isPage(psiClass)) {
+                    String pageObjetType = isComponent ? "component" : "page";
+                    WebSyncService webSyncService = ServiceManager.getService(WebSyncService.class);
+                    ShowPageObjectMessage requestMessage = new ShowPageObjectMessage(pageObjetType, psiClass.getQualifiedName());
+                    webSyncService.getBrowserConnection().send(requestMessage);
+                }
+            });
         }
     };
 }

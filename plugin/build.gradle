@@ -6,7 +6,7 @@ plugins {
 
 
 group 'org.websync'
-version '0.0.4'
+version '0.0.7'
 
 //sourceCompatibility = 1.8
 compileJava {
@@ -71,7 +71,7 @@ jar {
 
 intellij {
     setPlugins("java", "maven")
-    version '2019.3.3'
+    version '2021.2'
 }
 
 publishPlugin {

@@ -2,6 +2,7 @@ package org.websync.connection.messages;
 
 public class Message {
     public String type;
+    public String asyncId;
 
     public Message() {}
 

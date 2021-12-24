@@ -12,7 +12,7 @@ import org.websync.utils.PsiUtils;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class CommandWithDataBase<T> extends CommandBase{
+public abstract class CommandWithDataBase<T> extends CommandBase {
     public CommandWithDataBase(JdiProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
