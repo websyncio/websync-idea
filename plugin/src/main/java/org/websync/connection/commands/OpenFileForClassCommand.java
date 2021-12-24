@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import org.websync.WebSyncException;
 import org.websync.connection.messages.browser.OpenFileMessage;
-import org.websync.connection.messages.browser.ProjectMessage;
 import org.websync.psi.JdiProjectsProvider;
 import org.websync.utils.PsiUtils;
 

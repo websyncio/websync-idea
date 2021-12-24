@@ -6,6 +6,8 @@ import lombok.Getter;
 import org.websync.connection.BrowserConnection;
 import org.websync.connection.CommandsHandler;
 import org.websync.connection.ProjectUpdatesQueue;
+import org.websync.connection.messages.idea.ProjectClosedMessage;
+import org.websync.connection.messages.idea.ProjectOpenedMessage;
 import org.websync.psi.JdiProjectsProvider;
 import org.websync.psi.PsiJdiProjectsProvider;
 
@@ -61,10 +63,12 @@ public class WebSyncService {
     public void addProject(Project project) {
         projectsProvider.addProject(project);
         PsiManager.getInstance(project).addPsiTreeChangeListener(psiTreeChangeListener);
+        browserConnection.send(new ProjectOpenedMessage(project.getName()));
     }
 
     public void removeProject(Project project) {
         projectsProvider.removeProject(project);
         PsiManager.getInstance(project).removePsiTreeChangeListener(psiTreeChangeListener);
+        browserConnection.send(new ProjectClosedMessage(project.getName()));
     }
 }

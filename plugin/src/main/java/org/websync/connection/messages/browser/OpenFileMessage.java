@@ -1,6 +1,6 @@
 package org.websync.connection.messages.browser;
 
-import org.websync.connection.messages.Message;
+import org.websync.connection.messages.ProjectMessage;
 
 public class OpenFileMessage extends ProjectMessage {
     public String fullClassName;

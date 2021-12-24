@@ -2,7 +2,7 @@ package org.websync.connection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
 import org.websync.WebSyncException;
-import org.websync.connection.messages.browser.ProjectMessage;
+import org.websync.connection.messages.ProjectMessage;
 import org.websync.psi.JdiProjectsProvider;
 
 public class GetProjectCommand extends CommandWithDataBase<ProjectMessage> {
