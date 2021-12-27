@@ -2,6 +2,7 @@ package org.websync.connection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -26,16 +27,18 @@ public class OpenFileForClassCommand extends CommandWithDataBase<OpenFileMessage
     @Override
     public Object execute(OpenFileMessage commandData) throws WebSyncException {
         final Module module = projectsProvider.findProject(commandData.projectName);
-        PsiClass psiClass = PsiUtils.findClass(module, commandData.fullClassName);
-        if (psiClass == null) {
-            throw new WebSyncException("Class was not found: " + commandData.fullClassName);
-        }
-        VirtualFile classFile = psiClass.getContainingFile().getVirtualFile();
-        OpenFileDescriptor openFileDescriptor = new OpenFileDescriptor(module.getProject(), classFile);
-        ApplicationManager.getApplication().invokeLater(() -> {
-                    openFileDescriptor.navigate(false);
-                },
-                ModalityState.defaultModalityState());
+        ReadAction.run(() -> {
+            PsiClass psiClass = PsiUtils.findClass(module, commandData.fullClassName);
+            if (psiClass == null) {
+                throw new WebSyncException("Class was not found: " + commandData.fullClassName);
+            }
+            VirtualFile classFile = psiClass.getContainingFile().getVirtualFile();
+            OpenFileDescriptor openFileDescriptor = new OpenFileDescriptor(module.getProject(), classFile);
+            ApplicationManager.getApplication().invokeLater(() -> {
+                        openFileDescriptor.navigate(false);
+                    },
+                    ModalityState.defaultModalityState());
+        });
         return null;
     }
 }
