@@ -7,13 +7,13 @@ import org.websync.WebSyncException;
 import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateComponentTypeMessage;
 import org.websync.frameworks.jdi.JdiElement;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 public class CreateComponentTypeCommand extends CommandWithDataBase<CreateComponentTypeMessage>{
     private ProjectUpdatesQueue projectUpdatesQueue;
 
-    public CreateComponentTypeCommand(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
+    public CreateComponentTypeCommand(SeleniumProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
         super(projectsProvider);
         this.projectUpdatesQueue = projectUpdatesQueue;
     }

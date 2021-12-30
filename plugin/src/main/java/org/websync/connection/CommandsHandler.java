@@ -6,13 +6,13 @@ import org.websync.WebSyncException;
 import org.websync.connection.commands.*;
 import org.websync.connection.messages.Message;
 import org.websync.connection.messages.ResponseMessage;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 
 public class CommandsHandler {
-    private JdiProjectsProvider projectsProvider;
+    private SeleniumProjectsProvider projectsProvider;
     private ProjectUpdatesQueue projectUpdatesQueue;
 
-    public CommandsHandler(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue){
+    public CommandsHandler(SeleniumProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue){
         this.projectsProvider = projectsProvider;
         this.projectUpdatesQueue = projectUpdatesQueue;
     }
@@ -34,6 +34,8 @@ public class CommandsHandler {
 
     private Command getCommand(String messageType) {
         switch (messageType) {
+            case "match-url":
+                return new MatchUrlCommand(projectsProvider);
             case "open-file":
                 return new OpenFileForClassCommand(projectsProvider);
             case "get-projects-list":
@@ -59,7 +61,7 @@ public class CommandsHandler {
             case "delete-page-instance":
                 return null;
             case "update-page-instance":
-                return null;
+                return new UpdatePageInstanceCommand(projectsProvider, projectUpdatesQueue);
             case "delete-component-type":
                 return null;
             case "add-component-instance":

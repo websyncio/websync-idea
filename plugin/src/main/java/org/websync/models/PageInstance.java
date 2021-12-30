@@ -9,4 +9,6 @@ public interface PageInstance extends CodeModelWithId {
     String getPageTypeId();
 
     AnnotationInstance getAttributeInstance();
+
+    String getUrl();
 }

@@ -10,7 +10,8 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import org.websync.frameworks.jdi.JdiElementType;
-import org.websync.models.JdiProject;
+import org.websync.models.SeleniumProject;
+import org.websync.models.WebSite;
 import org.websync.utils.ModuleStructureUtils;
 import org.websync.psi.models.PsiComponentType;
 import org.websync.psi.models.PsiJdiProject;
@@ -28,19 +29,24 @@ import static org.websync.frameworks.jdi.JdiAttribute.JDI_JSITE;
 import static org.websync.frameworks.jdi.JdiElement.JDI_UI_BASE_ELEMENT;
 import static org.websync.frameworks.jdi.JdiElement.JDI_WEB_PAGE;
 
-public class PsiJdiProjectsProvider implements JdiProjectsProvider {
+public class PsiJdiProjectsProvider implements SeleniumProjectsProvider {
     private final List<String> projectNames = new ArrayList<>();
 
     @Override
-    public List<String> getJdiModuleNames() {
+    public List<String> getModuleNames() {
         return new ArrayList<>(projectNames);
     }
 
-    public JdiProject getJdiProject(String projectName) {
+    public SeleniumProject getProject(String projectName) {
         return getJdiProject(projectName, findProject(projectName));
     }
 
-    public JdiProject getJdiProject(String projectName, Module module) {
+    @Override
+    public Collection<WebSite> getWebsites(String projectName) {
+        return (Collection) getWebsites(findProject(projectName));
+    }
+
+    public SeleniumProject getJdiProject(String projectName, Module module) {
         Collection<PsiWebsite> websites = getWebsites(module);
         Collection<PsiPageType> pages = getPages(module);
         Collection<PsiComponentType> components = getComponents(module);

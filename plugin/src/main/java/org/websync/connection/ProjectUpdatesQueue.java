@@ -12,8 +12,8 @@ import org.websync.connection.messages.idea.UpdateComponentTypeMessage;
 import org.websync.connection.messages.idea.UpdatePageTypeMessage;
 import org.websync.connection.messages.idea.UpdateProjectMessage;
 import org.websync.connection.messages.idea.UpdateWebSiteMessage;
-import org.websync.models.JdiProject;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.models.SeleniumProject;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.psi.models.PsiComponentType;
 import org.websync.psi.models.PsiPageType;
 import org.websync.psi.models.PsiWebsite;
@@ -29,11 +29,11 @@ import static org.websync.utils.PsiUtils.*;
 
 public class ProjectUpdatesQueue {
     private BrowserConnection browserConnection;
-    private JdiProjectsProvider projectsProvider;
+    private SeleniumProjectsProvider projectsProvider;
     private final Debouncer debouncer;
     private List<Project> capturedProjects;
 
-    public ProjectUpdatesQueue(BrowserConnection browserConnection, JdiProjectsProvider projectsProvider) {
+    public ProjectUpdatesQueue(BrowserConnection browserConnection, SeleniumProjectsProvider projectsProvider) {
         this.browserConnection = browserConnection;
         this.projectsProvider = projectsProvider;
         this.debouncer = new Debouncer();
@@ -61,14 +61,14 @@ public class ProjectUpdatesQueue {
         if (!DumbService.isDumb(project)) {
             debouncer.debounce(project, () -> {
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    JdiProject jdiProject = projectsProvider.getJdiProject(project.getName());
+                    SeleniumProject jdiProject = projectsProvider.getProject(project.getName());
                     sendProjectUpdate(jdiProject);
                 });
             }, 300, TimeUnit.MILLISECONDS);
         }
     }
 
-    private void sendProjectUpdate(JdiProject jdiProject) {
+    private void sendProjectUpdate(SeleniumProject jdiProject) {
         LoggerUtils.logeTreeChangeEvent("Send project update");
         UpdateProjectMessage requestMessage = new UpdateProjectMessage(jdiProject.getDto());
         browserConnection.send(requestMessage);

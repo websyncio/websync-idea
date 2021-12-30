@@ -8,7 +8,7 @@ import org.websync.connection.CommandsHandler;
 import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.idea.ProjectClosedMessage;
 import org.websync.connection.messages.idea.ProjectOpenedMessage;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.psi.PsiJdiProjectsProvider;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class WebSyncService {
     @Getter
     private BrowserConnection browserConnection;
     @Getter
-    private JdiProjectsProvider projectsProvider;
+    private SeleniumProjectsProvider projectsProvider;
     final private WebSyncPsiTreeChangeListener psiTreeChangeListener;
     private ProjectUpdatesQueue projectUpdatesQueue;
 

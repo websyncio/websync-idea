@@ -1,10 +1,10 @@
 package org.websync.connection.commands;
 
 import com.intellij.openapi.application.ApplicationManager;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 
 public class GetProjectsCommand extends CommandBase {
-    public GetProjectsCommand(JdiProjectsProvider projectsProvider) {
+    public GetProjectsCommand(SeleniumProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
 
@@ -12,7 +12,7 @@ public class GetProjectsCommand extends CommandBase {
     public Object execute(String data) {
         Object[] result = new Object[1];
         ApplicationManager.getApplication().runReadAction(() -> {
-            result[0] = projectsProvider.getJdiModuleNames();
+            result[0] = projectsProvider.getModuleNames();
         });
         return result[0];
     }

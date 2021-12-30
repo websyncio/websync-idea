@@ -6,10 +6,10 @@ import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiField;
 import org.websync.WebSyncException;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 
 public class DeleteComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public DeleteComponentInstanceCommand(JdiProjectsProvider projectsProvider) {
+    public DeleteComponentInstanceCommand(SeleniumProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
 
@@ -24,7 +24,7 @@ public class DeleteComponentInstanceCommand extends CommandWithDataBase<Componen
         String className = commandData.componentInstance.parentId;
         int fieldIndex = commandData.componentInstance.fieldIndex;
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiField(module, className, fieldIndex);
+            PsiField psiField = findPsiFieldByIndex(module, className, fieldIndex);
             WriteCommandAction.runWriteCommandAction(module.getProject(),
                     className + ": delete field with index'" + fieldIndex,
                     "WebSyncAction",

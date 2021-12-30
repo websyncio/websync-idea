@@ -9,6 +9,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.impl.source.PsiFieldImpl;
 import com.intellij.psi.impl.source.tree.ChildRole;
+import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PsiUtil;
@@ -179,5 +180,15 @@ public class PsiUtils {
                     PsiJavaFile file = (PsiJavaFile) containerClass.getContainingFile();
                     file.importClass(importedClass);
                 });
+    }
+
+    public static void addAnnotationToField(PsiField psiField, PsiAnnotation psiAnnotation) {
+        PsiModifierList modifierListElement = (PsiModifierList)((CompositeElement)psiField.getNode()).findChildByRoleAsPsiElement(ChildRole.MODIFIER_LIST);
+        if (modifierListElement == null) {
+            PsiTypeElement psiTypeElement = psiField.getTypeElement();
+            psiTypeElement.addBefore(psiAnnotation, psiTypeElement.getFirstChild());
+        } else {
+            modifierListElement.addBefore(psiAnnotation, modifierListElement.getFirstChild());
+        }
     }
 }

@@ -5,7 +5,7 @@ import org.websync.connection.dto.JdiProjectDto;
 
 import java.util.Map;
 
-public abstract class JdiProject {
+public abstract class SeleniumProject {
     @Getter
     public Map<String, PageType> pageTypes;
     @Getter

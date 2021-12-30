@@ -1,11 +1,11 @@
 package org.websync.connection.commands;
 
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 
 public abstract class CommandBase implements Command  {
-    protected JdiProjectsProvider projectsProvider;
+    protected SeleniumProjectsProvider projectsProvider;
 
-    public CommandBase(JdiProjectsProvider projectsProvider){
+    public CommandBase(SeleniumProjectsProvider projectsProvider){
         this.projectsProvider = projectsProvider;
     }
 }

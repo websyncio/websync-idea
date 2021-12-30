@@ -4,6 +4,7 @@ package org.websync.psi.models;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
+import org.websync.connection.dto.AnnotationDto;
 import org.websync.models.PageInstance;
 
 import java.util.ArrayList;
@@ -69,6 +70,36 @@ public class PsiPageInstance extends PsiModelWithId<PsiPageInstance> implements 
         PsiAnnotation annotation = psiField.getAnnotations()[0];
 
         return getAttributeInstance(annotation);
+    }
+
+    @Override
+    public String getUrl() {
+        // this code should be in PSI model
+        AnnotationInstance annotationInstance = getAttributeInstance();
+        if (annotationInstance != null) {
+            AnnotationDto initializationAttribute;
+            initializationAttribute = new AnnotationDto(getAttributeInstance());
+            if (initializationAttribute.getName().equals("Url")) {
+                List<AnnotationDto.Parameter> params = initializationAttribute.getParameters();
+                return params.get(0).getValues().get(0);
+            }
+        }
+        return "";
+    }
+
+    public String getUrlPattern() {
+        AnnotationInstance annotationInstance = getAttributeInstance();
+        if (annotationInstance != null) {
+            AnnotationDto initializationAttribute;
+            initializationAttribute = new AnnotationDto(getAttributeInstance());
+            if (initializationAttribute.getName().equals("Url")) {
+                List<AnnotationDto.Parameter> params = initializationAttribute.getParameters();
+                return params.size() > 1 ?
+                        params.get(1).getValues().get(0) :
+                        null;
+            }
+        }
+        return "";
     }
 
     private AnnotationInstance getAttributeInstance(PsiAnnotation psiAnnotation) {

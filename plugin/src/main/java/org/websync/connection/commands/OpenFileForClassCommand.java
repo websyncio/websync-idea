@@ -9,13 +9,13 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import org.websync.WebSyncException;
 import org.websync.connection.messages.browser.OpenFileMessage;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 import static com.intellij.util.OpenSourceUtil.navigate;
 
 public class OpenFileForClassCommand extends CommandWithDataBase<OpenFileMessage> {
-    public OpenFileForClassCommand(JdiProjectsProvider projectsProvider) {
+    public OpenFileForClassCommand(SeleniumProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
 

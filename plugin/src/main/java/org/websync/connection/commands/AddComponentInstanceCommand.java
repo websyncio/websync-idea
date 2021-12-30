@@ -5,11 +5,11 @@ import org.websync.WebSyncException;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 public class AddComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public AddComponentInstanceCommand(JdiProjectsProvider projectsProvider) {
+    public AddComponentInstanceCommand(SeleniumProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
 

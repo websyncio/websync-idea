@@ -1,6 +1,5 @@
 package org.websync.connection.commands;
 
-import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
@@ -9,7 +8,7 @@ import com.intellij.psi.PsiPackage;
 import org.websync.WebSyncException;
 import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateWebsiteMessage;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;
 
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class CreateWebsiteCommand extends CommandWithDataBase<CreateWebsiteMessage> {
     private ProjectUpdatesQueue projectUpdatesQueue;
 
-    public CreateWebsiteCommand(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
+    public CreateWebsiteCommand(SeleniumProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
         super(projectsProvider);
         this.projectUpdatesQueue = projectUpdatesQueue;
     }

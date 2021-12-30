@@ -11,10 +11,10 @@ import org.websync.connection.dto.AnnotationDto;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 
 public class UpdateComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public UpdateComponentInstanceCommand(JdiProjectsProvider projectsProvider) {
+    public UpdateComponentInstanceCommand(SeleniumProjectsProvider projectsProvider) {
         super(projectsProvider);
     }
 
@@ -42,7 +42,7 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
 
     public void updateComponentInstance(Module module, String className, int fieldIndex, String newFieldType, String newFieldName) throws WebSyncException {
         WriteAction.runAndWait(() -> {
-            PsiFieldImpl psiField = (PsiFieldImpl) findPsiField(module, className, fieldIndex);
+            PsiFieldImpl psiField = (PsiFieldImpl) findPsiFieldByIndex(module, className, fieldIndex);
             PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiField.getManager().getProject());
             PsiTypeElement typeElement = (PsiTypeElement) psiField.getNode().findChildByRoleAsPsiElement(ChildRole.TYPE);
 
@@ -67,7 +67,7 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
             int fieldIndex,
             AnnotationDto annotationDto) throws WebSyncException {
         WriteAction.runAndWait(() -> {
-            PsiField psiField = findPsiField(module, className, fieldIndex);
+            PsiField psiField = findPsiFieldByIndex(module, className, fieldIndex);
             String attributeShortName = annotationDto.getName();
             String attributeQualifiedName = JdiAttribute.getQualifiedNameByName(attributeShortName);
             if (attributeQualifiedName == null) {

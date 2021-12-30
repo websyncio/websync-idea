@@ -8,14 +8,14 @@ import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreatePageTypeMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.frameworks.jdi.JdiElement;
-import org.websync.psi.JdiProjectsProvider;
+import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;
 import org.websync.utils.StringUtils;
 
 public class CreatePageTypeCommand extends CommandWithDataBase<CreatePageTypeMessage>{
     private ProjectUpdatesQueue projectUpdatesQueue;
 
-    public CreatePageTypeCommand(JdiProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
+    public CreatePageTypeCommand(SeleniumProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
         super(projectsProvider);
         this.projectUpdatesQueue = projectUpdatesQueue;
     }

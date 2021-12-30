@@ -149,7 +149,7 @@ public class AnalyzerTestLight extends LightJavaCodeInsightFixtureTestCase {
                 String.format("Copy time from directory contained java classes to virtual project. Time = %.3f.",
                         (double)(endTime - startTime) / 1000000000));
 
-        new PsiJdiProjectsProvider().getJdiModuleNames();
+        new PsiJdiProjectsProvider().getModuleNames();
 
         //TODO:include reasonable assertion
         /*

@@ -4,12 +4,12 @@ import org.websync.connection.dto.ComponentTypeDto;
 import org.websync.connection.dto.JdiProjectDto;
 import org.websync.connection.dto.PageTypeDto;
 import org.websync.connection.dto.WebsiteDto;
-import org.websync.models.JdiProject;
+import org.websync.models.SeleniumProject;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class PsiJdiProject extends JdiProject {
+public class PsiJdiProject extends SeleniumProject {
     public PsiJdiProject() {
         super();
     }
