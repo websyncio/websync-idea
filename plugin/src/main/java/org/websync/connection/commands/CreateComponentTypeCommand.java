@@ -3,7 +3,7 @@ package org.websync.connection.commands;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateComponentTypeMessage;
 import org.websync.frameworks.jdi.JdiElement;

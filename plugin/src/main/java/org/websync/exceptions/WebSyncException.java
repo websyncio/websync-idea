@@ -1,4 +1,4 @@
-package org.websync;
+package org.websync.exceptions;
 
 public class WebSyncException extends Exception {
 

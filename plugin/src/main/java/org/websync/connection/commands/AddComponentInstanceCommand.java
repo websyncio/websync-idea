@@ -1,7 +1,7 @@
 package org.websync.connection.commands;
 
 import com.intellij.openapi.module.Module;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.frameworks.jdi.JdiAttribute;

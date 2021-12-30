@@ -1,7 +1,6 @@
 package org.websync.connection.commands;
 
-import com.intellij.util.Url;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.messages.browser.MatchUrlMessage;
 import org.websync.connection.messages.idea.UrlMatchResult;
 import org.websync.models.PageInstance;
@@ -16,7 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MatchUrlCommand extends CommandWithDataBase<MatchUrlMessage>{

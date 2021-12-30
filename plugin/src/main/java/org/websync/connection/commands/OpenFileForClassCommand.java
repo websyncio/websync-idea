@@ -7,7 +7,7 @@ import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.messages.browser.OpenFileMessage;
 import org.websync.psi.SeleniumProjectsProvider;
 import org.websync.utils.PsiUtils;

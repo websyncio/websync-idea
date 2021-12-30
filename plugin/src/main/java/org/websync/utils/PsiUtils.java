@@ -15,7 +15,7 @@ import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PsiUtil;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Nullable;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.frameworks.jdi.JdiElement;
 
 import java.util.Arrays;

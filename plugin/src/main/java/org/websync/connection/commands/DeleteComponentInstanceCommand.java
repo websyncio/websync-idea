@@ -4,7 +4,7 @@ import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiField;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;
 import org.websync.psi.SeleniumProjectsProvider;
 

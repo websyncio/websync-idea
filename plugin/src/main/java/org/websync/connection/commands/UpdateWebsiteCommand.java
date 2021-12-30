@@ -8,13 +8,11 @@ import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.search.GlobalSearchScope;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.dto.WebsiteDto;
 import org.websync.connection.messages.browser.WebSiteMessage;
 import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.psi.SeleniumProjectsProvider;
-
-import javax.naming.OperationNotSupportedException;
 
 public class UpdateWebsiteCommand extends CommandWithDataBase<WebSiteMessage> {
     public UpdateWebsiteCommand(SeleniumProjectsProvider projectsProvider) {

@@ -5,7 +5,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.connection.messages.browser.CreateWebsiteMessage;
 import org.websync.psi.SeleniumProjectsProvider;

@@ -6,7 +6,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiFieldImpl;
 import com.intellij.psi.impl.source.tree.ChildRole;
-import org.websync.WebSyncException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.dto.AnnotationDto;
 import org.websync.connection.dto.ComponentInstanceDto;
 import org.websync.connection.messages.browser.ComponentInstanceMessage;

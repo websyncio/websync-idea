@@ -2,6 +2,7 @@ package org.websync.psi;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.JavaPsiFacade;
@@ -9,6 +10,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import org.websync.exceptions.DumbProjectException;
 import org.websync.frameworks.jdi.JdiElementType;
 import org.websync.models.SeleniumProject;
 import org.websync.models.WebSite;
@@ -37,7 +39,11 @@ public class PsiJdiProjectsProvider implements SeleniumProjectsProvider {
         return new ArrayList<>(projectNames);
     }
 
-    public SeleniumProject getProject(String projectName) {
+    public SeleniumProject getProject(String projectName) throws DumbProjectException {
+        Module module = findProject(projectName);
+        if (DumbService.isDumb(module.getProject())) {
+            throw new DumbProjectException(module.getProject());
+        }
         return getJdiProject(projectName, findProject(projectName));
     }
 

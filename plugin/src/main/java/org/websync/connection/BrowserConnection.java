@@ -3,12 +3,14 @@ package org.websync.connection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.intellij.openapi.project.DumbService;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.jetbrains.annotations.NotNull;
 import org.websync.connection.messages.Message;
 import org.websync.connection.messages.ResponseMessage;
+import org.websync.exceptions.DumbProjectException;
 import org.websync.utils.LoggerUtils;
 
 import java.io.IOException;
@@ -77,8 +79,15 @@ public class BrowserConnection {
         if (commandsHandler == null) {
             return;
         }
-        ResponseMessage responseMessage = commandsHandler.handle(message);
-        send(responseMessage);
+        try{
+            ResponseMessage responseMessage = commandsHandler.handle(message);
+            send(responseMessage);
+        }catch (DumbProjectException e){
+            DumbService.getInstance(e.project).smartInvokeLater(()->{
+                ResponseMessage responseMessage = commandsHandler.handle(message);
+                send(responseMessage);
+            });
+        }
     }
 
     public void send(Message message) {

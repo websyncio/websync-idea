@@ -2,7 +2,8 @@ package org.websync.connection;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.websync.WebSyncException;
+import org.websync.exceptions.DumbProjectException;
+import org.websync.exceptions.WebSyncException;
 import org.websync.connection.commands.*;
 import org.websync.connection.messages.Message;
 import org.websync.connection.messages.ResponseMessage;
@@ -17,7 +18,7 @@ public class CommandsHandler {
         this.projectUpdatesQueue = projectUpdatesQueue;
     }
 
-    public ResponseMessage handle(String messageString) {
+    public ResponseMessage handle(String messageString) throws DumbProjectException {
         Message message = parseMessage(messageString);
         Command command = getCommand(message.type);
         ResponseMessage responseMessage;
