@@ -6,6 +6,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiFieldImpl;
 import com.intellij.psi.impl.source.tree.ChildRole;
+import org.websync.connection.ProjectUpdatesQueue;
 import org.websync.exceptions.WebSyncException;
 import org.websync.connection.dto.AnnotationDto;
 import org.websync.connection.dto.ComponentInstanceDto;
@@ -14,8 +15,11 @@ import org.websync.frameworks.jdi.JdiAttribute;
 import org.websync.psi.SeleniumProjectsProvider;
 
 public class UpdateComponentInstanceCommand extends CommandWithDataBase<ComponentInstanceMessage> {
-    public UpdateComponentInstanceCommand(SeleniumProjectsProvider projectsProvider) {
+    private ProjectUpdatesQueue projectUpdatesQueue;
+
+    public UpdateComponentInstanceCommand(SeleniumProjectsProvider projectsProvider, ProjectUpdatesQueue projectUpdatesQueue) {
         super(projectsProvider);
+        this.projectUpdatesQueue = projectUpdatesQueue;
     }
 
     @Override
@@ -31,12 +35,16 @@ public class UpdateComponentInstanceCommand extends CommandWithDataBase<Componen
         String newFieldName = componentInstance.fieldName;
         String newFieldTypeName = getNameFromId(componentInstance.componentTypeId);
         final Module module = projectsProvider.findProject(commandData.projectName);
-
-        updateComponentInstance(module, parentId, fieldIndex, newFieldTypeName, newFieldName);
-        if (componentInstance.initializationAttribute.getParameters().size() > 1) {
-            throw new WebSyncException("Changed annotation has more than one parameters. Processing of that case is not implemented.");
+        try {
+            this.projectUpdatesQueue.captureProjectState(module.getProject());
+            updateComponentInstance(module, parentId, fieldIndex, newFieldTypeName, newFieldName);
+            if (componentInstance.initializationAttribute.getParameters().size() > 1) {
+                throw new WebSyncException("Changed annotation has more than one parameters. Processing of that case is not implemented.");
+            }
+            updateComponentInstanceWithSingleAttribute(module, parentId, fieldIndex, componentInstance.initializationAttribute);
+        }finally {
+            this.projectUpdatesQueue.releaseProjectState(module.getProject(),false);
         }
-        updateComponentInstanceWithSingleAttribute(module, parentId, fieldIndex, componentInstance.initializationAttribute);
         return "Attribute was changed.";
     }
 

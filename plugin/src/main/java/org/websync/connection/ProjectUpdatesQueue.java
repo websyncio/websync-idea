@@ -142,9 +142,15 @@ public class ProjectUpdatesQueue {
     }
 
     public void releaseProjectState(Project project) {
+        this.releaseProjectState(project,true);
+    }
+
+    public void releaseProjectState(Project project, boolean addUpdate) {
         if (isProjectStateCaptured(project)) {
             capturedProjects.remove(project);
-            addStructureUpdate(project);
+            if(addUpdate) {
+                addStructureUpdate(project);
+            }
         }
     }
 }

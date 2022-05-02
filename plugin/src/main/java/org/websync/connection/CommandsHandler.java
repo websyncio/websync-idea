@@ -70,7 +70,7 @@ public class CommandsHandler {
             case "delete-component-instance":
                 return new DeleteComponentInstanceCommand(projectsProvider);
             case "update-component-instance":
-                return new UpdateComponentInstanceCommand(projectsProvider);
+                return new UpdateComponentInstanceCommand(projectsProvider, projectUpdatesQueue);
             default:
                 throw new IllegalArgumentException(messageType);
         }

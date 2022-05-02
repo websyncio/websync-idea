@@ -54,12 +54,12 @@ public enum JdiElement {
 
     JDI_UI_BASE_ELEMENT(JdiElementType.Base, "com.epam.jdi.light.elements.base.UIBaseElement"),
 
-    JDI_COLOR_PICKER(JdiElementType.Base, "com.epam.jdi.light.ui.html.elements.common.Colorpicker"),
-    JDI_DATE_TIME_SELECTOR(JdiElementType.Base,"com.epam.jdi.light.ui.html.elements.common.DateTimeSelector"),
+    JDI_COLOR_PICKER(JdiElementType.Common, "com.epam.jdi.light.ui.html.elements.common.Colorpicker"),
+    JDI_DATE_TIME_SELECTOR(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.DateTimeSelector"),
 
-    JDI_NUMBER_SELECTOR(JdiElementType.Base,"com.epam.jdi.light.ui.html.elements.common.NumberSelector"),
-    JDI_PROGRESS_BAR(JdiElementType.Base,"com.epam.jdi.light.ui.html.elements.common.ProgressBar"),
-    JDI_RANGE(JdiElementType.Base,"com.epam.jdi.light.ui.html.elements.common.Range"),
+    JDI_NUMBER_SELECTOR(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.NumberSelector"),
+    JDI_PROGRESS_BAR(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.ProgressBar"),
+    JDI_RANGE(JdiElementType.Common,"com.epam.jdi.light.ui.html.elements.common.Range"),
 
 //    JDI_DROPDOWN_EXPAND("com.epam.jdi.light.elements.complex.dropdown.DropdownExpand"),
 //    JDI_DROPDOWN_SELECT("com.epam.jdi.light.elements.complex.dropdown.DropdownSelect"),
@@ -74,7 +74,7 @@ public enum JdiElement {
 //    JDI_COMBOBOX("com.epam.jdi.light.elements.complex.Combobox"),
 //    JDI_DATA_LIST("com.epam.jdi.light.elements.complex.DataList"),
 //    JDI_DATA_LIST_OPTIONS("com.epam.jdi.light.ui.html.elements.complex.DataListOptions"),
-    JDI_JLIST(JdiElementType.Base,"com.epam.jdi.light.elements.complex.JList");
+    JDI_JLIST(JdiElementType.Complex,"com.epam.jdi.light.elements.complex.JList");
 //    JDI_LIST_BASE("com.epam.jdi.light.elements.complex.ListBase"),
 //    JDI_MULTI_SELECTOR("com.epam.jdi.light.ui.html.elements.complex.MultiSelector"),
 //    JDI_SELECTOR("com.epam.jdi.light.elements.complex.Selector"),
